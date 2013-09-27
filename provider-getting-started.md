@@ -192,8 +192,12 @@ We recommend users utilize the [PHPMemcacheSASL](https://github.com/ronnywang/PH
 ~~~~ php
 include('MemcacheSASL.php');
 $m = new MemcacheSASL;
-$m->addServer(<MEMCACHIER_SERVERS>, '11211');
-$m->setSaslAuthData(<MEMCACHIER_USERNAME>, <MEMCACHIER_PASSWORD>);
+$servers = explode(",", getenv("MEMCACHIER_SERVERS"));
+foreach ($servers as $s) {
+    $parts = explode(":", $s);
+    $m->addServer($parts[0], $parts[1]);
+}
+$m->setSaslAuthData(getenv("MEMCACHIER_USERNAME"), getenv("MEMCACHIER_PASSWORD"));
 
 $m->add("foo", "bar");
 echo $m->get("foo");
