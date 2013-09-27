@@ -178,10 +178,11 @@ Rack::Cache integration.
 <p class="callout" markdown="1"> If not specified, `Dalli::Client.new`
 automatically retrieves the memcache server location from the
 `MEMCACHE_SERVERS` environment variable. If it doesn't exist it will
-default to localhost and default port (11211).  </p>
+default to localhost and default port (11211).</p>
 
     :::ruby
-    client = Dalli::Client.new
+    client = Dalli::Client.new(ENV["MEMCACHIER_SERVERS"],
+                               :value_max_bytes => 10485760)
     config.action_dispatch.rack_cache = {
       :metastore    => client,
       :entitystore  => client
@@ -191,6 +192,17 @@ default to localhost and default port (11211).  </p>
 You can find a full list of configuration options
 [here](http://rtomayko.github.io/rack-cache/configuration), but the
 above should be enough.
+
+We set the `:value_max_bytes` option to 10MB as without this,
+Rack::Cache will return a HTTP 5xx error response for any asset larger
+than 1MB. This occurs as memcached by default only allows values of
+1MB or smaller and so Dalli will throw an exception if you try to
+`set` a key-value pair larger than 1MB. Increasing `:value_max_bytes`
+to 10MB stops Dalli throwing this error and instead results in the
+memcache server returning a miss for any assets larger than 1MB. So
+while very large assets won't be served by Rack::Cache (not much
+benefit for these kinds of assets anyway), they won't cause any
+problems.
 
 ## Handling Multiple Dynos
 
