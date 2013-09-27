@@ -132,7 +132,8 @@ From here you can use the following code examples to use the cache in your Rails
 Without the `memcachier` gem, you’ll need to pass the proper credentials to Dalli in `config/environments/production.rb`:
 
     :::ruby
-    config.cache_store = :dalli_store, ENV["MEMCACHIER_SERVERS"].split(","),
+    config.cache_store = :dalli_store,
+                        (ENV["MEMCACHIER_SERVERS"] || "").split(","),
                         {:username => ENV["MEMCACHIER_USERNAME"],
                          :password => ENV["MEMCACHIER_PASSWORD"]}
 
@@ -198,7 +199,8 @@ From here you can use the following code examples to use the cache in your Rails
 Without the `memcachier` gem, you’ll need to pass the proper credentials to Dalli in `config/environments/production.rb`:
 
     :::ruby
-    config.cache_store = :dalli_store, ENV["MEMCACHIER_SERVERS"].split(","),
+    config.cache_store = :dalli_store,
+                        (ENV["MEMCACHIER_SERVERS"] || "").split(","),
                         {:username => ENV["MEMCACHIER_USERNAME"],
                          :password => ENV["MEMCACHIER_PASSWORD"]}
 
