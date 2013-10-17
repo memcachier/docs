@@ -258,6 +258,16 @@ To test locally you can simply use the rails console:
 To test against MemCachier itself, please refer to the [Ruby testing
 instructions](#testing-ruby).
 
+## Rails Rack::Cache
+
+Rails can use a middle-ware component of the Rack web server
+architecture called Rack::Cache. This provides caching of static
+assets in Rails and is a simple alternative to use a full CDN.
+
+Please see [this
+article](https://devcenter.heroku.com/articles/rack-cache-memcached-rails31#configure-rails-cache-store)
+for information.
+
 ## Django
 
 <p class="callout" markdown="1">
@@ -595,8 +605,19 @@ If you're switching from the [other Memcache add-on provided by
 Couchbase](http://addons.heroku.com/memcache), the only change you'll
 need to make is to your environment variables.
 
-If you're using Ruby/Rails, install the `memcachier` gem.  Add the
-following to your `Gemfile`:
+Most memcache client look for the environment variables,
+`MEMCACHE_SERVERS`, `MEMCACHE_USERNAME` and `MEMCACHE_PASSWORD` for
+their configuration.  If these environment variables aren't set,
+clients generally default to connecting to `127.0.0.1:11211` (i.e.,
+localhost).
+
+The deprecated Couchbase Memcache add-on set the `MEMCACHE_*`
+variables for your app. The MemCachier add-on however sets the
+`MEMCACHIER_*` environment variables. So you'll need to translate them
+across.
+
+If you're using Ruby/Rails, then simply install the `memcachier` gem
+which does this.  Add the following to your `Gemfile`:
 
     :::ruby
     gem 'memcachier'
@@ -641,7 +662,7 @@ due to the strong separation between the development and production
 clusters.
 </p>
 
-## Key-Value Size Limit (1MB)
+## Key-Value size limit (1MB)
 
 MemCachier has a maximum size that a key-value object can be of
 __1MB__. This applies to both key-value pairs created through a `set`
@@ -661,6 +682,44 @@ that storing values larger than 1MB doesn't normally make sense in a
 high-performance key-value store. The network transfer time in these
 situations becomes the limiting factor for performance. A disk cache
 or even a database makes sense for this size value.
+
+## Errors about app trying to connect to localhost
+
+By default, most memcache client look for the environment variables,
+`MEMCACHE_SERVERS`, `MEMCACHE_USERNAME` and `MEMCACHE_PASSWORD` for
+their configuration. These variables are used when the initialization
+code for the memcache client doesn't specifically specify these values.
+
+If these environment variables aren't set, clients generally default
+to connecting to `127.0.0.1:11211` (i.e., localhost), with no username
+and password.
+
+The MemCachier add-on sets the `MEMCACHIER_SERVERS`,
+`MEMCACHIER_USERNAME` and `MEMCACHIER_PASSWORD` environment variables.
+So you need to either set the equivalent `MEMCACHE_*` variables from
+these, or pass these values to your client when you create a new one
+in your code.
+
+For example, pseudo-code for the first approach is:
+
+    env[MEMCACHE_SERVERS] = env[MEMCACHIER_SERVERS]
+    env[MEMCACHE_USERNAME] = env[MEMCACHIER_USERNAME]
+    env[MEMCACHE_PASSWORD] = env[MEMCACHIER_PASSWORD]
+
+While pseudo-code for the second approach is:
+
+    memClient = new MemcacheClient(ENV['MEMCACHIER_SERVERS'],
+                                   ENV['MEMCACHIER_USERNAME'],
+                                   ENV['MEMCACHIER_PASSWORD'])
+
+Please be careful that you have setup the your client in all
+locations. Many frameworks, such as Rails, use memcache in multiple
+ways and may require you to setup initialization properly in a few
+locations. Generally the first approach is preferred as it is global
+while the second approach is local to each initialization.
+
+For example, with Ruby on Rails, you'll need to setup `cache_store`,
+`Rack::Cache` and the `session_store`.
 
 ## Support
 
