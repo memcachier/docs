@@ -534,6 +534,10 @@ will also work.
 <td>Go</td>
 <td><a href="http://github.com/bmizerany/mc">mc</a></td>
 </tr>
+<tr>
+<td>Haskell</td>
+<td><a href="http://hackage.haskell.org/package/memcache">memcache</a></td>
+</tr>
 </tbody>
 </table>
 

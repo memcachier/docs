@@ -1,71 +1,34 @@
-<style>
-h2 {
-  font-size:26px;
-  color: #555;
-}
-code {
-  color: #444;
-  background: #f0f6fc;
-  border: 1px solid #d2dce6;
-}
-pre {
-  background: #434e56;
-  border: #1px solid #3f464c;
-  border-radius: 3px;
-  line-height: 18px;
-  color: #EAEAEA;
-}
-</style>
+# Getting Started with MemCachier
 
 MemCachier is an implementation of the
 [Memcache](http://memcached.org) in-memory key/value store used for
-caching data. It is a key technology in modern web applications for
-scaling and reducing server loads. The MemCachier add-on manages and
+caching data. Memcache a key technology in modern web applications for
+scaling and reducing server loads. MemCachier manages and
 scales clusters of memcache servers so you can focus on your app. Tell
 us how much memory you need and get started for free instantly. Add
 capacity later as you need it.
 
-The information below will quickly get you up and running with the
-MemCachier add-on. For information on the benefits of MemCachier and
-how it works, please refer to the more extensive
-[User Guide](http://www.memcachier.com/documentation/memcache-user-guide/).
+Below is our user guide for using MemCachier, you can also find answers
+in our <a href="/faq">FAQ</a>.
 
-## Signup
+<h2 id="toc">Table of Contents</h2>
 
-[Signup with MemCachier](https://my.memcachier.com) if you haven't
-already. You will need to verify your email address after you've
-signed up. We don't require a credit card if you choose a free plan.
-
-## Create a MemCachier App
-
-After you've verified your email address, you can start creating an
-application.  Creating an application requires you to choose a plan
-and name the application.
-
-Once you've created an application, follow the below getting started
-instructions to begin using the cache.
-
-<p class="alert alert-info">Your credentials may take up to three (3) minutes to be synced to our servers. You may see authentication errors if you start using the cache immediately.</p>
-
-## Getting started
-
-We have documentation for the following languages and frameworks:
-
-* [Ruby](#ruby)
-* [Rails](#rails)
-* [Django](#django)
-* [PHP](#php)
-* [Node.js](#node.js)
-* [Java](#java)
-
-We also have documentation on MemCachier usasge in general:
-
-* [Supported client libraries](#clients)
-* [Example applications](#sample-apps)
-* [Local usage](#local)
-* [MemCachier analytics](#analytics)
-* [Changing plans](#upgrading)
-* [Getting support](#support)
+1. [Ruby](#ruby)
+2. [Rails](#rails)
+2. [Rails 3 & 4](#rails3)
+3. [Rails 2](#rails2)
+4. [Django](#django)
+5. [PHP](#php)
+6. [Node.js](#node.js)
+7. [Java](#java)
+8. [Supported client libraries](#clients)
+9. [Example applications](#sample-apps)
+10. [Local usage](#local)
+11. [MemCachier analytics](#analytics)
+12. [Changing plans](#upgrading)
+13. [Key-Value size limit](#1mb-limit)
+14. [Errors connecting to localhost](#localhost-errors)
+15. [Getting support](#support)
 
 
 <h2 id="ruby">Ruby</h2>
@@ -90,7 +53,7 @@ cache = Dalli::Client.new(<MEMCACHIER_SERVERS>.split(","),
                      :password => <MEMCACHIER_PASSWORD>})
 ~~~~
 
-The values for `<MEMCACHIER_SERVERS>`, `<MEMCACHIER_USERNAME>`, and `<MEMCACHIER_PASSWORD>` are listed on your application's page on [my.memcachier.com](https://my.memcachier.com).
+The values for `<MEMCACHIER_SERVERS>`, `<MEMCACHIER_USERNAME>`, and `<MEMCACHIER_PASSWORD>` are listed on your [cache overview page](https://www.memcachier.com/caches).
 
 From here you can use the following code examples to use the cache in your Ruby app:
 
@@ -109,7 +72,7 @@ cache.stats
 We’ve built a small Ruby example using Sinatra here: [MemCachier Sinatra Sample App](https://github.com/memcachier/examples-sinatra).
 
 
-<h2 id="rails">Rails</h2>
+<h2 id="rails3">Rails 3 & 4</h2>
 
 Start by adding the [dalli](https://github.com/mperham/dalli) gem to your Gemfile.
 
@@ -131,7 +94,7 @@ config.cache_store = :dalli_store, <MEMCACHIER_SERVERS>.split(","),
                      :password => <MEMCACHIER_PASSWORD>}
 ~~~~
 
-The values for `<MEMCACHIER_SERVERS>`, `<MEMCACHIER_USERNAME>`, and `<MEMCACHIER_PASSWORD>` are listed on your application's page on [my.memcachier.com](https://my.memcachier.com).
+The values for `<MEMCACHIER_SERVERS>`, `<MEMCACHIER_USERNAME>`, and `<MEMCACHIER_PASSWORD>` are listed on your [cache overview page](https://www.memcachier.com/caches).
 
 <p class="alert alert-info">In your development environment, Rails.cache defaults to a simple in-memory store and so it doesn’t require a running memcached.</p>
 
@@ -145,6 +108,60 @@ puts Rails.cache.read("foo")
 We’ve built a small Rails example here: [MemCachier Rails sample app](https://github.com/memcachier/examples-rails).
 
 
+<h2 id="rails2">Rails 2</h2>
+
+Start by adding the [dalli](https://github.com/mperham/dalli) gem to your Gemfile. You will need to use dalli **v1.0.5** as later versions of Dalli don't
+support Rails 2.
+
+~~~~ ruby
+gem 'memcachier'
+gem 'dalli', '~>1.0.5'
+~~~~
+
+Then bundle install:
+
+~~~~ text
+$ bundle install
+~~~~
+
+`Dalli` is a Ruby memcache client.  Once it is installed you’ll want to configure the Rails cache_store appropriately. Modify `config/environments/production.rb` with the following:
+
+~~~~ ruby
+require 'active_support/cache/dalli_store23'
+config.cache_store = :dalli_store, <MEMCACHIER_SERVERS>.split(","),
+                    {:username => <MEMCACHIER_USERNAME>,
+                     :password => <MEMCACHIER_PASSWORD>}
+~~~~
+
+The values for `<MEMCACHIER_SERVERS>`, `<MEMCACHIER_USERNAME>`, and `<MEMCACHIER_PASSWORD>` are listed on your [cache overview page](https://www.memcachier.com/caches).
+
+<p class="alert alert-info">In your development environment, Rails.cache defaults to a simple in-memory store and so it doesn’t require a running memcached.</p>
+
+Also modify`config/environment.rb` to contain:
+
+~~~~ ruby
+config.gem 'dalli'
+~~~~
+
+From here you can use the following code examples to use the cache in your Rails app:
+
+~~~~ ruby
+Rails.cache.write("foo", "bar")
+puts Rails.cache.read("foo")
+~~~~
+
+We’ve built a small Rails (3 & 4) example here: [MemCachier Rails sample app](https://github.com/memcachier/examples-rails).
+
+
+<h2 id="rack">Rails Rack::Cache</h2>
+
+Rails can use a middle-ware component of the Rack web server architecture called Rack::Cache. This provides caching of static assets in Rails and is a simple alternative to use a full CDN.  
+
+Please see [this
+article](https://devcenter.heroku.com/articles/rack-cache-memcached-rails31#configure-rails-cache-store)
+for information.
+
+
 <h2 id="django">Django</h2>
 
 MemCachier has been tested with the `pylibmc` memcache client, but the default client doesn’t support SASL authentication. Run the following commands on your machine to install the necessary pips:
@@ -153,6 +170,14 @@ MemCachier has been tested with the `pylibmc` memcache client, but the default c
 $ sudo port install libmemcached
 $ LIBMEMCACHED=/opt/local pip install pylibmc
 $ pip install django-pylibmc-sasl
+~~~~
+
+Be sure to update your `requirements.txt` file with these new
+requirements (note that your versions may differ than what’s below):
+
+~~~~ text
+pylibmc==1.2.2
+django-pylibmc-sasl==0.2.4
 ~~~~
 
 Next, configure your settings.py file the following way:
@@ -172,7 +197,7 @@ CACHES = {
 }
 ~~~~
 
-The values for `<MEMCACHIER_SERVERS>`, `<MEMCACHIER_USERNAME>`, and `<MEMCACHIER_PASSWORD>` are listed on your application's page on my.memcachier.com.  Note that Django expects <MEMCACHIER_SERVERS> to be semicolon-delimited.
+The values for `<MEMCACHIER_SERVERS>`, `<MEMCACHIER_USERNAME>`, and `<MEMCACHIER_PASSWORD>` are listed on your [cache overview page](https://www.memcachier.com/caches). Note that Django expects <MEMCACHIER_SERVERS> to be semicolon-delimited (while we provide it comma-eliminated).
 
 From here you can start writing cache code in your Django app:
 
@@ -197,13 +222,13 @@ foreach ($servers as $s) {
     $parts = explode(":", $s);
     $m->addServer($parts[0], $parts[1]);
 }
-$m->setSaslAuthData(getenv("MEMCACHIER_USERNAME"), getenv("MEMCACHIER_PASSWORD"));
+$m->setSaslAuthData(<MEMCACHIER_USERNAME>, <MEMCACHIER_PASSWORD>);
 
 $m->add("foo", "bar");
 echo $m->get("foo");
 ~~~~
 
-The values for `<MEMCACHIER_SERVERS>`, `<MEMCACHIER_USERNAME>`, and `<MEMCACHIER_PASSWORD>` are listed on your application's page on [my.memcachier.com](https://my.memcachier.com).
+The values for `<MEMCACHIER_SERVERS>`, `<MEMCACHIER_USERNAME>`, and `<MEMCACHIER_PASSWORD>` are listed on your [cache overview page](https://www.memcachier.com/caches).
 
 The more common PHP memcache clients have limited support for working with MemCachier due to issues with SASL authentication. The [Memcache](http://www.php.net/manual/en/book.memcache.php) simply doesn't provide SASL authentication support and so is not an option. The [Memcached](http://www.php.net/manual/en/book.memcached.php), does provide SASL authentication and so is a fine option for using with MemCachier. We simply have less experience in using it at this time and so continue to recommend PHPMemcacheSASL.
 
@@ -297,7 +322,7 @@ public class Foo {
 }
 ~~~~
 
-The values for `<MEMCACHIER_SERVERS>`, `<MEMCACHIER_USERNAME>`, and `<MEMCACHIER_PASSWORD>` are listed on your application's page on [my.memcachier.com](https://my.memcachier.com).
+The values for `<MEMCACHIER_SERVERS>`, `<MEMCACHIER_USERNAME>`, and `<MEMCACHIER_PASSWORD>` are listed on your [cache overview page](https://www.memcachier.com/caches).
 
 You may wish to look the `spymemcached` [JavaDocs](https://dustin.github.com/java-memcached-client/apidocs/) or some more [example code](https://code.google.com/p/spymemcached/wiki/Examples) to help in using MemCachier effectively.
 
@@ -355,6 +380,10 @@ MemCachier will work with any memcached binding that supports [SASL authenticati
 <td>Go</td>
 <td><a href="https://github.com/bmizerany/mc">mc</a></td>
 </tr>
+<tr>
+<td>Haskell</td>
+<td><a href="http://hackage.haskell.org/package/memcache">memcache</a></td>
+</tr>
 </tbody>
 </table>
 
@@ -408,17 +437,91 @@ Our analytics dashboard is a simple tool that gives you more insight into how yo
 <img style="width:85%;" src="https://www.evernote.com/shard/s17/sh/345fff03-736e-488c-a96a-c999f97757ae/6d7472dac4d27e74046d1290403732b3/deep/0/Screenshot%204/26/13%205:14%20PM.png" alt="Analytics dashboard">
 </p>
 
-To access your application's analytics dashboard login to your account at [my.memcachier.com](https://my.memcachier.com).
+To access your application's analytics dashboard login to your [account](https://www.memcachier.com/caches) and view one of your caches.
 
 
 <h2 id="upgrading">Upgrading and downgrading</h2>
 
 Changing your plan, either by upgrading or downgrading, requires no code changes.  Your cache won't be lost, either.  Upgrading and downgrading Just Works™. Also, you are only ever charged by the hour for the time that you are on a certain plan. So try experimenting with different cache sizes knowing that you will only be charged for the hours you are on a plan, not for a whole month.
 
+Changing your plan, either by upgrading or downgrading, can be done
+easily at any time through your
+[account](https://www.memcachier.com/caches).
+* No code changes are required.
+* Your cache won't be lost or reset<strong>*</strong>.
+* You are charged by the hour for plans, so try experimenting with
+  different cache sizes with low cost.
+
+<p class="alert alert-info">
+<strong>\*</strong> When moving between the development plan to a
+production plan, you __will__ loose your cache. This is unavoidable
+due to the strong separation between the development and production
+clusters.
+</p>
+
+<h2 id="1mb-limit">Key-Value size limit (1MB)</h2>
+
+MemCachier has a maximum size that a key-value object can be of
+__1MB__. This applies to both key-value pairs created through a `set`
+command, or existing key-value pairs grown through the use of an
+`append` or `prepend` command. In the later case, the size of the
+key-value pair with the new data added to it, must still be less than
+1MB.
+
+The 1MB limit applies to the size of the key and the value together. A
+key of size 512KB with a value of 712KB would be in violation of the
+1MB limit.
+
+The reason for this has partially to do with how memory is managed in
+MemCachier. A limitation of the high performance design is a
+restriction on how large key-value pairs can become. Another reason is
+that storing values larger than 1MB doesn't normally make sense in a
+high-performance key-value store. The network transfer time in these
+situations becomes the limiting factor for performance. A disk cache
+or even a database makes sense for this size value.
+
+<h2 id="localhost-errors">Errors about app trying to connect to localhost</h2>
+
+By default, most memcache client look for the environment variables,
+`MEMCACHE_SERVERS`, `MEMCACHE_USERNAME` and `MEMCACHE_PASSWORD` for
+their configuration. These variables are used when the initialization
+code for the memcache client doesn't specifically specify these values.
+
+If these environment variables aren't set, clients generally default
+to connecting to `127.0.0.1:11211` (i.e., localhost), with no username
+and password.
+
+The MemCachier add-on sets the `MEMCACHIER_SERVERS`,
+`MEMCACHIER_USERNAME` and `MEMCACHIER_PASSWORD` environment variables.
+So you need to either set the equivalent `MEMCACHE_*` variables from
+these, or pass these values to your client when you create a new one
+in your code.
+
+For example, pseudo-code for the first approach is:
+
+    env[MEMCACHE_SERVERS] = env[MEMCACHIER_SERVERS]
+    env[MEMCACHE_USERNAME] = env[MEMCACHIER_USERNAME]
+    env[MEMCACHE_PASSWORD] = env[MEMCACHIER_PASSWORD]
+
+While pseudo-code for the second approach is:
+
+    memClient = new MemcacheClient(ENV['MEMCACHIER_SERVERS'],
+                                   ENV['MEMCACHIER_USERNAME'],
+                                   ENV['MEMCACHIER_PASSWORD'])
+
+Please be careful that you have setup the your client in all
+locations. Many frameworks, such as Rails, use memcache in multiple
+ways and may require you to setup initialization properly in a few
+locations. Generally the first approach is preferred as it is global
+while the second approach is local to each initialization.
+
+For example, with Ruby on Rails, you'll need to setup `cache_store`,
+`Rack::Cache` and the `session_store`.
+
 
 <h2 id="support">Support</h2>
 
-All MemCachier support and runtime issues should be submitted via email to <a href="mailto:support@memcachier.com"><i class="icon-envelope"></i> support@memcachier.com</a>.
+All MemCachier support and runtime issues should be submitted via email to <a href="mailto:support@memcachier.com"><i class="icon-envelope"></i> support@memcachier.com</a> or through our [support site](http://support.memcchier.com).
 
 Any issues related to MemCachier service are reported at [MemCachier Status](http://status.memcachier.com/).
 
