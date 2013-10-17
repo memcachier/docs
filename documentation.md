@@ -14,7 +14,6 @@ in our <a href="/faq">FAQ</a>.
 <h2 id="toc">Table of Contents</h2>
 
 1. [Ruby](#ruby)
-2. [Rails](#rails)
 2. [Rails 3 & 4](#rails3)
 3. [Rails 2](#rails2)
 4. [Django](#django)
