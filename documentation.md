@@ -49,7 +49,11 @@ $ bundle install
 ~~~~ ruby
 cache = Dalli::Client.new(<MEMCACHIER_SERVERS>.split(","),
                     {:username => <MEMCACHIER_USERNAME>,
-                     :password => <MEMCACHIER_PASSWORD>})
+                     :password => <MEMCACHIER_PASSWORD>
+                     :failover => true,
+                     :socket_timeout => 1.5,
+                     :socket_failure_delay => 0.2
+                    })
 ~~~~
 
 The values for `<MEMCACHIER_SERVERS>`, `<MEMCACHIER_USERNAME>`, and `<MEMCACHIER_PASSWORD>` are listed on your [cache overview page](https://www.memcachier.com/caches).
@@ -90,7 +94,11 @@ $ bundle install
 ~~~~ ruby
 config.cache_store = :dalli_store, <MEMCACHIER_SERVERS>.split(","),
                     {:username => <MEMCACHIER_USERNAME>,
-                     :password => <MEMCACHIER_PASSWORD>}
+                     :password => <MEMCACHIER_PASSWORD>
+                     :failover => true,
+                     :socket_timeout => 1.5,
+                     :socket_failure_delay => 0.2
+                    }
 ~~~~
 
 The values for `<MEMCACHIER_SERVERS>`, `<MEMCACHIER_USERNAME>`, and `<MEMCACHIER_PASSWORD>` are listed on your [cache overview page](https://www.memcachier.com/caches).
@@ -129,7 +137,11 @@ $ bundle install
 require 'active_support/cache/dalli_store23'
 config.cache_store = :dalli_store, <MEMCACHIER_SERVERS>.split(","),
                     {:username => <MEMCACHIER_USERNAME>,
-                     :password => <MEMCACHIER_PASSWORD>}
+                     :password => <MEMCACHIER_PASSWORD>
+                     :failover => true,
+                     :socket_timeout => 1.5,
+                     :socket_failure_delay => 0.2
+                    }
 ~~~~
 
 The values for `<MEMCACHIER_SERVERS>`, `<MEMCACHIER_USERNAME>`, and `<MEMCACHIER_PASSWORD>` are listed on your [cache overview page](https://www.memcachier.com/caches).

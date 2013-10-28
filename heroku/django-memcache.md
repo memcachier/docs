@@ -256,6 +256,14 @@ of [config vars](config-vars) containing your memcache credentials.
 
 ### Configure Django with MemCachier
 
+We advise configuring the connection to MemCachier by setting the
+appropriate environment variables so that Django will simply load them
+each time your app starts. These are the `MEMCACHE_SERVERS`,
+`MEMCACHE_USERNAME` and `MEMCACHE_PASSWORD` variables. When you
+provision MemCachier we set corresponding variables but under the
+`MEMCACHIER_*` prefix (i.e, `MEMCACHIER_SERVERS`), so you'll need to
+map them across to `MEMCACHE_*` variables correctly.
+
 To have your application operate correctly in both development and
 production mode, add the following to `django_queue/settings.py`:
 

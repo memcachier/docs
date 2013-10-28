@@ -92,7 +92,11 @@ credentials to `Dalli`:
     :::ruby
     cache = Dalli::Client.new(ENV["MEMCACHIER_SERVERS"].split(","),
                         {:username => ENV["MEMCACHIER_USERNAME"],
-                         :password => ENV["MEMCACHIER_PASSWORD"]})
+                         :password => ENV["MEMCACHIER_PASSWORD"],
+                         :failover => true,
+                         :socket_timeout => 1.5,
+                         :socket_failure_delay => 0.2
+                        })
 
 ### Testing (Ruby)
 
@@ -168,7 +172,11 @@ credentials to Dalli in `config/environments/production.rb`:
     config.cache_store = :dalli_store,
                         (ENV["MEMCACHIER_SERVERS"] || "").split(","),
                         {:username => ENV["MEMCACHIER_USERNAME"],
-                         :password => ENV["MEMCACHIER_PASSWORD"]}
+                         :password => ENV["MEMCACHIER_PASSWORD"],
+                         :failover => true,
+                         :socket_timeout => 1.5,
+                         :socket_failure_delay => 0.2
+                        }
 
 <p class="callout" markdown="1">
 It is possible you will run into a configuration problem if you are
@@ -242,7 +250,11 @@ credentials to Dalli in `config/environments/production.rb`:
     config.cache_store = :dalli_store,
                         (ENV["MEMCACHIER_SERVERS"] || "").split(","),
                         {:username => ENV["MEMCACHIER_USERNAME"],
-                         :password => ENV["MEMCACHIER_PASSWORD"]}
+                         :password => ENV["MEMCACHIER_PASSWORD"],
+                         :failover => true,
+                         :socket_timeout => 1.5,
+                         :socket_failure_delay => 0.2
+                        }
 
 ### Testing (Rails)
 
@@ -302,7 +314,10 @@ Next, configure your settings.py file the following way:
         'BACKEND': 'django_pylibmc.memcached.PyLibMCCache',
         'TIMEOUT': 500,
         'BINARY': True,
-        'OPTIONS': { 'tcp_nodelay': True }
+        'OPTIONS': {
+            'tcp_nodelay': True,
+            'remove_failed': 4
+        }
       }
     }
 
