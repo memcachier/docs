@@ -227,7 +227,8 @@ store used for the MetaStore and a `file` store for the EntityStore.
 ## Serve static assets
 
 <div class="callout" markdown="1"> See the `production.rb` config of
-the [reference application](https://github.com/heroku/examples-rack-cache/blob/master/config/environments/production.rb)
+the [reference
+application](https://github.com/memcachier/examples-rack-cache/blob/master/config/environments/production.rb)
 on GitHub.</div>
 
 To allow your application to properly serve, invalidate and refresh
