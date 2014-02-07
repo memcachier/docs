@@ -1,37 +1,40 @@
 # MemCachier Documentation
 
 Collection of various docs of ours that are around the web. The ones
-in Heroku should be updated here first then pushed to heroku using the
-`devcenter` tool (install via `gem install devcenter`).
 
-This repo should be ground truth though, so for even the smallest
-edit, save it here!
+## Where is the authoratative version?
 
-## Documentation Work Items
+* For articles for our own website, the authoratative version is in
+  this repo and the live version is considered secondary.
+* For Heroku articles, the version stored with Heroku is considered
+  authoratative. This is as the Heroku staff sometimes edits articles
+  to update for markdown and other changes.
 
-* Own as many articles on Heroku as possible (See list).
+### Editing Heroku Articles
 
-### List of Heroku articles mentioning memcached
+~~~~
+devcenter pull https://devcenter.heroku.com/articles/memcachier
+vim memcachier.md
+devcenter push memcachier.md
+~~~~
 
-#### Not Us (Couchbase)
+## Heroku Articles
 
-* https://devcenter.heroku.com/articles/memcache
-* https://devcenter.heroku.com/articles/java-webapp-runner
+### Heroku Articles
 
-* https://devcenter.heroku.com/articles/releases
-* https://devcenter.heroku.com/articles/facebook
-
-#### Us
-
-* https://addons.heroku.com/memcachier
-* https://devcenter.heroku.com/articles/django-memcache
-* https://devcenter.heroku.com/articles/advanced-memcache
-
-* https://devcenter.heroku.com/articles/rack-cache-memcached-rails31
-* https://devcenter.heroku.com/articles/building-a-rails-3-application-with-the-memcache-addon
+https://devcenter.heroku.com/articles/releases
+https://devcenter.heroku.com/articles/java-webapp-runner
 
 #### No one (i.e., more general articles about caching)
 
-* https://devcenter.heroku.com/articles/caching-strategies
-* https://devcenter.heroku.com/articles/http-caching-ruby-rails
+https://devcenter.heroku.com/articles/caching-strategies
+https://devcenter.heroku.com/articles/http-caching-ruby-rails
+
+### Our Articles
+
+https://devcenter.heroku.com/articles/memcachier
+https://devcenter.heroku.com/articles/django-memcache
+https://devcenter.heroku.com/articles/advanced-memcache
+https://devcenter.heroku.com/articles/rack-cache-memcached-rails31
+https://devcenter.heroku.com/articles/building-a-rails-3-application-with-the-memcache-addon
 
