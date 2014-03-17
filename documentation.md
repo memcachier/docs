@@ -24,10 +24,12 @@ in our <a href="/faq">FAQ</a>.
 9. [Example applications](#sample-apps)
 10. [Local usage](#local)
 11. [MemCachier analytics](#analytics)
-12. [Changing plans](#upgrading)
-13. [Key-Value size limit](#1mb-limit)
-14. [Errors connecting to localhost](#localhost-errors)
-15. [Getting support](#support)
+12. [Advanced analytics](#advanced-analytics)
+13. [New Relic integration](#newrelic)
+14. [Changing plans](#upgrading)
+15. [Key-Value size limit](#1mb-limit)
+16. [Errors connecting to localhost](#localhost-errors)
+17. [Getting support](#support)
 
 
 <h2 id="ruby">Ruby</h2>
@@ -445,29 +447,75 @@ $ memcached -v
 Our analytics dashboard is a simple tool that gives you more insight into how you’re using memcache. Here's a screenshot of the dashboard:
 
 <p style="text-align:center;">
-<img style="width:85%;" src="https://www.evernote.com/shard/s17/sh/345fff03-736e-488c-a96a-c999f97757ae/6d7472dac4d27e74046d1290403732b3/deep/0/Screenshot%204/26/13%205:14%20PM.png" alt="Analytics dashboard">
+<img style="width:80%;" src="/images/analytics.png" alt="Analytics dashboard">
 </p>
 
 To access your application's analytics dashboard login to your [account](https://www.memcachier.com/caches) and view one of your caches.
 
+The analytics displayed are:
+
+* _Limit_ -- Your current cache size and memory limit. Once usage comes
+  close to this amount you will start seeing evictions.
+* _Live Connections_ -- Number of connections currently open to your
+  cache.
+* _Total connections_ -- Number of connections ever made to your cache.
+  (So always larger than live connections).
+* _Items_ -- Number of items currently stored in your cache.
+* _Evictions_ -- Number of items ever evicted from your cache due to
+  memory pressure. Items are evicted in an LRU order.
+* _New Evictions_ -- Number of evictions that have occured since the
+  last time we sampled your cache.
+* _Hit Rate_ -- The ratio of `get` commands that return an item (hit)
+  vs. the number that return nothing (miss). This ratio is for the
+  period between now and when we last sampled your cache.
+* _Set Cmds_ -- Number of times you have ever performed a set command.
+* _Flush Cmds_ -- Number of times you have ever performned a flush
+  command.
+
+With the basic analytics dashboard we sample your cache once per hour.
+With the advance dashboard we sample it once every 30 minutes.
+
+<h2 id="advanced-analytics">Advanced analytics</h2>
+
+We offer higher paying customers an advance version of our analytics
+dashboard. Currently, this offers two primary advantages:
+
+* _Higher Sample Rate_ -- We sample the cache for collecting analytics
+  once every thirty minutes, twice the rate of the basic analytics
+  dashboard. We don't sample more often than that as a higher
+  granularity hasn't proven to be useful, it leads to more noise and
+  less signal.
+* _More Graphs_ -- We offer two additional graphs for the advanced
+  analytics dashboard.
+  * _Eviction Graph_ -- Your new evictions tracked over time.
+  * _Connection Graph_ -- Your new connecions tracked over time.
+
+<h2 id="newrelic">New Relic integration</h2>
+
+MemCachier supports integration with your New Relic dashboard if you happen to be a customer of both MemCachier and New Relic. Currently this feature is only available to caches of <strong>500MB</strong> or larger. A blog post showing the integration can be found [here](http://blog.memcachier.com/2014/03/05/memcachier-and-new-relic-together/).
+
+To setup the integration you will need to find your New Relic license key. This can be done by going to your "Account Settings" page when logged in to New Relic by click on your New Relic username in the top right corner. Then you will find your license key in the right side information column. It should be exactly 40 characters long. Please refer to the [blog post](http://blog.memcachier.com/2014/03/05/memcachier-and-new-relic-together/) for a visual walkthrough.
+
+Once you have your New Relic licence key, it can be entered for your cache on the analytics dashboard page. In the bottom right corner there is a button to do this.
 
 <h2 id="upgrading">Upgrading and downgrading</h2>
 
-Changing your plan, either by upgrading or downgrading, requires no code changes.  Your cache won't be lost, either.  Upgrading and downgrading Just Works™. Also, you are only ever charged by the hour for the time that you are on a certain plan. So try experimenting with different cache sizes knowing that you will only be charged for the hours you are on a plan, not for a whole month.
+Changing your plan, either by upgrading or downgrading, requires no code changes. Your cache won't be lost, either.  Upgrading and downgrading Just Works™. Also, you are only ever charged by the hour for the time that you are on a certain plan. So try experimenting with different cache sizes knowing that you will only be charged for the hours you are on a plan, not for a whole month.
 
 Changing your plan, either by upgrading or downgrading, can be done
 easily at any time through your
 [account](https://www.memcachier.com/caches).
+
 * No code changes are required.
 * Your cache won't be lost or reset<strong>*</strong>.
 * You are charged by the hour for plans, so try experimenting with
   different cache sizes with low cost.
 
 <p class="alert alert-info">
-<strong>\*</strong> When moving between the development plan to a
-production plan, you __will__ loose your cache. This is unavoidable
-due to the strong separation between the development and production
-clusters.
+<strong>*</strong> When moving between the development plan to a
+production plan, you <strong>will</strong> loose your cache. This is
+unavoidable due to the strong separation between the development and
+production clusters.
 </p>
 
 <h2 id="1mb-limit">Key-Value size limit (1MB)</h2>
