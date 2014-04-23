@@ -225,12 +225,83 @@ We’ve built a small Django example here: [MemCachier Django sample app](https:
 
 <h2 id="php">PHP</h2>
 
-We recommend users utilize the [PHPMemcacheSASL](https://github.com/ronnywang/PHPMemcacheSASL) client as we have more experience in using and supporting it. Start by downloading the [PHPMemcacheSASL](https://github.com/ronnywang/PHPMemcacheSASL) library. From here you can start writing cache code in your PHP app:
+We recommended you use the [PHP Memcached client](http://www.php.net/manual/en/book.memcached.php) to connect with MemCachier. It supports the full protocol and has great performance. We also recommend that you use the [composer dependency manager](https://getcomposer.org/) for PHP, although that is up to you.
+
+It can be difficult to get the memcached client to work as it requires that you build it against a version of libmemcached (a C library that the PHP client relies upon) that support SASL authentication, which often isn't enabled by default. If you have trouble, please open a [support ticket](http://support.memcachier.com/) with us. Alternatively, you could use a [pure PHP client](#php-memcachesasl) that MemCachier supports, instructions on how are [here](#php-memcachesasl).
+
+First, if using composer, you'll need to modify your `composer.json` file to include the module:
+
+~~~~ js
+{
+    "require": {
+        "php": ">=5.3.2",
+        "ext-memcached": "*"
+    }
+}
+~~~~
+
+Then, you can connect to MemCachier using the client:
 
 ~~~~ php
-include('MemcacheSASL.php');
-$m = new MemcacheSASL;
-$servers = explode(",", getenv("MEMCACHIER_SERVERS"));
+require 'vendor/autoload.php';
+
+// create a new persistent client
+$m = new Memcached("memcached_pool");
+$m->setOption(Memcached::OPT_BINARY_PROTOCOL, TRUE);
+
+// some nicer default options
+$m->setOption(Memcached::OPT_NO_BLOCK, TRUE);
+$m->setOption(Memcached::OPT_AUTO_EJECT_HOSTS, TRUE);
+
+// We use a consistent connection to memcached, so only add in the
+// servers first time through otherwise we end up duplicating our
+// connections to the server.
+if (!$m->getServerList()) {
+    // parse server config
+    $servers = explode(",", <MEMCACHIER_SERVERS>);
+    foreach ($servers as $s) {
+        $parts = explode(":", $s);
+        $m->addServers($parts[0], $parts[1]);
+    }
+}
+
+// setup authentication
+$m->setSaslAuthData( <MEMCACHIER_USERNAME>
+                   , <MEMCACHIER_PASSWORD> );
+~~~~
+
+The values for `<MEMCACHIER_SERVERS>`, `<MEMCACHIER_USERNAME>`, and `<MEMCACHIER_PASSWORD>` are listed on your [cache overview page](https://www.memcachier.com/caches).
+
+You should look at the PHP [Memcached client documentation](http://www.php.net/manual/en/book.memcached.php) for a list of API calls you can make against MemCachier.
+
+We’ve built a small PHP example here: [MemCachier PHP sample app](https://github.com/memcachier/examples-php).
+
+
+<h3 id="php-memcachesasl">PHP -- MemcacheSASL</h3>
+
+This is not our recommended client for using MemCachier from PHP. We recommend the [php memcached](#php) client. However, it is an easier client to use as it's a pure PHP implementation while the [recommended php client](#php) requires a C extension to be installed with [SASL](http://en.wikipedia.org/wiki/Simple_Authentication_and_Security_Layer) support. It doesn't support multiple proxy servers like the memcached client but is otherwise quite good.
+
+You should first install the [PHPMemcacheSASL](https://github.com/memcachier/PHPMemcacheSASL) client. You can either grab the code directly or use [composer](https://getcomposer.org/) for package management. We suggest composer.
+
+First, if using composer, you'll need to modify your `composer.json` file to include the module:
+
+~~~~ js
+{
+    "require": {
+        "php": ">=5.3.2",
+        "memcachier/php-memcache-sasl": ">=1.0.1"
+    }
+}
+~~~~
+
+Then, you can connect to MemCachier using the client:
+
+~~~~ php
+require 'vendor/autoload.php';
+use MemCachier\MemcacheSASL;
+
+$m = new MemcacheSASL();
+$servers = explode(",", <MEMCACHIER_SERVERS>);
 foreach ($servers as $s) {
     $parts = explode(":", $s);
     $m->addServer($parts[0], $parts[1]);
@@ -242,8 +313,6 @@ echo $m->get("foo");
 ~~~~
 
 The values for `<MEMCACHIER_SERVERS>`, `<MEMCACHIER_USERNAME>`, and `<MEMCACHIER_PASSWORD>` are listed on your [cache overview page](https://www.memcachier.com/caches).
-
-The more common PHP memcache clients have limited support for working with MemCachier due to issues with SASL authentication. The [Memcache](http://www.php.net/manual/en/book.memcache.php) simply doesn't provide SASL authentication support and so is not an option. The [Memcached](http://www.php.net/manual/en/book.memcached.php), does provide SASL authentication and so is a fine option for using with MemCachier. We simply have less experience in using it at this time and so continue to recommend PHPMemcacheSASL.
 
 We’ve built a small PHP example here: [MemCachier PHP sample app](https://github.com/memcachier/examples-php).
 
