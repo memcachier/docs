@@ -193,6 +193,12 @@ pylibmc==1.2.2
 django-pylibmc-sasl==0.2.4
 ~~~~
 
+Note that the `pylibmc` requirements must be added directly to your
+`requirements.txt` file and not in any included pip requirement files.
+The Heroku Python buildpack checks the `requirements.txt` file and only
+that file for the presence of `pylibmc` to trigger bootstrapping
+`libmemcached`, which is prerequisite for installing `pylibmc`.
+
 Next, configure your settings.py file the following way:
 
 ~~~~ python
