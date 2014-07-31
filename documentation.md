@@ -20,18 +20,20 @@ in our <a href="/faq">FAQ</a>.
 3. [Rails 2](#rails2)
 4. [Django](#django)
 5. [PHP](#php)
-6. [Node.js](#node.js)
-7. [Java](#java)
-8. [Supported client libraries](#clients)
-9. [Example applications](#sample-apps)
-10. [Local usage](#local)
-11. [MemCachier analytics](#analytics)
-12. [Advanced analytics](#advanced-analytics)
-13. [New Relic integration](#newrelic)
-14. [Changing plans](#upgrading)
-15. [Key-Value size limit](#1mb-limit)
-16. [Errors connecting to localhost](#localhost-errors)
-17. [Getting support](#support)
+6. [CakePHP](#cakephp)
+7. [Symfony2](#symfony2)
+8. [Node.js](#node.js)
+9. [Java](#java)
+10. [Supported client libraries](#clients)
+11. [Example applications](#sample-apps)
+12. [Local usage](#local)
+13. [MemCachier analytics](#analytics)
+14. [Advanced analytics](#advanced-analytics)
+15. [New Relic integration](#newrelic)
+16. [Changing plans](#upgrading)
+17. [Key-Value size limit](#1mb-limit)
+18. [Errors connecting to localhost](#localhost-errors)
+19. [Getting support](#support)
 
 
 <h2 id="ruby">Ruby</h2>
@@ -263,6 +265,13 @@ $m->setOption(Memcached::OPT_BINARY_PROTOCOL, TRUE);
 // some nicer default options
 $m->setOption(Memcached::OPT_NO_BLOCK, TRUE);
 $m->setOption(Memcached::OPT_AUTO_EJECT_HOSTS, TRUE);
+$m->setOption(Memcached::OPT_CONNECT_TIMEOUT, 2000);
+$m->setOption(Memcached::OPT_POLL_TIMEOUT, 2000);
+$m->setOption(Memcached::OPT_RETRY_TIMEOUT, 2);
+
+// setup authentication
+$m->setSaslAuthData( <MEMCACHIER_USERNAME>
+                   , <MEMCACHIER_PASSWORD> );
 
 // We use a consistent connection to memcached, so only add in the
 // servers first time through otherwise we end up duplicating our
@@ -275,10 +284,6 @@ if (!$m->getServerList()) {
         $m->addServers($parts[0], $parts[1]);
     }
 }
-
-// setup authentication
-$m->setSaslAuthData( <MEMCACHIER_USERNAME>
-                   , <MEMCACHIER_PASSWORD> );
 ~~~~
 
 The values for `<MEMCACHIER_SERVERS>`, `<MEMCACHIER_USERNAME>`, and `<MEMCACHIER_PASSWORD>` are listed on your [cache overview page](https://www.memcachier.com/caches).
@@ -287,6 +292,19 @@ You should look at the PHP [Memcached client documentation](http://www.php.net/m
 
 We’ve built a small PHP example here: [MemCachier PHP sample app](https://github.com/memcachier/examples-php).
 
+<h3 id="php-session">PHP Session Support</h3>
+
+You can configure PHP to store sessions in MemCachier as follows.
+
+First, start by configuring an appropriate `.user.ini` in your document root. It should contain the following:
+
+~~~~ php
+session.save_handler=memcached
+session.save_path="PERSISTENT=myapp_session <MEMCACHIER_SERVERS>"
+memcached.sess_binary=1
+memcached.sess_sasl_username=<MEMCACHIER_USERNAME>
+memcached.sess_sasl_password=<MEMCACHIER_PASSWORD>
+~~~~
 
 <h3 id="php-memcachesasl">PHP -- MemcacheSASL</h3>
 
@@ -326,6 +344,61 @@ echo $m->get("foo");
 The values for `<MEMCACHIER_SERVERS>`, `<MEMCACHIER_USERNAME>`, and `<MEMCACHIER_PASSWORD>` are listed on your [cache overview page](https://www.memcachier.com/caches).
 
 We’ve built a small PHP example here: [MemCachier PHP sample app](https://github.com/memcachier/examples-php).
+
+
+<h2 id="cakephp">CakePHP</h2>
+
+The CakePHP framework has excellent support for caching and can be easily used with MemCachier as the provider. To setup CakePHP with MemCachier, you'll need to edit the file `app/Config/bootstrap.php` and add the following lines:
+
+~~~~ php
+Cache::config('default', array(
+    'engine' => 'Memcached',
+    'prefix' => 'mc_',
+    'duration' => '+7 days',
+    'servers' => explode(',', <MEMCACHIER_SERVERS>),
+    'compress' => false,
+    'persistent' => 'memcachier',
+    'login' => <MEMCACHIER_USERNAME>,
+    'password' => <MEMCACHIER_PASSWORD>,
+    'serialize' => 'php'
+));
+~~~~
+
+After that, you should be able to use caching throughout your application like so:
+
+~~~~ php
+class Post extends AppModel {
+
+    public function newest() {
+        $model = $this;
+        return Cache::remember('newest_posts', function() use ($model){
+            return $model->find('all', array(
+                'order' => 'Post.updated DESC',
+                'limit' => 10
+            ));
+        }, 'longterm');
+    }
+}
+~~~~
+
+The above will fetch the value associated with the key `newest_posts` from the cache if it exists. Otherwise, it will execute the function and SQL query, storing the result in the cache using the `newest_posts` key.
+
+You can find much more information on how to use caching with CakePHP [here](http://book.cakephp.org/2.0/en/core-libraries/caching.html).
+
+
+<h2 id="symfony2">Symfony2</h2>
+
+The [Symfony2](http://symfony.com/) framework is a great choice with MemCachier. It supports caching and storing sessions in MemCachier.
+
+First, start by configuring an appropriate `.user.ini` in your document root. It should contain the following:
+
+~~~~ php
+session.save_handler=memcached
+session.save_path="PERSISTENT=myapp_session <MEMCACHIER_SERVERS>"
+memcached.sess_binary=1
+memcached.sess_sasl_username=<MEMCACHIER_USERNAME>
+memcached.sess_sasl_password=<MEMCACHIER_PASSWORD>
+~~~~
 
 
 <h2 id="node.js">Node.js</h2>
