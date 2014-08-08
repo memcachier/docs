@@ -41,19 +41,19 @@ in our <a href="/faq">FAQ</a>.
 
 Start by adding the [dalli](https://github.com/mperham/dalli) gem to your Gemfile.
 
-~~~~ ruby
+```ruby
 gem 'dalli'
-~~~~
+```
 
 Then bundle install:
 
-~~~~ text
+```text
 $ bundle install
-~~~~
+```
 
 `Dalli` is a Ruby memcache client.  Once it is installed you can start writing code. The following is a basic example showing get and set.
 
-~~~~ ruby
+```ruby
 cache = Dalli::Client.new(<MEMCACHIER_SERVERS>.split(","),
                     {:username => <MEMCACHIER_USERNAME>,
                      :password => <MEMCACHIER_PASSWORD>
@@ -61,23 +61,23 @@ cache = Dalli::Client.new(<MEMCACHIER_SERVERS>.split(","),
                      :socket_timeout => 1.5,
                      :socket_failure_delay => 0.2
                     })
-~~~~
+```
 
 The values for `<MEMCACHIER_SERVERS>`, `<MEMCACHIER_USERNAME>`, and `<MEMCACHIER_PASSWORD>` are listed on your [cache overview page](https://www.memcachier.com/caches).
 
 From here you can use the following code examples to use the cache in your Ruby app:
 
-~~~~ ruby
+```ruby
 cache.set("foo", "bar")
 puts cache.get("foo")
-~~~~
+```
 
 You can also get an insight into your cache usage (number of keys stored and bytes) with the `stats` command:
 
-~~~~ ruby
+```ruby
 cache.stats
 => {"memcachier.example.net:11211" => {"cur_items" => "49982", "bytes" => "89982234"} }
-~~~~
+```
 
 We’ve built a small Ruby example using Sinatra here: [MemCachier Sinatra Sample App](https://github.com/memcachier/examples-sinatra).
 
@@ -86,19 +86,19 @@ We’ve built a small Ruby example using Sinatra here: [MemCachier Sinatra Sampl
 
 Start by adding the [dalli](https://github.com/mperham/dalli) gem to your Gemfile.
 
-~~~~ ruby
+```ruby
 gem 'dalli'
-~~~~
+```
 
 Then bundle install:
 
-~~~~ text
+```text
 $ bundle install
-~~~~
+```
 
 `Dalli` is a Ruby memcache client.  Once it is installed you’ll want to configure the Rails cache_store appropriately. Modify `config/environments/production.rb` with the following:
 
-~~~~ ruby
+```ruby
 config.cache_store = :dalli_store, <MEMCACHIER_SERVERS>.split(","),
                     {:username => <MEMCACHIER_USERNAME>,
                      :password => <MEMCACHIER_PASSWORD>
@@ -106,7 +106,7 @@ config.cache_store = :dalli_store, <MEMCACHIER_SERVERS>.split(","),
                      :socket_timeout => 1.5,
                      :socket_failure_delay => 0.2
                     }
-~~~~
+```
 
 The values for `<MEMCACHIER_SERVERS>`, `<MEMCACHIER_USERNAME>`, and `<MEMCACHIER_PASSWORD>` are listed on your [cache overview page](https://www.memcachier.com/caches).
 
@@ -114,10 +114,10 @@ The values for `<MEMCACHIER_SERVERS>`, `<MEMCACHIER_USERNAME>`, and `<MEMCACHIER
 
 From here you can use the following code examples to use the cache in your Rails app:
 
-~~~~ ruby
+```ruby
 Rails.cache.write("foo", "bar")
 puts Rails.cache.read("foo")
-~~~~
+```
 
 We’ve built a small Rails example here: [MemCachier Rails sample app](https://github.com/memcachier/examples-rails).
 
@@ -127,20 +127,20 @@ We’ve built a small Rails example here: [MemCachier Rails sample app](https://
 Start by adding the [dalli](https://github.com/mperham/dalli) gem to your Gemfile. You will need to use dalli **v1.0.5** as later versions of Dalli don't
 support Rails 2.
 
-~~~~ ruby
+```ruby
 gem 'memcachier'
 gem 'dalli', '~>1.0.5'
-~~~~
+```
 
 Then bundle install:
 
-~~~~ text
+```text
 $ bundle install
-~~~~
+```
 
 `Dalli` is a Ruby memcache client.  Once it is installed you’ll want to configure the Rails cache_store appropriately. Modify `config/environments/production.rb` with the following:
 
-~~~~ ruby
+```ruby
 require 'active_support/cache/dalli_store23'
 config.cache_store = :dalli_store, <MEMCACHIER_SERVERS>.split(","),
                     {:username => <MEMCACHIER_USERNAME>,
@@ -149,7 +149,7 @@ config.cache_store = :dalli_store, <MEMCACHIER_SERVERS>.split(","),
                      :socket_timeout => 1.5,
                      :socket_failure_delay => 0.2
                     }
-~~~~
+```
 
 The values for `<MEMCACHIER_SERVERS>`, `<MEMCACHIER_USERNAME>`, and `<MEMCACHIER_PASSWORD>` are listed on your [cache overview page](https://www.memcachier.com/caches).
 
@@ -157,16 +157,16 @@ The values for `<MEMCACHIER_SERVERS>`, `<MEMCACHIER_USERNAME>`, and `<MEMCACHIER
 
 Also modify`config/environment.rb` to contain:
 
-~~~~ ruby
+```ruby
 config.gem 'dalli'
-~~~~
+```
 
 From here you can use the following code examples to use the cache in your Rails app:
 
-~~~~ ruby
+```ruby
 Rails.cache.write("foo", "bar")
 puts Rails.cache.read("foo")
-~~~~
+```
 
 We’ve built a small Rails (3 & 4) example here: [MemCachier Rails sample app](https://github.com/memcachier/examples-rails).
 
@@ -184,19 +184,19 @@ for information.
 
 MemCachier has been tested with the `pylibmc` memcache client, but the default client doesn’t support SASL authentication. Run the following commands on your machine to install the necessary pips:
 
-~~~~ text
+```text
 $ sudo port install libmemcached
 $ LIBMEMCACHED=/opt/local pip install pylibmc
 $ pip install django-pylibmc-sasl
-~~~~
+```
 
 Be sure to update your `requirements.txt` file with these new
 requirements (note that your versions may differ than what’s below):
 
-~~~~ text
+```text
 pylibmc==1.3.0
 django-pylibmc==0.5.0
-~~~~
+```
 
 <p class="alert alert-info">
 <b>Heroku Users:</b> The above `pylibmc` requirements must be added
@@ -209,7 +209,7 @@ prerequisite for installing `pylibmc`.
 
 Next, configure your settings.py file the following way:
 
-~~~~ python
+```python
 os.environ['MEMCACHE_SERVERS'] = os.environ.get('MEMCACHIER_SERVERS', '').replace(',', ';')
 os.environ['MEMCACHE_USERNAME'] = os.environ.get('MEMCACHIER_USERNAME', '')
 os.environ['MEMCACHE_PASSWORD'] = os.environ.get('MEMCACHIER_PASSWORD', '')
@@ -229,25 +229,24 @@ CACHES = {
         }
     }
 }
-~~~~
+```
 
 The values for `<MEMCACHIER_SERVERS>`, `<MEMCACHIER_USERNAME>`, and `<MEMCACHIER_PASSWORD>` are listed on your [cache overview page](https://www.memcachier.com/caches). Note that Django expects <MEMCACHIER_SERVERS> to be semicolon-delimited (while we provide it comma-eliminated).
 
 From here you can start writing cache code in your Django app:
 
-~~~~ python
+```python
 from django.core.cache import cache
 cache.set("foo", "bar")
 print cache.get("foo")
-~~~~
+```
 
 We’ve built a small Django example here: [MemCachier Django sample app](https://github.com/memcachier/examples-django).
 
 You may also be interested in the [django-heroku-memcacheify](http://github.com/rdegges/django-heroku-memcacheify) pip, which fully configures MemCachier with one line of code for any Django app the pip supports.
 
 <p class="alert alert-info">
-A confusing error message you may get from `pylibmc` is
-**MemcachedError: error 37 from memcached_set: SYSTEM ERROR(Resource temporarily unavailable)**. This indicates that you are trying to store a value larger than 1MB. MemCachier has a hard limit of 1MB for the size of key-value pairs. To work around this, either consider sharding the data or using a different technology. The benefit of an in-memory key-value store diminishes at 1MB and higher.
+A confusing error message you may get from `pylibmc` is <b>MemcachedError: error 37 from memcached_set: SYSTEM ERROR (Resource temporarily unavailable)</b>. This indicates that you are trying to store a value larger than 1MB. MemCachier has a hard limit of 1MB for the size of key-value pairs. To work around this, either consider sharding the data or using a different technology. The benefit of an in-memory key-value store diminishes at 1MB and higher.
 </p>
 
 
@@ -259,18 +258,18 @@ It can be difficult to get the memcached client to work as it requires that you 
 
 First, if using composer, you'll need to modify your `composer.json` file to include the module:
 
-~~~~ js
+```js
 {
     "require": {
         "php": ">=5.3.2",
         "ext-memcached": "*"
     }
 }
-~~~~
+```
 
 Then, you can connect to MemCachier using the client:
 
-~~~~ php
+```php
 require 'vendor/autoload.php';
 
 // create a new persistent client
@@ -299,7 +298,7 @@ if (!$m->getServerList()) {
         $m->addServers($parts[0], $parts[1]);
     }
 }
-~~~~
+```
 
 The values for `<MEMCACHIER_SERVERS>`, `<MEMCACHIER_USERNAME>`, and `<MEMCACHIER_PASSWORD>` are listed on your [cache overview page](https://www.memcachier.com/caches).
 
@@ -313,21 +312,21 @@ You can configure PHP to store sessions in MemCachier as follows.
 
 First, start by configuring an appropriate `.user.ini` in your document root. It should contain the following:
 
-~~~~ php
+```php
 session.save_handler=memcached
 memcached.sess_binary=1
 session.save_path="PERSISTENT=myapp_session <MEMCACHIER_SERVERS>"
 memcached.sess_sasl_username=<MEMCACHIER_USERNAME>
 memcached.sess_sasl_password=<MEMCACHIER_PASSWORD>
-~~~~
+```
 
 In your code you should then be able to run:
 
-~~~~ php
+```php
 // Enable MemCachier session support
 session_start();
 $_SESSION['test'] = 42;
-~~~~
+```
 
 <h3 id="php-memcachesasl">PHP -- MemcacheSASL</h3>
 
@@ -337,18 +336,18 @@ You should first install the [PHPMemcacheSASL](https://github.com/memcachier/PHP
 
 First, if using composer, you'll need to modify your `composer.json` file to include the module:
 
-~~~~ js
+```js
 {
     "require": {
         "php": ">=5.3.2",
         "memcachier/php-memcache-sasl": ">=1.0.1"
     }
 }
-~~~~
+```
 
 Then, you can connect to MemCachier using the client:
 
-~~~~ php
+```php
 require 'vendor/autoload.php';
 use MemCachier\MemcacheSASL;
 
@@ -366,7 +365,7 @@ $m->setSaslAuthData( getenv("MEMCACHIER_USERNAME")
 
 $m->add("foo", "bar");
 echo $m->get("foo");
-~~~~
+```
 
 The values for `<MEMCACHIER_SERVERS>`, `<MEMCACHIER_USERNAME>`, and `<MEMCACHIER_PASSWORD>` are listed on your [cache overview page](https://www.memcachier.com/caches).
 
@@ -377,7 +376,7 @@ We’ve built a small PHP example here: [MemCachier PHP sample app](https://gith
 
 The CakePHP framework has excellent support for caching and can be easily used with MemCachier as the provider. To setup CakePHP with MemCachier, you'll need to edit the file `app/Config/bootstrap.php` and add the following lines:
 
-~~~~ php
+```php
 Cache::config('default', array(
     'engine' => 'Memcached',
     'prefix' => 'mc_',
@@ -389,11 +388,11 @@ Cache::config('default', array(
     'password' => <MEMCACHIER_PASSWORD>,
     'serialize' => 'php'
 ));
-~~~~
+```
 
 After that, you should be able to use caching throughout your application like so:
 
-~~~~ php
+```php
 class Post extends AppModel {
 
     public function newest() {
@@ -406,7 +405,7 @@ class Post extends AppModel {
         }, 'longterm');
     }
 }
-~~~~
+```
 
 The above will fetch the value associated with the key `newest_posts` from the cache if it exists. Otherwise, it will execute the function and SQL query, storing the result in the cache using the `newest_posts` key.
 
@@ -419,13 +418,13 @@ The [Symfony2](http://symfony.com/) framework is a great choice with MemCachier.
 
 First, start by configuring an appropriate `.user.ini` in your document root. It should contain the following:
 
-~~~~ php
+```php
 session.save_handler=memcached
 memcached.sess_binary=1
 session.save_path="PERSISTENT=myapp_session <MEMCACHIER_SERVERS>"
 memcached.sess_sasl_username=<MEMCACHIER_USERNAME>
 memcached.sess_sasl_password=<MEMCACHIER_PASSWORD>
-~~~~
+```
 
 
 <h2 id="node.js">Node.js</h2>
@@ -435,21 +434,21 @@ For Node.js we recommend the use of the
 and supported by MemCachier itself! To install, use the [node package
 manager (npm)](https://npmjs.org/):
 
-~~~~ text
+```text
 npm install memjs
-~~~~
+```
 
 Using it is straight-forward as memjs understands the
 `MEMCACHIER_SERVERS`, `MEMCACHIER_USERNAME` and `MEMCACHIER_PASSWORD`
 environment variables that the MemCachier add-on setups. For example:
 
-~~~~ javascript
+```javascript
 var memjs = require('memjs')
 var mc = memjs.Client.create()
 client.get('hello', function(val) {
     alert(val)
 })
-~~~~
+```
 
 We’ve built a small Node.js example here: [MemCachier Node.js sample app](http://github.com/memcachier/examples-node).
 
@@ -462,7 +461,7 @@ For Java we recommend using the [SpyMemcached](https://code.google.com/p/spymemc
 
 For `maven` however, start by configuring it to have the proper `spymemcached` repository:
 
-~~~~ xml
+```xml
 <repository>
   <id>spy</id>
   <name>Spy Repository</name>
@@ -472,22 +471,22 @@ For `maven` however, start by configuring it to have the proper `spymemcached` r
     <enabled>false</enabled>
   </snapshots>
 </repository>
-~~~~
+```
 
 Then add the `spymemcached` library to your dependencies:
 
-~~~~ xml
+```xml
 <dependency>
   <groupId>spy</groupId>
   <artifactId>spymemcached</artifactId>
   <version>2.8.1</version>
   <scope>provided</scope>
 </dependency>
-~~~~
+```
 
 Once your build system is configured, you can start adding caching to your Java app:
 
-~~~~ java
+```java
 import java.io.IOException;
 import net.spy.memcached.AddrUtil;
 import net.spy.memcached.MemcachedClient;
@@ -513,7 +512,7 @@ public class Foo {
     }
   }
 }
-~~~~
+```
 
 The values for `<MEMCACHIER_SERVERS>`, `<MEMCACHIER_USERNAME>`, and `<MEMCACHIER_PASSWORD>` are listed on your [cache overview page](https://www.memcachier.com/caches).
 
@@ -601,15 +600,15 @@ To test against your application locally, you will need to run a local memcached
 
 On Ubuntu:
 
-~~~~ text
+```text
 $ sudo apt-get install memcached
-~~~~
+```
 
 Or on OS X (with Homebrew):
 
-~~~~ text
+```text
 $ brew install memcached
-~~~~
+```
 
 Or for Windows please refer to [these instructions](http://www.codeforest.net/how-to-install-memcached-on-windows-machine).
 
@@ -617,9 +616,9 @@ For further information and resources (such as the memcached source code) please
 
 To run memcached simply execute the following command:
 
-~~~~ text
+```text
 $ memcached -v
-~~~~
+```
 
 
 <h2 id="analytics">MemCachier analytics</h2>
