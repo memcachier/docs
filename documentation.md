@@ -31,9 +31,10 @@ in our <a href="/faq">FAQ</a>.
 14. [Advanced analytics](#advanced-analytics)
 15. [New Relic integration](#newrelic)
 16. [Changing plans](#upgrading)
-17. [Key-Value size limit](#1mb-limit)
-18. [Errors connecting to localhost](#localhost-errors)
-19. [Getting support](#support)
+17. [Usage Documentation](#using)
+18. [Key-Value size limit](#1mb-limit)
+19. [Errors connecting to localhost](#localhost-errors)
+20. [Getting support](#support)
 
 
 <h2 id="ruby">Ruby</h2>
@@ -67,8 +68,8 @@ The values for `<MEMCACHIER_SERVERS>`, `<MEMCACHIER_USERNAME>`, and `<MEMCACHIER
 From here you can use the following code examples to use the cache in your Ruby app:
 
 ~~~~ ruby
-cache.write("foo", "bar")
-puts cache.read("foo")
+cache.set("foo", "bar")
+puts cache.get("foo")
 ~~~~
 
 You can also get an insight into your cache usage (number of keys stored and bytes) with the `stats` command:
@@ -193,8 +194,8 @@ Be sure to update your `requirements.txt` file with these new
 requirements (note that your versions may differ than what’s below):
 
 ~~~~ text
-pylibmc==1.2.2
-django-pylibmc-sasl==0.2.4
+pylibmc==1.3.0
+django-pylibmc==0.5.0
 ~~~~
 
 <p class="alert alert-info">
@@ -209,17 +210,24 @@ prerequisite for installing `pylibmc`.
 Next, configure your settings.py file the following way:
 
 ~~~~ python
-os.environ['MEMCACHE_SERVERS'] = <MEMCACHIER_SERVERS>.replace(',', ';')
-os.environ['MEMCACHE_USERNAME'] = <MEMCACHIER_USER_NAME>
-os.environ['MEMCACHE_PASSWORD'] = <MEMCACHIER_PASSWORD>
+os.environ['MEMCACHE_SERVERS'] = os.environ.get('MEMCACHIER_SERVERS', '').replace(',', ';')
+os.environ['MEMCACHE_USERNAME'] = os.environ.get('MEMCACHIER_USERNAME', '')
+os.environ['MEMCACHE_PASSWORD'] = os.environ.get('MEMCACHIER_PASSWORD', '')
 
 CACHES = {
-  'default': {
-    'BACKEND': 'django_pylibmc.memcached.PyLibMCCache',
-    'TIMEOUT': 500,
-    'BINARY': True,
-    'OPTIONS': { 'tcp_nodelay': True }
-  }
+    'default': {
+        'BACKEND': 'django_pylibmc.memcached.PyLibMCCache',
+        'BINARY': True,
+        'OPTIONS': {
+            'no_block': True,
+            'tcp_nodelay': True,
+            'tcp_keepalive': True,
+            'remove_failed': 4,
+            'retry_timeout': 2,
+            'dead_timeout': 10,
+            '_poll_timeout': 2000
+        }
+    }
 }
 ~~~~
 
@@ -234,6 +242,13 @@ print cache.get("foo")
 ~~~~
 
 We’ve built a small Django example here: [MemCachier Django sample app](https://github.com/memcachier/examples-django).
+
+You may also be interested in the [django-heroku-memcacheify](http://github.com/rdegges/django-heroku-memcacheify) pip, which fully configures MemCachier with one line of code for any Django app the pip supports.
+
+<p class="alert alert-info">
+A confusing error message you may get from `pylibmc` is
+**MemcachedError: error 37 from memcached_set: SYSTEM ERROR(Resource temporarily unavailable)**. This indicates that you are trying to store a value larger than 1MB. MemCachier has a hard limit of 1MB for the size of key-value pairs. To work around this, either consider sharding the data or using a different technology. The benefit of an in-memory key-value store diminishes at 1MB and higher.
+</p>
 
 
 <h2 id="php">PHP</h2>
@@ -300,10 +315,18 @@ First, start by configuring an appropriate `.user.ini` in your document root. It
 
 ~~~~ php
 session.save_handler=memcached
-session.save_path="PERSISTENT=myapp_session <MEMCACHIER_SERVERS>"
 memcached.sess_binary=1
+session.save_path="PERSISTENT=myapp_session <MEMCACHIER_SERVERS>"
 memcached.sess_sasl_username=<MEMCACHIER_USERNAME>
 memcached.sess_sasl_password=<MEMCACHIER_PASSWORD>
+~~~~
+
+In your code you should then be able to run:
+
+~~~~ php
+// Enable MemCachier session support
+session_start();
+$_SESSION['test'] = 42;
 ~~~~
 
 <h3 id="php-memcachesasl">PHP -- MemcacheSASL</h3>
@@ -329,13 +352,17 @@ Then, you can connect to MemCachier using the client:
 require 'vendor/autoload.php';
 use MemCachier\MemcacheSASL;
 
+// Create client
 $m = new MemcacheSASL();
 $servers = explode(",", <MEMCACHIER_SERVERS>);
 foreach ($servers as $s) {
     $parts = explode(":", $s);
     $m->addServer($parts[0], $parts[1]);
 }
-$m->setSaslAuthData(<MEMCACHIER_USERNAME>, <MEMCACHIER_PASSWORD>);
+
+// Setup authentication
+$m->setSaslAuthData( getenv("MEMCACHIER_USERNAME")
+                   , getenv("MEMCACHIER_PASSWORD") );
 
 $m->add("foo", "bar");
 echo $m->get("foo");
@@ -394,8 +421,8 @@ First, start by configuring an appropriate `.user.ini` in your document root. It
 
 ~~~~ php
 session.save_handler=memcached
-session.save_path="PERSISTENT=myapp_session <MEMCACHIER_SERVERS>"
 memcached.sess_binary=1
+session.save_path="PERSISTENT=myapp_session <MEMCACHIER_SERVERS>"
 memcached.sess_sasl_username=<MEMCACHIER_USERNAME>
 memcached.sess_sasl_password=<MEMCACHIER_PASSWORD>
 ~~~~
@@ -670,6 +697,30 @@ production plan, you <strong>will</strong> loose your cache. This is
 unavoidable due to the strong separation between the development and
 production clusters.
 </p>
+
+<h2 id="using">Using MemCachier</h2>
+
+Please refer to your client or framework documentation for how to use
+MemCachier effectively.
+
+MemCachier Guides:
+
+* [Advanced Memcache Usage](https://devcenter.heroku.com/articles/advanced-memcache)
+* [Building a Rails 3 App with MemCachier](https://devcenter.heroku.com/articles/building-a-rails-3-application-with-memcache)
+* [Rails + Rack::Cache + MemCachier](https://devcenter.heroku.com/articles/rack-cache-memcached-rails31)
+* [Django and MemCachier](https://devcenter.heroku.com/articles/django-memcache)
+
+Framework and Client Documentation:
+
+* [Dalli (Ruby Client) API](http://www.rubydoc.info/github/mperham/dalli/Dalli/Client)
+* [Rails Caching Guide](http://guides.rubyonrails.org/caching_with_rails.html)
+* [PHP Memcached client](http://www.php.net/manual/en/book.memcached.php)
+* [CakePHP Caching Guide](http://book.cakephp.org/2.0/en/core-libraries/caching.html)
+* [Pylibmc (Pytnon Client) API](http://sendapatch.se/projects/pylibmc/)
+* [Django Caching Guide](https://docs.djangoproject.com/en/dev/topics/cache/)
+* [MemJS (node.js client) API](http://amitlevy.com/projects/memjs/)
+* [Spymemcached JavaDocs](http://dustin.github.com/java-memcached-client/apidocs/)
+
 
 <h2 id="1mb-limit">Key-Value size limit (1MB)</h2>
 
