@@ -1,3 +1,10 @@
+# Why am I seeing evictions before 100% cache usage?
+
+We shard your data over many servers and this can create some
+imbalance in how data is distributed. This means that you'll get some
+evictions before 100%. Essentially, as you approach 100%, the
+probability of an eviction increases until it is guaranteed.
+
 # Does MemCachier use an LRU for evicting items?
 
 We evict items in an LRU fashion, but it is not a strict, single LRU.
