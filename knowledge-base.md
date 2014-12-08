@@ -9,40 +9,15 @@ probability of an eviction increases until it is guaranteed.
 
 We evict items in an LRU fashion, but it is not a strict, single LRU.
 
-Memcached (and MemCachier) divides memory up into buckets, where each
-bucket manages key-value pairs of similar sizes. I.e., all key-value
-pairs of size 129 - 256 bytes will be in bucket B1, while key-value
-pairs of size 257 - 512 bytes will be in different bucket B2.
+Memcached (and MemCachier) divides memory up into buckets, where each bucket manages key-value pairs of similar sizes. I.e., all key-value pairs of size 129 - 256 bytes will be in bucket B1, while key-value pairs of size 257 - 512 bytes will be in different bucket B2.
 
-For various performance reasons, memcached has a separate LRU per
-bucket. This allows it to guarantee O(1) operations for everything.
-This means though that when an item is evicted, the LRU used depends
-on the size of the new item being stored. If the item being store is
-183 bytes, then the LRU and only the LRU for bucket B1 is used. This
-then isn't strict LRU but a sharded form.
+For various performance reasons, memcached has a separate LRU per bucket. This allows it to guarantee O(1) operations for everything.  This means though that when an item is evicted, the LRU used depends on the size of the new item being stored. If the item being store is 183 bytes, then the LRU and only the LRU for bucket B1 is used. This then isn't strict LRU but a sharded form.
 
-What can sometimes happen though is a data imbalance. Say you start
-with a new cache and store only items of N bytes up until your limit.
-They'll all end up in one bucket Bx. This means bucket Bx will have
-taken all the memory your cache has. If you try to store another item
-that is say 2N+1 bytes in size, it'll end up in a different bucket By
-However, you are out of memory and something needs to be evicted.
-Bucket By though has no items yet, so we can't evict anything! In
-Memcached this situation leads to an error, in MemCachier we allow it
-to succeed and you'll go slightly above your memory limit. However,
-any future stores to bucket By will immediately evict the previously
-stored item. Essentially, bucket By has room for 1 key only.
+What can sometimes happen though is a data imbalance. Say you start with a new cache and store only items of N bytes up until your limit.  They'll all end up in one bucket Bx. This means bucket Bx will have taken all the memory your cache has. If you try to store another item that is say 2N+1 bytes in size, it'll end up in a different bucket By However, you are out of memory and something needs to be evicted.  Bucket By though has no items yet, so we can't evict anything! In Memcached this situation leads to an error, in MemCachier we allow it to succeed and you'll go slightly above your memory limit. However, any future stores to bucket By will immediately evict the previously stored item. Essentially, bucket By has room for 1 key only.  
 
-The only way to fix this right now sadly is to flush your cache. Once
-memory has been assigned to a particular bucket, it can never be used
-by a different bucket. Generally the issue doesn't occur as customers
-store data across all buckets, the above example is an extreme of what
-can occur as an imbalance.
+The only way to fix this right now sadly is to flush your cache. Once memory has been assigned to a particular bucket, it can never be used by a different bucket. Generally the issue doesn't occur as customers store data across all buckets, the above example is an extreme of what can occur as an imbalance.
 
-If you use MemCachier for say two or more very distinctive use cases
-(i.e., a session store and a HTML fragment cache), we generally
-recommend you use two separate caches as it helps avoid the above
-issue occurring.
+If you use MemCachier for say two or more very distinctive use cases (i.e., a session store and a HTML fragment cache), we generally recommend you use two separate caches as it helps avoid the above issue occurring.
 
 # How do you guarantee locality of MemCachier servers with my Heroku Dynos?
 
