@@ -231,9 +231,25 @@ CACHES = {
 }
 ```
 
-The values for `<MEMCACHIER_SERVERS>`, `<MEMCACHIER_USERNAME>`, and `<MEMCACHIER_PASSWORD>` are listed on your [cache overview page](https://www.memcachier.com/caches). Note that Django expects <MEMCACHIER_SERVERS> to be semicolon-delimited (while we provide it comma-eliminated).
+The values for `<MEMCACHIER_SERVERS>`, `<MEMCACHIER_USERNAME>`, and
+`<MEMCACHIER_PASSWORD>` are listed on your [cache overview
+page](https://www.memcachier.com/caches). Note that Django expects
+<MEMCACHIER_SERVERS> to be semicolon-delimited (while we provide it
+comma-eliminated).
 
-From here you can start writing cache code in your Django app:
+Finally, we also *strongly* recommend that you place the following
+code in your `wsgi.py` file to correct a serious performance bug
+([#11331](https://code.djangoproject.com/ticket/11331)) with Django
+and memcached. The fix enables persistent connections under Django,
+which by default uses a new connection for each request:
+
+```python
+# Fix django closing connection to MemCachier after every request (#11331)
+from django.core.cache.backends.memcached import BaseMemcachedCache
+BaseMemcachedCache.close = lambda self, **kwargs: None
+```
+
+After this, you can start writing cache code in your Django app:
 
 ```python
 from django.core.cache import cache
