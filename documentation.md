@@ -705,7 +705,7 @@ Or on OS X (with Homebrew):
 $ brew install memcached
 ```
 
-Or for Windows please refer to [these instructions](http://www.codeforest.net/how-to-install-memcached-on-windows-machine).
+Or for Windows please refer to [these instructions](http://www.heckler.com.br/blog/2013/05/10/memcached-on-windows/)
 
 For further information and resources (such as the memcached source code) please refer to the [Memcache.org homepage](http://memcached.org)
 
