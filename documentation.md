@@ -18,23 +18,24 @@ in our <a href="/faq">FAQ</a>.
 1. [Ruby](#ruby)
 2. [Rails 3 & 4](#rails3)
 3. [Rails 2](#rails2)
-4. [Django](#django)
-5. [PHP](#php)
-6. [CakePHP](#cakephp)
-7. [Symfony2](#symfony2)
-8. [Node.js](#node.js)
-9. [Java](#java)
-10. [Supported client libraries](#clients)
-11. [Example applications](#sample-apps)
-12. [Local usage](#local)
-13. [MemCachier analytics](#analytics)
-14. [Advanced analytics](#advanced-analytics)
-15. [New Relic integration](#newrelic)
-16. [Changing plans](#upgrading)
-17. [Usage Documentation](#using)
-18. [Key-Value size limit](#1mb-limit)
-19. [Errors connecting to localhost](#localhost-errors)
-20. [Getting support](#support)
+4. [Python](#python)
+5. [Django](#django)
+6. [PHP](#php)
+7. [CakePHP](#cakephp)
+8. [Symfony2](#symfony2)
+9. [Node.js](#node.js)
+10. [Java](#java)
+11. [Supported client libraries](#clients)
+12. [Example applications](#sample-apps)
+13. [Local usage](#local)
+14. [MemCachier analytics](#analytics)
+15. [Advanced analytics](#advanced-analytics)
+16. [New Relic integration](#newrelic)
+17. [Changing plans](#upgrading)
+18. [Usage Documentation](#using)
+19. [Key-Value size limit](#1mb-limit)
+20. [Errors connecting to localhost](#localhost-errors)
+21. [Getting support](#support)
 
 
 <h2 id="ruby">Ruby</h2>
@@ -180,21 +181,99 @@ article](https://devcenter.heroku.com/articles/rack-cache-memcached-rails31#conf
 for information.
 
 
-<h2 id="django">Django</h2>
+<h2 id="python">Python</h2>
 
-MemCachier has been tested with the `pylibmc` memcache client, but the default client doesn’t support SASL authentication. Run the following commands on your machine to install the necessary pips:
+<p class="alert alert-info">
+We support the `pylibmc` memcache client as it has great performance
+and recently added Python 3 support. However, it can sometimes be
+difficult to install locally as it relies on the C libmemcached
+library. If you prefer, you can try a pure python client,
+[python-binary-memcached](https://github.com/jaysonsantos/python-binary-memcached),
+which works well but only supports Python 2 right now.
+</p>
 
-```text
-$ sudo port install libmemcached
-$ LIBMEMCACHED=/opt/local pip install pylibmc
-$ pip install django-pylibmc-sasl
+Here we explain how you setup and install MemCachier with Python.
+
+MemCachier has been tested with the `pylibmc` memcache client. This
+client relies on the C libmemcached library. This should be fairly
+straight-forward to install with your package manager on Linux or
+Windows. We also have a
+[blog post](http://blog.memcachier.com/2014/11/05/ubuntu-libmemcached-and-sasl-support/)
+for Ubuntu users on how to do this. Once it's installed, then install
+`pylibmc`:
+
+```term
+$ pip install pylibmc
 ```
 
 Be sure to update your `requirements.txt` file with these new
 requirements (note that your versions may differ than what’s below):
 
 ```text
-pylibmc==1.3.0
+pylibmc==1.4.0
+```
+
+<p class="alert alert-info">
+<b>Heroku Users:</b> The above `pylibmc` requirements must be added
+directly to your `requirements.txt` file. They shouldn't be placed in
+an included pip requirement file. The Heroku Python buildpack checks
+the `requirements.txt` file and only that file for the presence of
+`pylibmc` to trigger bootstrapping `libmemcached`, which is
+prerequisite for installing `pylibmc`.
+</p>
+
+
+Next, configure your settings.py file the following way:
+
+```python
+import pylibmc
+
+servers = os.environ.get('MEMCACHIER_SERVERS', '').split(',')
+user = os.environ.get('MEMCACHIER_USERNAME', '')
+pass = os.environ.get('MEMCACHIER_PASSWORD', '')
+
+mc = pylibmc.Client(servers, binary=True,
+                    username=user, password=pass,
+                    behaviors={"tcp_nodelay": True,
+                               "ketama": True,
+                               "no_block": True,})
+```
+
+After this, you can start writing cache code in your Python app:
+
+```python
+mc.set("foo", "bar")
+print mc.get("foo")
+```
+
+<p class="alert alert-info">
+A confusing error message you may get from `pylibmc` is <b>MemcachedError: error 37 from memcached_set: SYSTEM ERROR (Resource temporarily unavailable)</b>. This indicates that you are trying to store a value larger than 1MB. MemCachier has a hard limit of 1MB for the size of key-value pairs. To work around this, either consider sharding the data or using a different technology. The benefit of an in-memory key-value store diminishes at 1MB and higher.
+</p>
+
+
+<h2 id="django">Django</h2>
+
+MemCachier has been tested with the `pylibmc` memcache client, but the
+default django pylibmc client doesn’t support SASL authentication.
+Recently `pylibmc` added *Python 3* support in version 1.4.0.
+
+This client relies on the C libmemcached library. This should be
+fairly straight-forward to install with your package manager on Linux
+or Windows. We also have a
+[blog post](http://blog.memcachier.com/2014/11/05/ubuntu-libmemcached-and-sasl-support/)
+for Ubuntu users on how to do this.
+
+Once it's installed, then install `pylibmc`:
+
+```text
+$ pip install pylibmc django-pylibmc
+```
+
+Be sure to update your `requirements.txt` file with these new
+requirements (note that your versions may differ than what’s below):
+
+```text
+pylibmc==1.4.0
 django-pylibmc==0.5.0
 ```
 
