@@ -524,10 +524,10 @@ memcached.sess_sasl_password=<MEMCACHIER_PASSWORD>
 
 <h2 id="laravel">Laravel</h2>
 
-Laravel is a great framework although as of v5.0 the built-in Cache and Session services do not support
-memcached with persistent connections, options, or SASL authentication.
+[Laravel](http://laravel.com/) is a great framework although as of v5.0 the built-in [Cache](http://laravel.com/docs/5.0/cache) and [Session](http://laravel.com/docs/5.0/session)
+services do not support memcached with persistent connections, options, or SASL authentication.
 The [laravel-memcached-plus](https://github.com/b3it/laravel-memcached-plus) package adds support for these features
-making using Memcachier a breeze.
+making using MemCachier a breeze.
 
 <h2 id="node.js">Node.js</h2>
 
