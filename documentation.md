@@ -23,19 +23,20 @@ in our <a href="/faq">FAQ</a>.
 6. [PHP](#php)
 7. [CakePHP](#cakephp)
 8. [Symfony2](#symfony2)
-9. [Node.js](#node.js)
-10. [Java](#java)
-11. [Supported client libraries](#clients)
-12. [Example applications](#sample-apps)
-13. [Local usage](#local)
-14. [MemCachier analytics](#analytics)
-15. [Advanced analytics](#advanced-analytics)
-16. [New Relic integration](#newrelic)
-17. [Changing plans](#upgrading)
-18. [Usage Documentation](#using)
-19. [Key-Value size limit](#1mb-limit)
-20. [Errors connecting to localhost](#localhost-errors)
-21. [Getting support](#support)
+9. [Laravel](#laravel)
+10. [Node.js](#node.js)
+11. [Java](#java)
+12. [Supported client libraries](#clients)
+13. [Example applications](#sample-apps)
+14. [Local usage](#local)
+15. [MemCachier analytics](#analytics)
+16. [Advanced analytics](#advanced-analytics)
+17. [New Relic integration](#newrelic)
+18. [Changing plans](#upgrading)
+19. [Usage Documentation](#using)
+20. [Key-Value size limit](#1mb-limit)
+21. [Errors connecting to localhost](#localhost-errors)
+22. [Getting support](#support)
 
 
 <h2 id="ruby">Ruby</h2>
@@ -521,6 +522,12 @@ memcached.sess_sasl_username=<MEMCACHIER_USERNAME>
 memcached.sess_sasl_password=<MEMCACHIER_PASSWORD>
 ```
 
+<h2 id="laravel">Laravel</h2>
+
+Laravel is a great framework although as of v5.0 the built-in Cache and Session services do not support
+memcached with persistent connections, options, or SASL authentication.
+The [laravel-memcached-plus](https://github.com/b3it/laravel-memcached-plus) package adds support for these features
+making using Memcachier a breeze.
 
 <h2 id="node.js">Node.js</h2>
 
