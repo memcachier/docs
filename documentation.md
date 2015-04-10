@@ -878,7 +878,7 @@ For example, with Ruby on Rails, you'll need to setup `cache_store`,
 
 <h2 id="support">Support</h2>
 
-All MemCachier support and runtime issues should be submitted via email to <a href="mailto:support@memcachier.com"><i class="icon-envelope"></i> support@memcachier.com</a> or through our [support site](http://support.memcchier.com).
+All MemCachier support and runtime issues should be submitted via email to <a href="mailto:support@memcachier.com"><i class="icon-envelope"></i> support@memcachier.com</a> or through our [support site](http://support.memcachier.com).
 
 Any issues related to MemCachier service are reported at [MemCachier Status](http://status.memcachier.com/).
 
