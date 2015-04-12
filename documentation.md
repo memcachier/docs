@@ -18,26 +18,27 @@ in our <a href="/faq">FAQ</a>.
 1. [Ruby](#ruby)
 2. [Rails 3 & 4](#rails3)
 3. [Rails 2](#rails2)
-4. [Python](#python)
-5. [Django](#django)
-6. [PHP](#php)
-7. [Wordpress](#wordpress)
-8. [CakePHP](#cakephp)
-9. [Symfony2](#symfony2)
-10. [Laravel](#laravel)
-11. [Node.js](#node.js)
-12. [Java](#java)
-13. [Supported client libraries](#clients)
-14. [Example applications](#sample-apps)
-15. [Local usage](#local)
-16. [MemCachier analytics](#analytics)
-17. [Advanced analytics](#advanced-analytics)
-18. [New Relic integration](#newrelic)
-19. [Changing plans](#upgrading)
-20. [Usage Documentation](#using)
-21. [Key-Value size limit](#1mb-limit)
-22. [Errors connecting to localhost](#localhost-errors)
-23. [Getting support](#support)
+4. [Rack::Cache](#rack)
+5. [Python](#python)
+6. [Django](#django)
+7. [PHP](#php)
+8. [WordPress](#wordpress)
+9. [CakePHP](#cakephp)
+10. [Symfony2](#symfony2)
+11. [Laravel](#laravel)
+12. [Node.js](#node.js)
+13. [Java](#java)
+14. [Supported client libraries](#clients)
+15. [Example applications](#sample-apps)
+16. [Local usage](#local)
+17. [MemCachier analytics](#analytics)
+18. [Advanced analytics](#advanced-analytics)
+19. [New Relic integration](#newrelic)
+20. [Changing plans](#upgrading)
+21. [Usage Documentation](#using)
+22. [Key-Value size limit](#1mb-limit)
+23. [Errors connecting to localhost](#localhost-errors)
+24. [Getting support](#support)
 
 
 <h2 id="ruby">Ruby</h2>
@@ -469,9 +470,9 @@ The values for `<MEMCACHIER_SERVERS>`, `<MEMCACHIER_USERNAME>`, and `<MEMCACHIER
 We’ve built a small PHP example here: [MemCachier PHP sample app](https://github.com/memcachier/examples-php).
 
 
-<h2 id="wordpress">Wordpress</h2>
+<h2 id="wordpress">WordPress</h2>
 
-We support Wordpress through two different options. The first you can find
+We support WordPress through two different options. The first you can find
 [here](https://github.com/memcachier/wordpress-cache), and uses the binary
 memcache protocol and is supported by us. It should be easy to install, simply
 follow the instructions on the Git repo.
