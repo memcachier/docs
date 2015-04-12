@@ -21,21 +21,23 @@ in our <a href="/faq">FAQ</a>.
 4. [Python](#python)
 5. [Django](#django)
 6. [PHP](#php)
-7. [CakePHP](#cakephp)
-8. [Symfony2](#symfony2)
-9. [Node.js](#node.js)
-10. [Java](#java)
-11. [Supported client libraries](#clients)
-12. [Example applications](#sample-apps)
-13. [Local usage](#local)
-14. [MemCachier analytics](#analytics)
-15. [Advanced analytics](#advanced-analytics)
-16. [New Relic integration](#newrelic)
-17. [Changing plans](#upgrading)
-18. [Usage Documentation](#using)
-19. [Key-Value size limit](#1mb-limit)
-20. [Errors connecting to localhost](#localhost-errors)
-21. [Getting support](#support)
+7. [Wordpress](#wordpress)
+8. [CakePHP](#cakephp)
+9. [Symfony2](#symfony2)
+10. [Laravel](#laravel)
+11. [Node.js](#node.js)
+12. [Java](#java)
+13. [Supported client libraries](#clients)
+14. [Example applications](#sample-apps)
+15. [Local usage](#local)
+16. [MemCachier analytics](#analytics)
+17. [Advanced analytics](#advanced-analytics)
+18. [New Relic integration](#newrelic)
+19. [Changing plans](#upgrading)
+20. [Usage Documentation](#using)
+21. [Key-Value size limit](#1mb-limit)
+22. [Errors connecting to localhost](#localhost-errors)
+23. [Getting support](#support)
 
 
 <h2 id="ruby">Ruby</h2>
@@ -467,6 +469,20 @@ The values for `<MEMCACHIER_SERVERS>`, `<MEMCACHIER_USERNAME>`, and `<MEMCACHIER
 We’ve built a small PHP example here: [MemCachier PHP sample app](https://github.com/memcachier/examples-php).
 
 
+<h2 id="wordpress">Wordpress</h2>
+
+We support Wordpress through two different options. The first you can find
+[here](https://github.com/memcachier/wordpress-cache), and uses the binary
+memcache protocol and is supported by us. It should be easy to install, simply
+follow the instructions on the Git repo.
+
+We also have a community support alternative approach that uses the ASCII
+memcache protocol, which is far easier to get running on your own servers if
+you aren't using a hosted platform like Heroku. You can find it on GitHub
+[here](https://github.com/hubertnguyen/memcachier). Please follow the
+instructions on the repo page.
+
+
 <h2 id="cakephp">CakePHP</h2>
 
 The CakePHP framework has excellent support for caching and can be easily used with MemCachier as the provider. To setup CakePHP with MemCachier, you'll need to edit the file `app/Config/bootstrap.php` and add the following lines:
@@ -520,6 +536,14 @@ session.save_path="PERSISTENT=myapp_session <MEMCACHIER_SERVERS>"
 memcached.sess_sasl_username=<MEMCACHIER_USERNAME>
 memcached.sess_sasl_password=<MEMCACHIER_PASSWORD>
 ```
+
+
+<h2 id="laravel">Laravel</h2>
+
+We have community provided support for the Laravel PHP webframework. You can
+find a caching backend with MemCachier support on Github
+[here](https://github.com/b3it/laravel-memcached-plus). Please follow the
+instructions on the repo page.
 
 
 <h2 id="node.js">Node.js</h2>
