@@ -83,3 +83,17 @@ reasonable amount of work, so the easiest solution may just be an
 automated notification system that brings a human in when needed to
 either restart one particular dyno or take other actions.
 
+# Should I increase the size of my plan?
+
+The best way is to generally look at your analytics dashboard and compare your
+'Hit Rate' to your 'Usage'.
+
+Basically, if your hit rate is low but your usage is high, then this is often
+indicative that you could get better performance from a larger cache.
+
+Secondly, we designed MemCachier to be easy to test different plans with.
+Moving between any of the paid plans doesn't loose any of your data. And you
+are only charged by the hour, so you can easily try out a much larger plan and
+test if it improves performance. If it doesn't, simply downgrade back to your
+old plan!
+
