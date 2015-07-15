@@ -97,3 +97,7 @@ are only charged by the hour, so you can easily try out a much larger plan and
 test if it improves performance. If it doesn't, simply downgrade back to your
 old plan!
 
+# Rails + multi_get
+
+https://github.com/n8/multi_fetch_fragments
+
