@@ -18,27 +18,28 @@ in our <a href="/faq">FAQ</a>.
 1. [Ruby](#ruby)
 2. [Rails 3 & 4](#rails3)
 3. [Rails 2](#rails2)
-4. [Rack::Cache](#rack)
-5. [Python](#python)
-6. [Django](#django)
-7. [PHP](#php)
-8. [WordPress](#wordpress)
-9. [CakePHP](#cakephp)
-10. [Symfony2](#symfony2)
-11. [Laravel](#laravel)
-12. [Node.js](#node.js)
-13. [Java](#java)
-14. [Supported client libraries](#clients)
-15. [Example applications](#sample-apps)
-16. [Local usage](#local)
-17. [MemCachier analytics](#analytics)
-18. [Advanced analytics](#advanced-analytics)
-19. [New Relic integration](#newrelic)
-20. [Changing plans](#upgrading)
-21. [Usage Documentation](#using)
-22. [Key-Value size limit](#1mb-limit)
-23. [Errors connecting to localhost](#localhost-errors)
-24. [Getting support](#support)
+3. [Ruby Puma Webserver](#ruby-puma-webserver)
+5. [Rack::Cache](#rack)
+6. [Python](#python)
+7. [Django](#django)
+8. [PHP](#php)
+9. [WordPress](#wordpress)
+10. [CakePHP](#cakephp)
+11. [Symfony2](#symfony2)
+12. [Laravel](#laravel)
+13. [Node.js](#node.js)
+14. [Java](#java)
+15. [Supported client libraries](#clients)
+16. [Example applications](#sample-apps)
+17. [Local usage](#local)
+18. [MemCachier analytics](#analytics)
+19. [Advanced analytics](#advanced-analytics)
+20. [New Relic integration](#newrelic)
+21. [Changing plans](#upgrading)
+22. [Usage Documentation](#using)
+23. [Key-Value size limit](#1mb-limit)
+24. [Errors connecting to localhost](#localhost-errors)
+25. [Getting support](#support)
 
 
 <h2 id="ruby">Ruby</h2>
@@ -175,9 +176,50 @@ puts Rails.cache.read("foo")
 We’ve built a small Rails (3 & 4) example here: [MemCachier Rails sample app](https://github.com/memcachier/examples-rails).
 
 
+<h2 id="ruby-puma-webserver">Ruby Puma Webserver</h2>
+
+If you are using the [Puma](http://puma.io/) webserver for your Ruby app (Rails
+or otherwise), then you should take some additional steps due to the
+multi-threaded runtime being used. This applies to all threaded webservers for
+Ruby, not just Puma.
+
+First, please refer to the documentation on [Rails](#rails-3-and-4) or
+[Ruby](#ruby) above appropriately, and then take these additional steps.
+
+Dalli by default uses a single connection to each server. This works fine
+normally, but can be come a bottleneck in a multi-threaded environment and
+limit performance. In this case, Dalli support connection pooling, where
+multiple connections are created to MemCachier's servers. To use this, start by
+adding the `connection_pool` gem to your Gemfile:
+
+```ruby
+gem 'connection_pool'
+```
+
+Next, you'll need to set the `:pool_size` configuration option when setting up
+Dalli. For example, in Rails 3 & 4 your configuration would become:
+
+```ruby
+config.cache_store = :dalli_store,
+                    (ENV["MEMCACHIER_SERVERS"] || "").split(","),
+                    {:username => ENV["MEMCACHIER_USERNAME"],
+                     :password => ENV["MEMCACHIER_PASSWORD"],
+                     :failover => true,
+                     :socket_timeout => 1.5,
+                     :socket_failure_delay => 0.2,
+                     :pool_size => 5
+                    }
+```
+
+Where the number 5 should be chosen according to how many threads you will be
+running and the available concurrency on the machines running your webserver.
+
+
 <h2 id="rack">Rails Rack::Cache</h2>
 
-Rails can use a middle-ware component of the Rack web server architecture called Rack::Cache. This provides caching of static assets in Rails and is a simple alternative to use a full CDN.  
+Rails can use a middle-ware component of the Rack web server architecture
+called Rack::Cache. This provides caching of static assets in Rails and is a
+simple alternative to use a full CDN.  
 
 Please see [this
 article](https://devcenter.heroku.com/articles/rack-cache-memcached-rails31#configure-rails-cache-store)
