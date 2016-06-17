@@ -842,19 +842,32 @@ chances are good that other SASL binary protocol packages will also work.
 <td>Python</td>
 <td>
   <a href="http://sendapatch.se/projects/pylibmc/">pylibmc</a>
+  <b>or</b>
+  <a href="https://github.com/jaysonsantos/python-binary-memcached">python-binary-memcached</a>
 </td>
 </tr>
 <tr>
 <td>Django</td>
 <td>
-  <a href="https://github.com/jbalogh/django-pylibmc">django-pylibmc</a>
+  (
+    <a href="http://sendapatch.se/projects/pylibmc/">pylibmc</a>
+    <b>and</b>
+    <a href="https://github.com/jbalogh/django-pylibmc">django-pylibmc</a>
+  )
+  <b>or</b>
+  (
+    <a href="https://github.com/jaysonsantos/python-binary-memcached">python-binary-memcached</a>
+    <b>and</b>
+    <a href="https://github.com/jaysonsantos/django-bmemcached">django-bmemcached</a>
+  )
 </td>
 </tr>
 <tr>
 <td>PHP</td>
 <td>
-  <a href="http://github.com/ronnywang/PHPMemcacheSASL">PHPMemcacheSASL</a> <b>or</b>
   <a href="http://www.php.net/manual/en/book.memcached.php">PHP Memcached</a>
+  <b>or</b>
+  <a href="http://github.com/ronnywang/PHPMemcacheSASL">PHPMemcacheSASL</a>
 </td>
 </tr>
 <tr>
@@ -866,14 +879,14 @@ chances are good that other SASL binary protocol packages will also work.
 <tr>
 <td>Java</td>
 <td>
-  <a href="http://code.google.com/p/spymemcached/">spymemcached</a>
+  <a href="http://code.google.com/p/spymemcached/">SpyMemcached</a>
   <b>or</b>
-  <a href="https://code.google.com/p/xmemcached/">xmemcached</a>
+  <a href="https://code.google.com/p/xmemcached/">XMemcached</a>
 </td>
 </tr>
 <tr>
 <td>Go</td>
-<td><a href="https://github.com/bmizerany/mc">mc</a></td>
+<td><a href="https://github.com/memcachier/mc">mc</a></td>
 </tr>
 <tr>
 <td>Haskell</td>
