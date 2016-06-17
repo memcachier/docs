@@ -275,8 +275,8 @@ for Ubuntu users on how to do this. Once it's installed, then install
 $ pip install pylibmc
 ```
 
-Be sure to update your `requirements.txt` file with these new
-requirements (note that your versions may differ than what’s below):
+Be sure to update your `requirements.txt` file with these new requirements
+(note that your versions may differ than what’s below):
 
 ```text
 pylibmc==1.5.1
@@ -865,7 +865,7 @@ chances are good that other SASL binary protocol packages will also work.
 <tr>
 <td>PHP</td>
 <td>
-  <a href="http://www.php.net/manual/en/book.memcached.php">PHP Memcached</a>
+  <a href="http://www.php.net/manual/en/book.memcached.php">php-memcached</a>
   <b>or</b>
   <a href="http://github.com/ronnywang/PHPMemcacheSASL">PHPMemcacheSASL</a>
 </td>
