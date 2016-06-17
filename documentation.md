@@ -44,7 +44,8 @@ in our <a href="/faq">FAQ</a>.
 
 <h2 id="ruby">Ruby</h2>
 
-Start by adding the [dalli](https://github.com/mperham/dalli) gem to your Gemfile.
+Start by adding the [dalli](https://github.com/mperham/dalli) gem to your
+Gemfile.
 
 ```ruby
 gem 'dalli'
@@ -56,7 +57,8 @@ Then bundle install:
 $ bundle install
 ```
 
-`Dalli` is a Ruby memcache client.  Once it is installed you can start writing code. The following is a basic example showing get and set.
+`Dalli` is a Ruby memcache client.  Once it is installed you can start writing
+code. The following is a basic example showing get and set.
 
 ```ruby
 cache = Dalli::Client.new(<MEMCACHIER_SERVERS>.split(","),
@@ -68,23 +70,28 @@ cache = Dalli::Client.new(<MEMCACHIER_SERVERS>.split(","),
                     })
 ```
 
-The values for `<MEMCACHIER_SERVERS>`, `<MEMCACHIER_USERNAME>`, and `<MEMCACHIER_PASSWORD>` are listed on your [cache overview page](https://www.memcachier.com/caches).
+The values for `<MEMCACHIER_SERVERS>`, `<MEMCACHIER_USERNAME>`, and
+`<MEMCACHIER_PASSWORD>` are listed on your [cache overview
+page](https://www.memcachier.com/caches).
 
-From here you can use the following code examples to use the cache in your Ruby app:
+From here you can use the following code examples to use the cache in your Ruby
+app:
 
 ```ruby
 cache.set("foo", "bar")
 puts cache.get("foo")
 ```
 
-You can also get an insight into your cache usage (number of keys stored and bytes) with the `stats` command:
+You can also get an insight into your cache usage (number of keys stored and
+bytes) with the `stats` command:
 
 ```ruby
 cache.stats
 => {"memcachier.example.net:11211" => {"cur_items" => "49982", "bytes" => "89982234"} }
 ```
 
-We’ve built a small Ruby example using Sinatra here: [MemCachier Sinatra Sample App](https://github.com/memcachier/examples-sinatra).
+We’ve built a small Ruby example using Sinatra here: [MemCachier Sinatra Sample
+App](https://github.com/memcachier/examples-sinatra).
 
 
 <h2 id="rails3">Rails 3 & 4</h2>
@@ -101,7 +108,9 @@ Then bundle install:
 $ bundle install
 ```
 
-`Dalli` is a Ruby memcache client.  Once it is installed you’ll want to configure the Rails cache_store appropriately. Modify `config/environments/production.rb` with the following:
+`Dalli` is a Ruby memcache client.  Once it is installed you’ll want to
+configure the Rails cache_store appropriately. Modify
+`config/environments/production.rb` with the following:
 
 ```ruby
 config.cache_store = :dalli_store, <MEMCACHIER_SERVERS>.split(","),
@@ -113,23 +122,30 @@ config.cache_store = :dalli_store, <MEMCACHIER_SERVERS>.split(","),
                     }
 ```
 
-The values for `<MEMCACHIER_SERVERS>`, `<MEMCACHIER_USERNAME>`, and `<MEMCACHIER_PASSWORD>` are listed on your [cache overview page](https://www.memcachier.com/caches).
+The values for `<MEMCACHIER_SERVERS>`, `<MEMCACHIER_USERNAME>`, and
+`<MEMCACHIER_PASSWORD>` are listed on your [cache overview
+page](https://www.memcachier.com/caches).
 
-<p class="alert alert-info">In your development environment, Rails.cache defaults to a simple in-memory store and so it doesn’t require a running memcached.</p>
+<p class="alert alert-info">In your development environment, Rails.cache
+defaults to a simple in-memory store and so it doesn’t require a running
+memcached.</p>
 
-From here you can use the following code examples to use the cache in your Rails app:
+From here you can use the following code examples to use the cache in your
+Rails app:
 
 ```ruby
 Rails.cache.write("foo", "bar")
 puts Rails.cache.read("foo")
 ```
 
-We’ve built a small Rails example here: [MemCachier Rails sample app](https://github.com/memcachier/examples-rails).
+We’ve built a small Rails example here: [MemCachier Rails sample
+app](https://github.com/memcachier/examples-rails).
 
 
 <h2 id="rails2">Rails 2</h2>
 
-Start by adding the [dalli](https://github.com/mperham/dalli) gem to your Gemfile. You will need to use dalli **v1.0.5** as later versions of Dalli don't
+Start by adding the [dalli](https://github.com/mperham/dalli) gem to your
+Gemfile. You will need to use dalli **v1.0.5** as later versions of Dalli don't
 support Rails 2.
 
 ```ruby
@@ -143,7 +159,9 @@ Then bundle install:
 $ bundle install
 ```
 
-`Dalli` is a Ruby memcache client.  Once it is installed you’ll want to configure the Rails cache_store appropriately. Modify `config/environments/production.rb` with the following:
+`Dalli` is a Ruby memcache client.  Once it is installed you’ll want to
+configure the Rails cache_store appropriately. Modify
+`config/environments/production.rb` with the following:
 
 ```ruby
 require 'active_support/cache/dalli_store23'
@@ -156,9 +174,13 @@ config.cache_store = :dalli_store, <MEMCACHIER_SERVERS>.split(","),
                     }
 ```
 
-The values for `<MEMCACHIER_SERVERS>`, `<MEMCACHIER_USERNAME>`, and `<MEMCACHIER_PASSWORD>` are listed on your [cache overview page](https://www.memcachier.com/caches).
+The values for `<MEMCACHIER_SERVERS>`, `<MEMCACHIER_USERNAME>`, and
+`<MEMCACHIER_PASSWORD>` are listed on your [cache overview
+page](https://www.memcachier.com/caches).
 
-<p class="alert alert-info">In your development environment, Rails.cache defaults to a simple in-memory store and so it doesn’t require a running memcached.</p>
+<p class="alert alert-info">In your development environment, Rails.cache
+defaults to a simple in-memory store and so it doesn’t require a running
+memcached.</p>
 
 Also modify`config/environment.rb` to contain:
 
@@ -166,14 +188,16 @@ Also modify`config/environment.rb` to contain:
 config.gem 'dalli'
 ```
 
-From here you can use the following code examples to use the cache in your Rails app:
+From here you can use the following code examples to use the cache in your
+Rails app:
 
 ```ruby
 Rails.cache.write("foo", "bar")
 puts Rails.cache.read("foo")
 ```
 
-We’ve built a small Rails (3 & 4) example here: [MemCachier Rails sample app](https://github.com/memcachier/examples-rails).
+We’ve built a small Rails (3 & 4) example here: [MemCachier Rails sample
+app](https://github.com/memcachier/examples-rails).
 
 
 <h2 id="ruby-puma-webserver">Ruby Puma Webserver</h2>
@@ -442,11 +466,22 @@ diminishes at 1MB and higher.
 
 <h2 id="php">PHP</h2>
 
-We recommended you use the [PHP Memcached client](http://www.php.net/manual/en/book.memcached.php) to connect with MemCachier. It supports the full protocol and has great performance. We also recommend that you use the [composer dependency manager](https://getcomposer.org/) for PHP, although that is up to you.
+We recommended you use the [PHP Memcached
+client](http://www.php.net/manual/en/book.memcached.php) to connect with
+MemCachier. It supports the full protocol and has great performance. We also
+recommend that you use the [composer dependency
+manager](https://getcomposer.org/) for PHP, although that is up to you.
 
-It can be difficult to get the memcached client to work as it requires that you build it against a version of libmemcached (a C library that the PHP client relies upon) that support SASL authentication, which often isn't enabled by default. If you have trouble, please open a [support ticket](http://support.memcachier.com/) with us. Alternatively, you could use a [pure PHP client](#php-memcachesasl) that MemCachier supports, instructions on how are [here](#php-memcachesasl).
+It can be difficult to get the memcached client to work as it requires that you
+build it against a version of libmemcached (a C library that the PHP client
+relies upon) that support SASL authentication, which often isn't enabled by
+default. If you have trouble, please open a [support
+ticket](http://support.memcachier.com/) with us. Alternatively, you could use a
+[pure PHP client](#php-memcachesasl) that MemCachier supports, instructions on
+how are [here](#php-memcachesasl).
 
-First, if using composer, you'll need to modify your `composer.json` file to include the module:
+First, if using composer, you'll need to modify your `composer.json` file to
+include the module:
 
 ```js
 {
@@ -490,17 +525,23 @@ if (!$m->getServerList()) {
 }
 ```
 
-The values for `<MEMCACHIER_SERVERS>`, `<MEMCACHIER_USERNAME>`, and `<MEMCACHIER_PASSWORD>` are listed on your [cache overview page](https://www.memcachier.com/caches).
+The values for `<MEMCACHIER_SERVERS>`, `<MEMCACHIER_USERNAME>`, and
+`<MEMCACHIER_PASSWORD>` are listed on your [cache overview
+page](https://www.memcachier.com/caches).
 
-You should look at the PHP [Memcached client documentation](http://www.php.net/manual/en/book.memcached.php) for a list of API calls you can make against MemCachier.
+You should look at the PHP [Memcached client
+documentation](http://www.php.net/manual/en/book.memcached.php) for a list of
+API calls you can make against MemCachier.
 
-We’ve built a small PHP example here: [MemCachier PHP sample app](https://github.com/memcachier/examples-php).
+We’ve built a small PHP example here: [MemCachier PHP sample
+app](https://github.com/memcachier/examples-php).
 
 <h3 id="php-session">PHP Session Support</h3>
 
 You can configure PHP to store sessions in MemCachier as follows.
 
-First, start by configuring an appropriate `.user.ini` in your document root. It should contain the following:
+First, start by configuring an appropriate `.user.ini` in your document root.
+It should contain the following:
 
 ```php
 session.save_handler=memcached
@@ -520,11 +561,21 @@ $_SESSION['test'] = 42;
 
 <h3 id="php-memcachesasl">PHP -- MemcacheSASL</h3>
 
-This is not our recommended client for using MemCachier from PHP. We recommend the [php memcached](#php) client. However, it is an easier client to use as it's a pure PHP implementation while the [recommended php client](#php) requires a C extension to be installed with [SASL](http://en.wikipedia.org/wiki/Simple_Authentication_and_Security_Layer) support. It doesn't support multiple proxy servers like the memcached client but is otherwise quite good.
+This is not our recommended client for using MemCachier from PHP. We recommend
+the [php memcached](#php) client. However, it is an easier client to use as
+it's a pure PHP implementation while the [recommended php client](#php)
+requires a C extension to be installed with
+[SASL](http://en.wikipedia.org/wiki/Simple_Authentication_and_Security_Layer)
+support. It doesn't support multiple proxy servers like the memcached client
+but is otherwise quite good.
 
-You should first install the [PHPMemcacheSASL](https://github.com/memcachier/PHPMemcacheSASL) client. You can either grab the code directly or use [composer](https://getcomposer.org/) for package management. We suggest composer.
+You should first install the
+[PHPMemcacheSASL](https://github.com/memcachier/PHPMemcacheSASL) client. You
+can either grab the code directly or use [composer](https://getcomposer.org/)
+for package management. We suggest composer.
 
-First, if using composer, you'll need to modify your `composer.json` file to include the module:
+First, if using composer, you'll need to modify your `composer.json` file to
+include the module:
 
 ```js
 {
@@ -557,9 +608,12 @@ $m->add("foo", "bar");
 echo $m->get("foo");
 ```
 
-The values for `<MEMCACHIER_SERVERS>`, `<MEMCACHIER_USERNAME>`, and `<MEMCACHIER_PASSWORD>` are listed on your [cache overview page](https://www.memcachier.com/caches).
+The values for `<MEMCACHIER_SERVERS>`, `<MEMCACHIER_USERNAME>`, and
+`<MEMCACHIER_PASSWORD>` are listed on your [cache overview
+page](https://www.memcachier.com/caches).
 
-We’ve built a small PHP example here: [MemCachier PHP sample app](https://github.com/memcachier/examples-php).
+We’ve built a small PHP example here: [MemCachier PHP sample
+app](https://github.com/memcachier/examples-php).
 
 
 <h2 id="wordpress">WordPress</h2>
@@ -578,7 +632,9 @@ instructions on the repo page.
 
 <h2 id="cakephp">CakePHP</h2>
 
-The CakePHP framework has excellent support for caching and can be easily used with MemCachier as the provider. To setup CakePHP with MemCachier, you'll need to edit the file `app/Config/bootstrap.php` and add the following lines:
+The CakePHP framework has excellent support for caching and can be easily used
+with MemCachier as the provider. To setup CakePHP with MemCachier, you'll need
+to edit the file `app/Config/bootstrap.php` and add the following lines:
 
 ```php
 Cache::config('default', array(
@@ -611,16 +667,21 @@ class Post extends AppModel {
 }
 ```
 
-The above will fetch the value associated with the key `newest_posts` from the cache if it exists. Otherwise, it will execute the function and SQL query, storing the result in the cache using the `newest_posts` key.
+The above will fetch the value associated with the key `newest_posts` from the
+cache if it exists. Otherwise, it will execute the function and SQL query,
+storing the result in the cache using the `newest_posts` key.
 
-You can find much more information on how to use caching with CakePHP [here](http://book.cakephp.org/2.0/en/core-libraries/caching.html).
+You can find much more information on how to use caching with CakePHP
+[here](http://book.cakephp.org/2.0/en/core-libraries/caching.html).
 
 
 <h2 id="symfony2">Symfony2</h2>
 
-The [Symfony2](http://symfony.com/) framework is a great choice with MemCachier. It supports caching and storing sessions in MemCachier.
+The [Symfony2](http://symfony.com/) framework is a great choice with
+MemCachier. It supports caching and storing sessions in MemCachier.
 
-First, start by configuring an appropriate `.user.ini` in your document root. It should contain the following:
+First, start by configuring an appropriate `.user.ini` in your document root.
+It should contain the following:
 
 ```php
 session.save_handler=memcached
@@ -650,8 +711,8 @@ manager (npm)](https://npmjs.org/):
 npm install memjs
 ```
 
-Using it is straight-forward as memjs understands the
-`MEMCACHIER_SERVERS`, `MEMCACHIER_USERNAME` and `MEMCACHIER_PASSWORD`
+Using it is straight-forward as memjs understands the `MEMCACHIER_SERVERS`,
+`MEMCACHIER_USERNAME` and `MEMCACHIER_PASSWORD`
 environment variables that the MemCachier add-on setups. For example:
 
 ```javascript
@@ -662,14 +723,21 @@ client.get('hello', function(val) {
 })
 ```
 
-We’ve built a small Node.js example here: [MemCachier Node.js sample app](http://github.com/memcachier/examples-node).
+We’ve built a small Node.js example here: [MemCachier Node.js sample
+app](http://github.com/memcachier/examples-node).
 
 
 <h2 id="java">Java</h2>
 
-For Java we recommend using the [SpyMemcached](https://code.google.com/p/spymemcached/) client. We also recommend using the [Apache Maven](https://maven.apache.org/) build manager for working with Java applications. If you aren't using `maven` and are instead using [Apache Ant](https://ant.apache.org/) or your own build system, then simply add the `spymemcached` jar file as a dependency of your application.
+For Java we recommend using the
+[SpyMemcached](https://code.google.com/p/spymemcached/) client. We also
+recommend using the [Apache Maven](https://maven.apache.org/) build manager for
+working with Java applications. If you aren't using `maven` and are instead
+using [Apache Ant](https://ant.apache.org/) or your own build system, then
+simply add the `spymemcached` jar file as a dependency of your application.
 
-For `maven` however, start by configuring it to have the proper `spymemcached` repository:
+For `maven` however, start by configuring it to have the proper `spymemcached`
+repository:
 
 ```xml
 <repository>
@@ -694,7 +762,8 @@ Then add the `spymemcached` library to your dependencies:
 </dependency>
 ```
 
-Once your build system is configured, you can start adding caching to your Java app:
+Once your build system is configured, you can start adding caching to your Java
+app:
 
 ```java
 import java.io.IOException;
@@ -724,16 +793,27 @@ public class Foo {
 }
 ```
 
-The values for `<MEMCACHIER_SERVERS>`, `<MEMCACHIER_USERNAME>`, and `<MEMCACHIER_PASSWORD>` are listed on your [cache overview page](https://www.memcachier.com/caches).
+The values for `<MEMCACHIER_SERVERS>`, `<MEMCACHIER_USERNAME>`, and
+`<MEMCACHIER_PASSWORD>` are listed on your [cache overview
+page](https://www.memcachier.com/caches).
 
-You may wish to look the `spymemcached` [JavaDocs](https://dustin.github.com/java-memcached-client/apidocs/) or some more [example code](https://code.google.com/p/spymemcached/wiki/Examples) to help in using MemCachier effectively.
+You may wish to look the `spymemcached`
+[JavaDocs](https://dustin.github.com/java-memcached-client/apidocs/) or some
+more [example code](https://code.google.com/p/spymemcached/wiki/Examples) to
+help in using MemCachier effectively.
 
-We’ve built a small Java example here, using Jetty: [MemCachier Java Jetty sample app](https://github.com/memcachier/examples-java).
+We’ve built a small Java example here, using Jetty: [MemCachier Java Jetty
+sample app](https://github.com/memcachier/examples-java).
 
 
 <h2 id="clients">Client library support</h2>
 
-MemCachier will work with any memcached binding that supports [SASL authentication](https://en.wikipedia.org/wiki/Simple_Authentication_and_Security_Layer) and the [binary protocol](https://code.google.com/p/memcached/wiki/MemcacheBinaryProtocol). We have tested MemCachier with the following language bindings, although the chances are good that other SASL binary protocol packages will also work.
+MemCachier will work with any memcached binding that supports [SASL
+authentication](https://en.wikipedia.org/wiki/Simple_Authentication_and_Security_Layer)
+and the [binary
+protocol](https://code.google.com/p/memcached/wiki/MemcacheBinaryProtocol). We
+have tested MemCachier with the following language bindings, although the
+chances are good that other SASL binary protocol packages will also work.
 
 <table class="table table-striped table-bordered">
 <tbody>
@@ -792,7 +872,9 @@ MemCachier will work with any memcached binding that supports [SASL authenticati
 
 <h2 id="sample-apps">Sample applications</h2>
 
-We've built a number of working sample apps, too. Though keep in mind that these apps are built for Heroku, so they expect `MEMCACHIER_SERVERS`, `MEMCACHIER_USERNAME`, and `MEMCACHIER_PASSWORD` to be in the environment.
+We've built a number of working sample apps, too. Though keep in mind that
+these apps are built for Heroku, so they expect `MEMCACHIER_SERVERS`,
+`MEMCACHIER_USERNAME`, and `MEMCACHIER_PASSWORD` to be in the environment.
 
 * [Sinatra Example](https://github.com/memcachier/examples-sinatra)
 * [Rails Example](https://github.com/memcachier/examples-rails)
@@ -804,9 +886,17 @@ We've built a number of working sample apps, too. Though keep in mind that these
 
 <h2 id="local">Local usage</h2>
 
-To test against your application locally, you will need to run a local memcached process. MemCachier is only available from the datacenter you signed up for. But because MemCachier and memcached speak the same protocol, you shouldn’t have any issues testing locally. Installation depends on your platform.
+To test against your application locally, you will need to run a local
+memcached process. MemCachier is only available from the datacenter you signed
+up for. But because MemCachier and memcached speak the same protocol, you
+shouldn’t have any issues testing locally. Installation depends on your
+platform.
 
-<div class="alert alert-info">The below examples will install memcached without SASL authentication support. This is generally what you want as client code can still try to use SASL auth and memcached will simply ignore the requests which is the same as allowing any credentials. So your client code can run without modification locally.</div>
+<div class="alert alert-info">The below examples will install memcached without
+SASL authentication support. This is generally what you want as client code can
+still try to use SASL auth and memcached will simply ignore the requests which
+is the same as allowing any credentials. So your client code can run without
+modification locally.</div>
 
 On Ubuntu:
 
@@ -820,9 +910,11 @@ Or on OS X (with Homebrew):
 $ brew install memcached
 ```
 
-Or for Windows please refer to [these instructions](http://www.heckler.com.br/blog/2013/05/10/memcached-on-windows/)
+Or for Windows please refer to [these
+instructions](http://www.heckler.com.br/blog/2013/05/10/memcached-on-windows/)
 
-For further information and resources (such as the memcached source code) please refer to the [Memcache.org homepage](http://memcached.org)
+For further information and resources (such as the memcached source code)
+please refer to the [Memcache.org homepage](http://memcached.org)
 
 To run memcached simply execute the following command:
 
@@ -833,13 +925,15 @@ $ memcached -v
 
 <h2 id="analytics">MemCachier analytics</h2>
 
-Our analytics dashboard is a simple tool that gives you more insight into how you’re using memcache. Here's a screenshot of the dashboard:
+Our analytics dashboard is a simple tool that gives you more insight into how
+you’re using memcache. Here's a screenshot of the dashboard:
 
 <p style="text-align:center;">
 <img style="width:80%;" src="/images/analytics.png" alt="Analytics dashboard">
 </p>
 
-To access your application's analytics dashboard login to your [account](https://www.memcachier.com/caches) and view one of your caches.
+To access your application's analytics dashboard login to your
+[account](https://www.memcachier.com/caches) and view one of your caches.
 
 The analytics displayed are:
 
@@ -881,18 +975,35 @@ dashboard. Currently, this offers two primary advantages:
 
 <h2 id="newrelic">New Relic integration</h2>
 
-MemCachier supports integration with your New Relic dashboard if you happen to be a customer of both MemCachier and New Relic. Currently this feature is only available to caches of <strong>500MB</strong> or larger. A blog post showing the integration can be found [here](http://blog.memcachier.com/2014/03/05/memcachier-and-new-relic-together/).
+MemCachier supports integration with your New Relic dashboard if you happen to
+be a customer of both MemCachier and New Relic. Currently this feature is only
+available to caches of <strong>500MB</strong> or larger. A blog post showing
+the integration can be found
+[here](http://blog.memcachier.com/2014/03/05/memcachier-and-new-relic-together/).
 
-To setup the integration you will need to find your New Relic license key. This can be done by going to your "Account Settings" page when logged in to New Relic by click on your New Relic username in the top right corner. Then you will find your license key in the right side information column. It should be exactly 40 characters long. Please refer to the [blog post](http://blog.memcachier.com/2014/03/05/memcachier-and-new-relic-together/) for a visual walkthrough.
+To setup the integration you will need to find your New Relic license key. This
+can be done by going to your "Account Settings" page when logged in to New
+Relic by click on your New Relic username in the top right corner. Then you
+will find your license key in the right side information column. It should be
+exactly 40 characters long. Please refer to the [blog
+post](http://blog.memcachier.com/2014/03/05/memcachier-and-new-relic-together/)
+for a visual walkthrough.
 
-Once you have your New Relic licence key, it can be entered for your cache on the analytics dashboard page. In the bottom right corner there is a button to do this.
+Once you have your New Relic licence key, it can be entered for your cache on
+the analytics dashboard page. In the bottom right corner there is a button to
+do this.
 
 <h2 id="upgrading">Upgrading and downgrading</h2>
 
-Changing your plan, either by upgrading or downgrading, requires no code changes. Your cache won't be lost, either.  Upgrading and downgrading Just Works™. Also, you are only ever charged by the hour for the time that you are on a certain plan. So try experimenting with different cache sizes knowing that you will only be charged for the hours you are on a plan, not for a whole month.
+Changing your plan, either by upgrading or downgrading, requires no code
+changes. Your cache won't be lost, either.  Upgrading and downgrading Just
+Works™. Also, you are only ever charged by the hour for the time that you are
+on a certain plan. So try experimenting with different cache sizes knowing that
+you will only be charged for the hours you are on a plan, not for a whole
+month.
 
-Changing your plan, either by upgrading or downgrading, can be done
-easily at any time through your
+Changing your plan, either by upgrading or downgrading, can be done easily at
+any time through your
 [account](https://www.memcachier.com/caches).
 
 * No code changes are required.
@@ -993,9 +1104,15 @@ For example, with Ruby on Rails, you'll need to setup `cache_store`,
 
 <h2 id="support">Support</h2>
 
-All MemCachier support and runtime issues should be submitted via email to <a href="mailto:support@memcachier.com"><i class="icon-envelope"></i> support@memcachier.com</a> or through our [support site](http://support.memcachier.com).
+All MemCachier support and runtime issues should be submitted via email to <a
+href="mailto:support@memcachier.com"><i class="icon-envelope"></i>
+support@memcachier.com</a> or through our [support
+site](http://support.memcachier.com).
 
-Any issues related to MemCachier service are reported at [MemCachier Status](http://status.memcachier.com/).
+Any issues related to MemCachier service are reported at [MemCachier
+Status](http://status.memcachier.com/).
 
-Please also follow us on twitter, <a href="https://twitter.com/MemCachier">@memcachier</a>, for status and product announcements.
+Please also follow us on twitter, <a
+href="https://twitter.com/MemCachier">@memcachier</a>, for status and product
+announcements.
 
