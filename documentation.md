@@ -254,10 +254,10 @@ for information.
 
 <p class="alert alert-info">
 We support the <code>pylibmc</code> memcache client as it has great performance
-and recently added Python 3 support. However, it can sometimes be difficult to
-install locally as it relies on the C libmemcached library. If you prefer, you
-can try a pure python client,
-<a href="https://github.com/jaysonsantos/python-binary-memcached">python-binary-memcached</a>
+and Python 3 support. However, it can sometimes be difficult to install locally
+as it relies on the C <code>libmemcached</code> library. If you prefer, you can
+try a pure python client, <a
+href="https://github.com/jaysonsantos/python-binary-memcached">python-binary-memcached</a>
 which works well but only supports Python 2 right now.
 </p>
 
@@ -279,7 +279,7 @@ Be sure to update your `requirements.txt` file with these new
 requirements (note that your versions may differ than what’s below):
 
 ```text
-pylibmc==1.5.0
+pylibmc==1.5.1
 ```
 
 <p class="alert alert-info">
@@ -342,28 +342,41 @@ diminishes at 1MB and higher.
 
 <h2 id="django">Django</h2>
 
-MemCachier has been tested with the `pylibmc` memcache client, but the
-default django pylibmc client doesn’t support SASL authentication.
-Recently `pylibmc` added *Python 3* support in version 1.4.0.
+<p class="alert alert-info">
+We support the <code>pylibmc</code> memcache client as it has great performance
+and Python 3 support. However, it can sometimes be difficult to install locally
+as it relies on the C <code>libmemcached</code> library. If you prefer, you can
+try a pure python client, <a
+href="https://github.com/jaysonsantos/python-binary-memcached">python-binary-memcached</a>
+which works well but only supports Python 2 right now. You'll also need the <a
+href="https://github.com/jaysonsantos/django-bmemcached">django-bmemcached</a>
+package.
+</p>
 
-This client relies on the C libmemcached library. This should be
-fairly straight-forward to install with your package manager on Linux
-or Windows. We also have a
-[blog post](http://blog.memcachier.com/2014/11/05/ubuntu-libmemcached-and-sasl-support/)
+MemCachier has been tested with the `pylibmc` memcache client. This is a great
+client, fully-featured, high-performance and Python 2 & 3 support. Sadly, the
+Django integration of `pylibmc` and other memcache clients doesn't work
+out-of-the-box with MemCachier as they don't expose the authentication
+mechanism (SASL). This is easily solved by using the `django-pylibmc` package.
+
+The `pylibmc` client relies on the C `libmemcached` library. This should be
+fairly straight-forward to install with your package manager on Linux or
+Windows. We also have a [blog
+post](http://blog.memcachier.com/2014/11/05/ubuntu-libmemcached-and-sasl-support/)
 for Ubuntu users on how to do this.
 
-Once it's installed, then install `pylibmc`:
+Once `libmemcached` is installed, then install `pylibmc` and `django-pylibmc`:
 
 ```text
 $ pip install pylibmc django-pylibmc
 ```
 
-Be sure to update your `requirements.txt` file with these new
-requirements (note that your versions may differ than what’s below):
+Be sure to update your `requirements.txt` file with these new requirements
+(note that your versions may differ than what’s below):
 
 ```text
-pylibmc==1.5.0
-django-pylibmc==0.6.0
+pylibmc==1.5.1
+django-pylibmc==0.6.1
 ```
 
 <p class="alert alert-info">
