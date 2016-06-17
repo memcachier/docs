@@ -653,8 +653,6 @@ We’ve built a small Node.js example here: [MemCachier Node.js sample app](http
 
 For Java we recommend using the [SpyMemcached](https://code.google.com/p/spymemcached/) client. We also recommend using the [Apache Maven](https://maven.apache.org/) build manager for working with Java applications. If you aren't using `maven` and are instead using [Apache Ant](https://ant.apache.org/) or your own build system, then simply add the `spymemcached` jar file as a dependency of your application.
 
-<div class="alert">Please make sure to use version <strong>2.8.9</strong> or earlier! At the moment, version 2.8.10 and later have an <a href="https://code.google.com/p/spymemcached/issues/detail?id=272">issue</a> with SASL authentication that makes them unusable with MemCachier.</div>
-
 For `maven` however, start by configuring it to have the proper `spymemcached` repository:
 
 ```xml
@@ -675,7 +673,7 @@ Then add the `spymemcached` library to your dependencies:
 <dependency>
   <groupId>spy</groupId>
   <artifactId>spymemcached</artifactId>
-  <version>2.8.1</version>
+  <version>2.12.1</version>
   <scope>provided</scope>
 </dependency>
 ```
@@ -760,7 +758,7 @@ MemCachier will work with any memcached binding that supports [SASL authenticati
 <td>Java</td>
 <td>
   <a href="http://code.google.com/p/spymemcached/">spymemcached</a>
-  (version <b>2.8.9</b> or earlier) <b>or</b>
+  <b>or</b>
   <a href="https://code.google.com/p/xmemcached/">xmemcached</a>
 </td>
 </tr>
