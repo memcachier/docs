@@ -229,11 +229,11 @@ for information.
 <h2 id="python">Python</h2>
 
 <p class="alert alert-info">
-We support the `pylibmc` memcache client as it has great performance
-and recently added Python 3 support. However, it can sometimes be
-difficult to install locally as it relies on the C libmemcached
-library. If you prefer, you can try a pure python client,
-[python-binary-memcached](https://github.com/jaysonsantos/python-binary-memcached),
+We support the <code>pylibmc</code> memcache client as it has great performance
+and recently added Python 3 support. However, it can sometimes be difficult to
+install locally as it relies on the C libmemcached library. If you prefer, you
+can try a pure python client,
+<a href="https://github.com/jaysonsantos/python-binary-memcached">python-binary-memcached</a>
 which works well but only supports Python 2 right now.
 </p>
 
@@ -259,12 +259,12 @@ pylibmc==1.5.0
 ```
 
 <p class="alert alert-info">
-<b>Heroku Users:</b> The above `pylibmc` requirements must be added
-directly to your `requirements.txt` file. They shouldn't be placed in
-an included pip requirement file. The Heroku Python buildpack checks
-the `requirements.txt` file and only that file for the presence of
-`pylibmc` to trigger bootstrapping `libmemcached`, which is
-prerequisite for installing `pylibmc`.
+<b>Heroku Users:</b> The above <code>pylibmc</code> requirements must be added
+directly to your <code>requirements.txt</code> file. They shouldn't be placed
+in an included pip requirement file. The Heroku Python buildpack checks the
+<code>requirements.txt</code> file and only that file for the presence of
+<code>pylibmc</code> to trigger bootstrapping <code>libmemcached</code>, which
+is prerequisite for installing <code>pylibmc</code>.
 </p>
 
 
@@ -306,7 +306,13 @@ print mc.get("foo")
 ```
 
 <p class="alert alert-info">
-A confusing error message you may get from `pylibmc` is <b>MemcachedError: error 37 from memcached_set: SYSTEM ERROR (Resource temporarily unavailable)</b>. This indicates that you are trying to store a value larger than 1MB. MemCachier has a hard limit of 1MB for the size of key-value pairs. To work around this, either consider sharding the data or using a different technology. The benefit of an in-memory key-value store diminishes at 1MB and higher.
+A confusing error message you may get from <code>pylibmc</code> is
+<b>MemcachedError: error 37 from memcached_set: SYSTEM ERROR (Resource
+temporarily unavailable)</b>. This indicates that you are trying to store a
+value larger than 1MB. MemCachier has a hard limit of 1MB for the size of
+key-value pairs. To work around this, either consider sharding the data or
+using a different technology. The benefit of an in-memory key-value store
+diminishes at 1MB and higher.
 </p>
 
 
@@ -337,12 +343,12 @@ django-pylibmc==0.6.0
 ```
 
 <p class="alert alert-info">
-<b>Heroku Users:</b> The above `pylibmc` requirements must be added
-directly to your `requirements.txt` file. They shouldn't be placed in
-an included pip requirement file. The Heroku Python buildpack checks
-the `requirements.txt` file and only that file for the presence of
-`pylibmc` to trigger bootstrapping `libmemcached`, which is
-prerequisite for installing `pylibmc`.
+<b>Heroku Users:</b> The above <code>pylibmc</code> requirements must be added
+directly to your <code>requirements.txt</code> file. They shouldn't be placed
+in an included pip requirement file. The Heroku Python buildpack checks the
+<code>requirements.txt</code> file and only that file for the presence of
+<code>pylibmc</code> to trigger bootstrapping <code>libmemcached</code>, which
+is prerequisite for installing <code>pylibmc</code>.
 </p>
 
 Next, configure your settings.py file the following way:
@@ -415,12 +421,22 @@ cache.set("foo", "bar")
 print cache.get("foo")
 ```
 
-We’ve built a small Django example here: [MemCachier Django sample app](https://github.com/memcachier/examples-django).
+We’ve built a small Django example here: [MemCachier Django sample
+app](https://github.com/memcachier/examples-django).
 
-You may also be interested in the [django-heroku-memcacheify](http://github.com/rdegges/django-heroku-memcacheify) pip, which fully configures MemCachier with one line of code for any Django app the pip supports.
+You may also be interested in the
+[django-heroku-memcacheify](http://github.com/rdegges/django-heroku-memcacheify)
+pip, which fully configures MemCachier with one line of code for any Django app
+the pip supports.
 
 <p class="alert alert-info">
-A confusing error message you may get from `pylibmc` is <b>MemcachedError: error 37 from memcached_set: SYSTEM ERROR (Resource temporarily unavailable)</b>. This indicates that you are trying to store a value larger than 1MB. MemCachier has a hard limit of 1MB for the size of key-value pairs. To work around this, either consider sharding the data or using a different technology. The benefit of an in-memory key-value store diminishes at 1MB and higher.
+A confusing error message you may get from <code>pylibmc</code> is
+<b>MemcachedError: error 37 from memcached_set: SYSTEM ERROR (Resource
+temporarily unavailable)</b>. This indicates that you are trying to store a
+value larger than 1MB. MemCachier has a hard limit of 1MB for the size of
+key-value pairs.  To work around this, either consider sharding the data or
+using a different technology. The benefit of an in-memory key-value store
+diminishes at 1MB and higher.
 </p>
 
 
