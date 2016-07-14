@@ -824,7 +824,7 @@ sample app](https://github.com/memcachier/examples-java).
 MemCachier will work with any memcached binding that supports [SASL
 authentication](https://en.wikipedia.org/wiki/Simple_Authentication_and_Security_Layer)
 and the [binary
-protocol](https://code.google.com/p/memcached/wiki/MemcacheBinaryProtocol). We
+protocol](https://github.com/memcached/memcached/wiki/BinaryProtocolRevamped). We
 have tested MemCachier with the following language bindings, although the
 chances are good that other SASL binary protocol packages will also work.
 
