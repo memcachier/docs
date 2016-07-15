@@ -37,9 +37,10 @@ in our <a href="/faq">FAQ</a>.
 20. [New Relic integration](#newrelic)
 21. [Changing plans](#upgrading)
 22. [Usage Documentation](#using)
-23. [Key-Value size limit](#1mb-limit)
-24. [Errors connecting to localhost](#localhost-errors)
-25. [Getting support](#support)
+23. [Encrypted Connections (TLS)](#tls)
+24. [Key-Value size limit](#1mb-limit)
+25. [Errors connecting to localhost](#localhost-errors)
+26. [Getting support](#support)
 
 
 <h2 id="ruby">Ruby</h2>
@@ -1067,6 +1068,38 @@ Framework and Client Documentation:
 * [MemJS (node.js client) API](http://amitlevy.com/projects/memjs/)
 * [Spymemcached JavaDocs](http://dustin.github.com/java-memcached-client/apidocs/)
 
+<h2 id="tls">Encrypted Connections (TLS)</h2>
+
+It is possible to connect to MemCachier using TLS encrypted sockets.
+While no existing clients support TLS connections natively, we provide
+a [buildpack](https://github.com/memcachier/memcachier-tls-buildpack)
+that proxies the connection to MemCachier and wraps it in a TLS
+connection.
+
+The builpack installs and sets up [stunnel] on localhost listening
+on port 11211. It configures stunnel to connect to the MemCachier servers
+specified in your environment variable and to verify certificates as signed by
+the [MemCachier Root CA](https://www.memcachier.com/MemCachierRootCA.pem).
+
+Use the buildpack in conjunction with another buildpack that actually
+runs your app. To do so, first configure your app to use the
+[multi-buildpack](https://github.com/ddollar/heroku-buildpack-multi):
+
+    $ heroku config:add BUILDPACK_URL=https://github.com/ddollar/heroku-buildpack-multi.git
+
+Next, add a `.buildpacks` file to your app repository. The file should contain
+the Git URL of each buildpack you'd like to use, including this one. For
+example, to run a Python app with TLS support for MemCachier, your
+`.buildpacks` file should look like this:
+
+    $ cat .buildpacks
+    https://github.com/heroku/heroku-buildpack-python.git
+    https://github.com/memcachier/memcachier-tls-buildpack.git
+
+Finally, configure your app to connect to `localhost:11211` instead of using
+the `MEMCACHIER_SERVERS` environment variable. _IMPORTANT_ leave your
+`MEMCACHIER_SERVERS` environent variable unchanged as the TLS
+buildpack uses it to connect to MemCachier.
 
 <h2 id="1mb-limit">Key-Value size limit (1MB)</h2>
 
