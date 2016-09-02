@@ -67,7 +67,8 @@ cache = Dalli::Client.new(<MEMCACHIER_SERVERS>.split(","),
                      :password => <MEMCACHIER_PASSWORD>
                      :failover => true,
                      :socket_timeout => 1.5,
-                     :socket_failure_delay => 0.2
+                     :socket_failure_delay => 0.2,
+                     :down_retry_delay => 60
                     })
 ```
 
