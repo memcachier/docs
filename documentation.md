@@ -128,9 +128,11 @@ The values for `<MEMCACHIER_SERVERS>`, `<MEMCACHIER_USERNAME>`, and
 `<MEMCACHIER_PASSWORD>` are listed on your [cache overview
 page](https://www.memcachier.com/caches).
 
-<p class="alert alert-info">In your development environment, Rails.cache
+<p class="alert alert-info">
+In your development environment, Rails.cache
 defaults to a simple in-memory store and so it doesn’t require a running
-memcached.</p>
+memcached.
+</p>
 
 From here you can use the following code examples to use the cache in your
 Rails app:
@@ -180,11 +182,13 @@ The values for `<MEMCACHIER_SERVERS>`, `<MEMCACHIER_USERNAME>`, and
 `<MEMCACHIER_PASSWORD>` are listed on your [cache overview
 page](https://www.memcachier.com/caches).
 
-<p class="alert alert-info">In your development environment, Rails.cache
+<p class="alert alert-info">
+In your development environment, Rails.cache
 defaults to a simple in-memory store and so it doesn’t require a running
-memcached.</p>
+memcached.
+</p>
 
-Also modify`config/environment.rb` to contain:
+Also modify `config/environment.rb` to contain:
 
 ```ruby
 config.gem 'dalli'
