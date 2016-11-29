@@ -35,9 +35,9 @@ in our <a href="/faq">FAQ</a>.
 18. [MemCachier analytics](#analytics)
 19. [Advanced analytics](#advanced-analytics)
 20. [New Relic integration](#newrelic)
-21. [Changing plans](#upgrading)
-22. [Usage Documentation](#using)
-23. [Encrypted Connections (TLS)](#tls)
+21. [Encrypted Connections (TLS)](#tls)
+22. [Changing plans](#upgrading)
+23. [Usage Documentation](#using)
 24. [Key-Value size limit](#1mb-limit)
 25. [Errors connecting to localhost](#localhost-errors)
 26. [Getting support](#support)
@@ -249,7 +249,7 @@ running and the available concurrency on the machines running your webserver.
 
 Rails can use a middle-ware component of the Rack web server architecture
 called Rack::Cache. This provides caching of static assets in Rails and is a
-simple alternative to use a full CDN.  
+simple alternative to use a full CDN.
 
 Please see [this
 article](https://devcenter.heroku.com/articles/rack-cache-memcached-rails31#configure-rails-cache-store)
@@ -312,19 +312,21 @@ mc = pylibmc.Client(servers, binary=True,
                     behaviors={
                       # Faster IO
                       "tcp_nodelay": True,
-                      "no_block": True,
+
+                      # Keep connection alive
+                      'tcp_keepalive': True,
 
                       # Timeout for set/get requests
-                      "_poll_timeout": 2000,
+                      'connect_timeout': 2000, # ms
+                      'send_timeout': 750 * 1000, # us
+                      'receive_timeout': 750 * 1000, # us
+                      '_poll_timeout': 2000, # ms
 
-                      # Use consistent hashing for failover
-                      "ketama": True,
-
-                      # Configure failover timings
-                      "connect_timeout": 2000,
-                      "remove_failed": 4,
-                      "retry_timeout": 2,
-                      "dead_timeout": 10,
+                      # Better failover
+                      'ketama': True,
+                      'remove_failed': 1,
+                      'retry_timeout': 2,
+                      'dead_timeout': 30,
                     })
 ```
 
@@ -416,23 +418,22 @@ CACHES = {
 
         'OPTIONS': {
             # Enable faster IO
-            'no_block': True,
             'tcp_nodelay': True,
 
             # Keep connection alive
             'tcp_keepalive': True,
 
-            # Timeout for set/get requests
-            '_poll_timeout': 2000,
+            # Timeout settings
+            'connect_timeout': 2000, # ms
+            'send_timeout': 750 * 1000, # us
+            'receive_timeout': 750 * 1000, # us
+            '_poll_timeout': 2000, # ms
 
-            # Use consistent hashing for failover
+            # Better failover
             'ketama': True,
-
-            # Configure failover timings
-            'connect_timeout': 2000,
-            'remove_failed': 4,
+            'remove_failed': 1,
             'retry_timeout': 2,
-            'dead_timeout': 10
+            'dead_timeout': 30,
         }
     }
 }
@@ -482,7 +483,6 @@ using a different technology. The benefit of an in-memory key-value store
 diminishes at 1MB and higher.
 </p>
 
-
 <h2 id="php">PHP</h2>
 
 We recommended you use the [PHP Memcached
@@ -521,11 +521,20 @@ $m = new Memcached("memcached_pool");
 $m->setOption(Memcached::OPT_BINARY_PROTOCOL, TRUE);
 
 // some nicer default options
-$m->setOption(Memcached::OPT_NO_BLOCK, TRUE);
-$m->setOption(Memcached::OPT_AUTO_EJECT_HOSTS, TRUE);
-$m->setOption(Memcached::OPT_CONNECT_TIMEOUT, 2000);
-$m->setOption(Memcached::OPT_POLL_TIMEOUT, 2000);
+// - nicer TCP options
+$m->setOption(Memcached::OPT_TCP_NODELAY, TRUE);
+$m->setOption(Memcached::OPT_NO_BLOCK, FALSE);
+// - timeouts
+$m->setOption(Memcached::OPT_CONNECT_TIMEOUT, 2000);    // ms
+$m->setOption(Memcached::OPT_POLL_TIMEOUT, 2000);       // ms
+$m->setOption(Memcached::OPT_RECV_TIMEOUT, 750 * 1000); // us
+$m->setOption(Memcached::OPT_SEND_TIMEOUT, 750 * 1000); // us
+// - better failover
+$m->setOption(Memcached::OPT_DISTRIBUTION, Memcached::DISTRIBUTION_CONSISTENT);
+$m->setOption(Memcached::OPT_LIBKETAMA_COMPATIBLE, TRUE);
 $m->setOption(Memcached::OPT_RETRY_TIMEOUT, 2);
+$m->setOption(Memcached::OPT_SERVER_FAILURE_LIMIT, 1);
+$m->setOption(Memcached::OPT_AUTO_EJECT_HOSTS, TRUE);
 
 // setup authentication
 $m->setSaslAuthData( <MEMCACHIER_USERNAME>
@@ -578,7 +587,7 @@ session_start();
 $_SESSION['test'] = 42;
 ```
 
-<h3 id="php-memcachesasl">PHP -- MemcacheSASL</h3>
+<h3 id="php-memcachesasl">Alternative PHP Client -- MemcacheSASL</h3>
 
 This is not our recommended client for using MemCachier from PHP. We recommend
 the [php memcached](#php) client. However, it is an easier client to use as
@@ -866,6 +875,10 @@ chances are good that other SASL binary protocol packages will also work.
     <b>and</b>
     <a href="https://github.com/jaysonsantos/django-bmemcached">django-bmemcached</a>
   )
+  <b>or</b>
+  (
+    <a href=https://github.com/memcachier/django-ascii">django-ascii</a>
+  )
 </td>
 </tr>
 <tr>
@@ -910,10 +923,15 @@ these apps are built for Heroku, so they expect `MEMCACHIER_SERVERS`,
 
 * [Sinatra Example](https://github.com/memcachier/examples-sinatra)
 * [Rails Example](https://github.com/memcachier/examples-rails)
+* [Rack::Cache Example](https://github.com/memcachier/examples-rack-cache)
 * [Django Example](https://github.com/memcachier/examples-django)
 * [PHP Example](https://github.com/memcachier/examples-php)
 * [Node.js Example](https://github.com/memcachier/examples-node)
 * [Java Example](https://github.com/memcachier/examples-java)
+
+We also have a collection of [example
+code](https://github.com/memcachier/example-code) that can be a useful
+reference source.
 
 
 <h2 id="local">Local usage</h2>
@@ -924,11 +942,11 @@ up for. But because MemCachier and memcached speak the same protocol, you
 shouldn’t have any issues testing locally. Installation depends on your
 platform.
 
-<div class="alert alert-info">The below examples will install memcached without
+<p class="alert alert-info">The below examples will install memcached without
 SASL authentication support. This is generally what you want as client code can
 still try to use SASL auth and memcached will simply ignore the requests which
 is the same as allowing any credentials. So your client code can run without
-modification locally.</div>
+modification locally.</p>
 
 On Ubuntu:
 
@@ -990,7 +1008,7 @@ The analytics displayed are:
 With the basic analytics dashboard we sample your cache once per hour.
 With the advance dashboard we sample it once every 30 minutes.
 
-<h2 id="advanced-analytics">Advanced analytics</h2>
+<h3 id="advanced-analytics">Advanced analytics</h3>
 
 We offer higher paying customers an advance version of our analytics
 dashboard. Currently, this offers two primary advantages:
@@ -1005,12 +1023,18 @@ dashboard. Currently, this offers two primary advantages:
   * _Eviction Graph_ -- Your new evictions tracked over time.
   * _Connection Graph_ -- Your new connecions tracked over time.
 
+Please note that our graph only allows two data sources to be selected at a
+time. So if two are already selected, say "Usage" and "Hit Rate", to select a
+different data source, say "Evictions", you'll need to deselect an existing
+data source first before selecting the new one to display.
+
+
 <h2 id="newrelic">New Relic integration</h2>
 
-MemCachier supports integration with your New Relic dashboard if you happen to
-be a customer of both MemCachier and New Relic. Currently this feature is only
-available to caches of <strong>500MB</strong> or larger. A blog post showing
-the integration can be found
+MemCachier supports integration with your New Relic dashboard if you
+happen to be a customer of both MemCachier and New Relic. Currently
+this feature is only available to caches of *500MB* or larger. A blog
+post showing the integration can be found
 [here](http://blog.memcachier.com/2014/03/05/memcachier-and-new-relic-together/).
 
 To setup the integration you will need to find your New Relic license key. This
@@ -1024,6 +1048,52 @@ for a visual walkthrough.
 Once you have your New Relic licence key, it can be entered for your cache on
 the analytics dashboard page. In the bottom right corner there is a button to
 do this.
+
+
+<h2 id="tls">Encrypted Connections (TLS)</h2>
+
+<p class="alert alert-info">
+We generally don't recommend using TLS to secure your connection. Why?
+Memcache is normally only used when performance is important and so
+low latency is critical. This means we expect your MemCachier cache
+and your application that accesses it runs in the same datacenter, for
+example the Amazon EC2 `us-east-1` datacenter. All your traffic are
+running over, and only over, the internal datacenter network. This is
+a <strong>highly secure</strong> network that can't be sniffed on or
+tampered with. For example, your web application is probably speaking
+HTTPS, but the HTTPS connection is very likely terminated at a load
+balancer, and then unsecured HTTP used to talk between the load
+balancer and your application.
+</p>
+
+It is possible to connect to MemCachier using TLS encrypted sockets.
+While no existing clients support TLS connections natively, we provide
+a [buildpack](https://github.com/memcachier/memcachier-tls-buildpack)
+that proxies the connection to MemCachier and wraps it in a TLS
+connection. This can be useful for the extra paranoid among us, or to
+securely access your cache from outside the datacenter.
+
+The buildpack installs and sets up
+[stunnel](https://www.stunnel.org/index.html) on localhost listening
+on port 11211. It configures stunnel to connect to the MemCachier
+servers specified in your environment variable and to verify
+certificates as signed by the [MemCachier Root
+CA](https://www.memcachier.com/MemCachierRootCA.pem).
+
+Use the buildpack in conjunction with another buildpack that actually
+runs your app, using Heroku's [multiple
+buildpack](https://devcenter.heroku.com/articles/using-multiple-buildpacks-for-an-app)
+feature:
+
+```term
+$ heroku buildpacks:add https://github.com/memcachier/memcachier-tls-buildpack.git
+```
+
+Finally, configure your app to connect to `localhost:11211` instead of
+using the `MEMCACHIER_SERVERS` environment variable, but, **leave your
+`MEMCACHIER_SERVERS` environment variable unchanged as the TLS
+buildpack uses it to connect to MemCachier**.
+
 
 <h2 id="upgrading">Upgrading and downgrading</h2>
 
@@ -1050,6 +1120,7 @@ unavoidable due to the strong separation between the development and
 production clusters.
 </p>
 
+
 <h2 id="using">Using MemCachier</h2>
 
 Please refer to your client or framework documentation for how to use
@@ -1073,30 +1144,6 @@ Framework and Client Documentation:
 * [MemJS (node.js client) API](http://amitlevy.com/projects/memjs/)
 * [Spymemcached JavaDocs](http://dustin.github.com/java-memcached-client/apidocs/)
 
-<h2 id="tls">Encrypted Connections (TLS)</h2>
-
-It is possible to connect to MemCachier using TLS encrypted sockets.
-While no existing clients support TLS connections natively, we provide
-a [buildpack](https://github.com/memcachier/memcachier-tls-buildpack)
-that proxies the connection to MemCachier and wraps it in a TLS
-connection.
-
-The buildpack installs and sets up [stunnel] on localhost listening
-on port 11211. It configures stunnel to connect to the MemCachier servers
-specified in your environment variable and to verify certificates as signed by
-the [MemCachier Root CA](https://www.memcachier.com/MemCachierRootCA.pem).
-
-Use the buildpack in conjunction with another buildpack that actually
-runs your app, using Heroku's
-[multiple buildpack](https://devcenter.heroku.com/articles/using-multiple-buildpacks-for-an-app)
-feature:
-
-    $ heroku buildpacks:add https://github.com/memcachier/memcachier-tls-buildpack.git
-
-Finally, configure your app to connect to `localhost:11211` instead of using
-the `MEMCACHIER_SERVERS` environment variable. _IMPORTANT_ leave your
-`MEMCACHIER_SERVERS` environment variable unchanged as the TLS
-buildpack uses it to connect to MemCachier.
 
 <h2 id="1mb-limit">Key-Value size limit (1MB)</h2>
 
@@ -1118,6 +1165,7 @@ that storing values larger than 1MB doesn't normally make sense in a
 high-performance key-value store. The network transfer time in these
 situations becomes the limiting factor for performance. A disk cache
 or even a database makes sense for this size value.
+
 
 <h2 id="localhost-errors">Errors about app trying to connect to localhost</h2>
 
@@ -1163,7 +1211,11 @@ For example, with Ruby on Rails, you'll need to setup `cache_store`,
 All MemCachier support and runtime issues should be submitted via email to <a
 href="mailto:support@memcachier.com"><i class="icon-envelope"></i>
 support@memcachier.com</a> or through our [support
-site](http://support.memcachier.com).
+site](http://support.memcachier.com). Please include your `MEMCACHIER_USERNAME`
+with support tickets.
+
+Any non-support related issues or product feedback is welcome via
+email at: [support@memcachier.com](mailto:support@memcachier.com).
 
 Any issues related to MemCachier service are reported at [MemCachier
 Status](http://status.memcachier.com/).
