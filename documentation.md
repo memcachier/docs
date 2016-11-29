@@ -129,9 +129,8 @@ The values for `<MEMCACHIER_SERVERS>`, `<MEMCACHIER_USERNAME>`, and
 page](https://www.memcachier.com/caches).
 
 <p class="alert alert-info">
-In your development environment, Rails.cache
-defaults to a simple in-memory store and so it doesn’t require a running
-memcached.
+In your development environment, Rails.cache defaults to a simple
+in-memory store and so it doesn't require a running memcached.
 </p>
 
 From here you can use the following code examples to use the cache in your
@@ -183,9 +182,8 @@ The values for `<MEMCACHIER_SERVERS>`, `<MEMCACHIER_USERNAME>`, and
 page](https://www.memcachier.com/caches).
 
 <p class="alert alert-info">
-In your development environment, Rails.cache
-defaults to a simple in-memory store and so it doesn’t require a running
-memcached.
+In your development environment, Rails.cache defaults to a simple
+in-memory store and so it doesn't require a running memcached.
 </p>
 
 Also modify `config/environment.rb` to contain:
