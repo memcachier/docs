@@ -877,7 +877,7 @@ chances are good that other SASL binary protocol packages will also work.
   )
   <b>or</b>
   (
-    <a href=https://github.com/memcachier/django-ascii">django-ascii</a>
+    <a href=https://github.com/memcachier/django-ascii>django-ascii</a>
   )
 </td>
 </tr>
