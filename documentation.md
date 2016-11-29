@@ -264,8 +264,7 @@ We support the <code>pylibmc</code> memcache client as it has great performance
 and Python 3 support. However, it can sometimes be difficult to install locally
 as it relies on the C <code>libmemcached</code> library. If you prefer, you can
 try a pure python client, <a
-href="https://github.com/jaysonsantos/python-binary-memcached">python-binary-memcached</a>
-which works well but only supports Python 2 right now.
+href="https://github.com/jaysonsantos/python-binary-memcached">python-binary-memcached</a>.
 </p>
 
 Here we explain how you setup and install MemCachier with Python.
@@ -356,8 +355,8 @@ We support the <code>pylibmc</code> memcache client as it has great performance
 and Python 3 support. However, it can sometimes be difficult to install locally
 as it relies on the C <code>libmemcached</code> library. If you prefer, you can
 try a pure python client, <a
-href="https://github.com/jaysonsantos/python-binary-memcached">python-binary-memcached</a>
-which works well but only supports Python 2 right now. You'll also need the <a
+href="https://github.com/jaysonsantos/python-binary-memcached">python-binary-memcached</a>.
+You'll also need the <a
 href="https://github.com/jaysonsantos/django-bmemcached">django-bmemcached</a>
 package.
 </p>
