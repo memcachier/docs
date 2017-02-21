@@ -35,12 +35,13 @@ in our <a href="/faq">FAQ</a>.
 18. [MemCachier analytics](#analytics)
 19. [Advanced analytics](#advanced-analytics)
 20. [New Relic integration](#newrelic)
-21. [Encrypted Connections (TLS)](#tls)
-22. [Changing plans](#upgrading)
-23. [Usage Documentation](#using)
-24. [Key-Value size limit](#1mb-limit)
-25. [Errors connecting to localhost](#localhost-errors)
-26. [Getting support](#support)
+21. [Credentials](#credentials)
+22. [Encrypted Connections (TLS)](#tls)
+23. [Changing plans](#upgrading)
+24. [Usage Documentation](#using)
+25. [Key-Value size limit](#1mb-limit)
+26. [Errors connecting to localhost](#localhost-errors)
+27. [Getting support](#support)
 
 
 <h2 id="ruby">Ruby</h2>
@@ -1050,6 +1051,35 @@ the analytics dashboard page. In the bottom right corner there is a button to
 do this.
 
 
+<h2 id="credentials">Credentials</h2>
+
+In order to connect a memcache client to MemCachier, you use a
+username and password listed on the [analytics dashboard](#analytics)
+for your cache.  Each cache can have multiple sets of credentials.
+One of these sets of credentials is distinguished as
+*primary*, meaning that, for hosted platforms like Heroku,
+it is linked to the hosted platform MemCachier addon.
+
+From the *Credentials* panel on the analytics dashboard, it
+is possible to create new credentials, delete existing credentials and
+promote secondary credentials to primary credentials.  This makes it
+possible to rotate credentials by creating a new set of secondary
+credentials and promoting them to primary.  For caches associated with
+hosted platforms, promoting a set of secondary credentials to primary
+causes the configuration variables on the hosted platform to be
+updated.  For example, rotating the credentials on a Heroku-associated
+cache causes an update of the `MEMCACHIER_USERNAME` and
+`MEMCACHIER_PASSWORD` configuration variables on your Heroku app and a
+restart of your dynos to pick up the new values.
+
+Each set of credentials for a cache can be given different
+*capabilities*, in the sense that sets of credentials can
+be restricted to read-only access to the cache, or prevented from
+flushing the cache via the memcache API.  These capabilities are
+controlled by checkboxes on the *Credentials* panel of the
+analytics dashboard.
+
+
 <h2 id="tls">Encrypted Connections (TLS)</h2>
 
 <p class="alert alert-info">
@@ -1223,4 +1253,3 @@ Status](http://status.memcachier.com/).
 Please also follow us on twitter, <a
 href="https://twitter.com/MemCachier">@memcachier</a>, for status and product
 announcements.
-
