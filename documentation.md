@@ -15,33 +15,60 @@ in our <a href="/faq">FAQ</a>.
 
 <h2 id="toc">Table of Contents</h2>
 
-1. [Ruby](#ruby)
-2. [Rails 3 & 4](#rails3)
-3. [Rails 2](#rails2)
-3. [Ruby Puma Webserver](#ruby-puma-webserver)
-5. [Rack::Cache](#rack)
-6. [Python](#python)
-7. [Django](#django)
-8. [PHP](#php)
-9. [WordPress](#wordpress)
-10. [CakePHP](#cakephp)
-11. [Symfony2](#symfony2)
-12. [Laravel](#laravel)
-13. [Node.js](#node.js)
-14. [Java](#java)
-15. [Supported client libraries](#clients)
-16. [Example applications](#sample-apps)
-17. [Local usage](#local)
-18. [MemCachier analytics](#analytics)
-19. [Advanced analytics](#advanced-analytics)
-20. [New Relic integration](#newrelic)
-21. [Credentials](#credentials)
-22. [Encrypted Connections (TLS)](#tls)
-23. [Changing plans](#upgrading)
-24. [Usage Documentation](#using)
-25. [Key-Value size limit](#1mb-limit)
-26. [Errors connecting to localhost](#localhost-errors)
-27. [Getting support](#support)
+1. [Supported Protocols: ASCII & Binary](#protocols)
+2. [Ruby](#ruby)
+3. [Rails 3 & 4](#rails3)
+4. [Rails 2](#rails2)
+5. [Ruby Puma Webserver](#ruby-puma-webserver)
+6. [Rack::Cache](#rack)
+7. [Python](#python)
+8. [Django](#django)
+9. [PHP](#php)
+10. [WordPress](#wordpress)
+11. [CakePHP](#cakephp)
+12. [Symfony2](#symfony2)
+13. [Laravel](#laravel)
+14. [Node.js](#node.js)
+15. [Java](#java)
+16. [Supported client libraries](#clients)
+17. [Example applications](#sample-apps)
+18. [Local usage](#local)
+19. [MemCachier analytics](#analytics)
+20. [Advanced analytics](#advanced-analytics)
+21. [New Relic integration](#newrelic)
+22. [Credentials](#credentials)
+23. [Encrypted Connections (TLS)](#tls)
+24. [Changing plans](#upgrading)
+25. [Usage Documentation](#using)
+26. [Key-Value size limit](#1mb-limit)
+27. [Errors connecting to localhost](#localhost-errors)
+28. [Getting support](#support)
+
+
+<h2 id="protocols">Supported Protocols: ASCII &amp; Binary</h2>
+
+MemCachier supports both the memcache binary and ASCII protocols. Our preferred
+method is to use the binary protocol as it natively supports user
+authentication and improves the performance slightly over the ASCII protocol.
+All our documentation is written for using the binary protocol.
+
+The ASCII protocol does not natively support user authentication. For
+MemCachier, where all connections require authentication, we extend the ASCII
+protocol in a very simple way. Once the connection is established, you should
+send a `set` command with your username as the key and your password as the
+value. For example:
+
+```text
+$ telnet 35865.1e4cfd.us-east-3.ec2.prod.memcachier.com 11211
+>
+> set 15F38e 0 0 32
+> 52353F9F1C4017CC16FD348B982ED47D
+> STORED
+```
+
+You'll need to do this quickly! As we timeout connections that don't
+authenticate within a few seconds. Once authenticated, the full ASCII protocol
+is available to you.
 
 
 <h2 id="ruby">Ruby</h2>
