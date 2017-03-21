@@ -1100,11 +1100,18 @@ cache causes an update of the `MEMCACHIER_USERNAME` and
 restart of your dynos to pick up the new values.
 
 Each set of credentials for a cache can be given different
-*capabilities*, in the sense that sets of credentials can
-be restricted to read-only access to the cache, or prevented from
+*capabilities*, in the sense that sets of credentials can be
+restricted to read-only access to the cache, or prevented from
 flushing the cache via the memcache API.  These capabilities are
-controlled by checkboxes on the *Credentials* panel of the
-analytics dashboard.
+controlled by checkboxes on the *Credentials* panel of the analytics
+dashboard.  (The exact error conditions that a client will receive if
+it attempts to perform an action for which it does not have the
+capability depends on the details of the client library used.  The
+most common cases are likely to be for the Dalli Ruby library and the
+pylibmc Python library.  For both of these client libraries,
+attempting to set a cache entry using credentials that do not have the
+write capability will simply result in a "value not set" response from
+the library.)
 
 
 <h2 id="tls">Encrypted Connections (TLS)</h2>
