@@ -37,12 +37,13 @@ in our <a href="/faq">FAQ</a>.
 20. [Advanced analytics](#advanced-analytics)
 21. [New Relic integration](#newrelic)
 22. [Credentials](#credentials)
-23. [Encrypted Connections (TLS)](#tls)
-24. [Changing plans](#upgrading)
-25. [Usage Documentation](#using)
-26. [Key-Value size limit](#1mb-limit)
-27. [Errors connecting to localhost](#localhost-errors)
-28. [Getting support](#support)
+23. [Disabled caches](#disabled-caches)
+24. [Encrypted Connections (TLS)](#tls)
+25. [Changing plans](#upgrading)
+26. [Usage Documentation](#using)
+27. [Key-Value size limit](#1mb-limit)
+28. [Errors connecting to localhost](#localhost-errors)
+29. [Getting support](#support)
 
 
 <h2 id="protocols">Supported Protocols: ASCII &amp; Binary</h2>
@@ -1113,6 +1114,12 @@ attempting to set a cache entry using credentials that do not have the
 write capability will simply result in a "value not set" response from
 the library.)
 
+<h2 id="disabled-caches">Disabled Caches</h2>
+
+Development caches are disabled after 30 days of inactivity. Disabled caches
+can no longer be accessed (authentication will fail). To use the caches again
+it can be re-enabled on the [analytics dashboard](#analytics) under the
+*Settings* panel.
 
 <h2 id="tls">Encrypted Connections (TLS)</h2>
 
