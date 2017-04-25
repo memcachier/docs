@@ -8,11 +8,11 @@ We are happy to receive bug reports, fixes, documentation
 enhancements, and other improvements.
 
 Please report bugs via the [github issue
-tracker](http://github.com/memcachier/examples-rails/issues).
+tracker](http://github.com/memcachier/docs/issues).
 
-Master [git repository](http://github.com/memcachier/examples-rails):
+Master [git repository](http://github.com/memcachier/docs):
 
-* `git clone git://github.com/memcachier/examples-rails.git`
+* `git clone git://github.com/memcachier/docs.git`
 
 ## Licensing
 
