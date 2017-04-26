@@ -87,7 +87,7 @@ Then bundle install:
 $ bundle install
 ```
 
-`Dalli` is a Ruby memcache client.  Once it is installed you can start writing
+`Dalli` is a Ruby memcache client. Once it is installed you can start writing
 code. The following is a basic example showing get and set.
 
 ```ruby
@@ -139,7 +139,7 @@ Then bundle install:
 $ bundle install
 ```
 
-`Dalli` is a Ruby memcache client.  Once it is installed you’ll want to
+`Dalli` is a Ruby memcache client. Once it is installed you’ll want to
 configure the Rails cache_store appropriately. Modify
 `config/environments/production.rb` with the following:
 
@@ -182,7 +182,6 @@ Gemfile. You will need to use dalli **v1.0.5** as later versions of Dalli don't
 support Rails 2.
 
 ```ruby
-gem 'memcachier'
 gem 'dalli', '~>1.0.5'
 ```
 
@@ -192,7 +191,7 @@ Then bundle install:
 $ bundle install
 ```
 
-`Dalli` is a Ruby memcache client.  Once it is installed you’ll want to
+`Dalli` is a Ruby memcache client. Once it is installed you’ll want to
 configure the Rails cache_store appropriately. Modify
 `config/environments/production.rb` with the following:
 
@@ -507,7 +506,7 @@ A confusing error message you may get from <code>pylibmc</code> is
 <b>MemcachedError: error 37 from memcached_set: SYSTEM ERROR (Resource
 temporarily unavailable)</b>. This indicates that you are trying to store a
 value larger than 1MB. MemCachier has a hard limit of 1MB for the size of
-key-value pairs.  To work around this, either consider sharding the data or
+key-value pairs. To work around this, either consider sharding the data or
 using a different technology. The benefit of an in-memory key-value store
 diminishes at 1MB and higher.
 </p>
@@ -1083,19 +1082,19 @@ do this.
 
 In order to connect a memcache client to MemCachier, you use a
 username and password listed on the [analytics dashboard](#analytics)
-for your cache.  Each cache can have multiple sets of credentials.
+for your cache. Each cache can have multiple sets of credentials.
 One of these sets of credentials is distinguished as
 *primary*, meaning that, for hosted platforms like Heroku,
 it is linked to the hosted platform MemCachier addon.
 
 From the *Credentials* panel on the analytics dashboard, it
 is possible to create new credentials, delete existing credentials and
-promote secondary credentials to primary credentials.  This makes it
+promote secondary credentials to primary credentials. This makes it
 possible to rotate credentials by creating a new set of secondary
-credentials and promoting them to primary.  For caches associated with
+credentials and promoting them to primary. For caches associated with
 hosted platforms, promoting a set of secondary credentials to primary
 causes the configuration variables on the hosted platform to be
-updated.  For example, rotating the credentials on a Heroku-associated
+updated. For example, rotating the credentials on a Heroku-associated
 cache causes an update of the `MEMCACHIER_USERNAME` and
 `MEMCACHIER_PASSWORD` configuration variables on your Heroku app and a
 restart of your dynos to pick up the new values.
@@ -1103,13 +1102,13 @@ restart of your dynos to pick up the new values.
 Each set of credentials for a cache can be given different
 *capabilities*, in the sense that sets of credentials can be
 restricted to read-only access to the cache, or prevented from
-flushing the cache via the memcache API.  These capabilities are
+flushing the cache via the memcache API. These capabilities are
 controlled by checkboxes on the *Credentials* panel of the analytics
-dashboard.  (The exact error conditions that a client will receive if
+dashboard. (The exact error conditions that a client will receive if
 it attempts to perform an action for which it does not have the
-capability depends on the details of the client library used.  The
+capability depends on the details of the client library used. The
 most common cases are likely to be for the Dalli Ruby library and the
-pylibmc Python library.  For both of these client libraries,
+pylibmc Python library. For both of these client libraries,
 attempting to set a cache entry using credentials that do not have the
 write capability will simply result in a "value not set" response from
 the library.)
@@ -1140,9 +1139,10 @@ balancer and your application.
 It is possible to connect to MemCachier using TLS encrypted sockets.
 While no existing clients support TLS connections natively, we provide
 a [buildpack](https://github.com/memcachier/memcachier-tls-buildpack)
-that proxies the connection to MemCachier and wraps it in a TLS
-connection. This can be useful for the extra paranoid among us, or to
-securely access your cache from outside the datacenter.
+for Heroku customers that proxies the connection to MemCachier and
+wraps it in a TLS connection. This can be useful for the extra
+paranoid among us, or to securely access your cache from outside the
+datacenter.
 
 The buildpack installs and sets up
 [stunnel](https://www.stunnel.org/index.html) on localhost listening
@@ -1169,7 +1169,7 @@ buildpack uses it to connect to MemCachier**.
 <h2 id="upgrading">Upgrading and downgrading</h2>
 
 Changing your plan, either by upgrading or downgrading, requires no code
-changes. Your cache won't be lost, either.  Upgrading and downgrading Just
+changes. Your cache won't be lost, either. Upgrading and downgrading Just
 Works™. Also, you are only ever charged by the hour for the time that you are
 on a certain plan. So try experimenting with different cache sizes knowing that
 you will only be charged for the hours you are on a plan, not for a whole
