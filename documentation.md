@@ -35,15 +35,16 @@ in our <a href="/faq">FAQ</a>.
 18. [Local usage](#local)
 19. [MemCachier analytics](#analytics)
 20. [Advanced analytics](#advanced-analytics)
-21. [New Relic integration](#newrelic)
-22. [Credentials](#credentials)
-23. [Disabled caches](#disabled-caches)
-24. [Encrypted Connections (TLS)](#tls)
-25. [Changing plans](#upgrading)
-26. [Usage Documentation](#using)
-27. [Key-Value size limit](#1mb-limit)
-28. [Errors connecting to localhost](#localhost-errors)
-29. [Getting support](#support)
+21. [Analytics API](#analytics-api)
+22. [New Relic integration](#newrelic)
+23. [Credentials](#credentials)
+24. [Disabled caches](#disabled-caches)
+25. [Encrypted Connections (TLS)](#tls)
+26. [Changing plans](#upgrading)
+27. [Usage Documentation](#using)
+28. [Key-Value size limit](#1mb-limit)
+29. [Errors connecting to localhost](#localhost-errors)
+30. [Getting support](#support)
 
 
 <h2 id="protocols">Supported Protocols: ASCII &amp; Binary</h2>
@@ -1055,6 +1056,412 @@ Please note that our graph only allows two data sources to be selected at a
 time. So if two are already selected, say "Usage" and "Hit Rate", to select a
 different data source, say "Evictions", you'll need to deselect an existing
 data source first before selecting the new one to display.
+
+<h2 id="analytics-api">Analytics API</h2>
+
+You can also access features available on the analytics dashboard via the API.
+- [Authenticate](#api-auth)
+- [Memcachier API ID](#api-id)
+- [Stats](#api-stats)
+- [History](#api-history)
+- [Flush](#api-flush)
+- [List Credentials](#api-list-cred)
+- [Add Credentials](#api-create-cred)
+- [Update Credentails](#api-update-cred)
+- [Promote Credentials](#api-promote-cred)
+- [Delete Credentials](#api-delete-cred)
+
+<h3 id='api-auth'>Authentication</h3>
+
+Memcachier uses credentials to allow access to the API. After you've created a cache, you can find your credentials on the [analytics dashboard](https://analytics.memcachier.com/). Only credentials that have the API capability will be allowed to use this API.
+
+Memcachier expects for your credentials to be included in the header of all API requests.
+
+```shell
+curl "https://analytics.memcachier.com/api/v1/:memcachier_id/:action"
+  --user CRED_USERNAME:CRED_PASSWORD
+```
+
+> Make sure to replace `CRED_USERNAME:CRED_PASSWORD` with your credential username and password found on the analytics dashboard.
+
+<h3 id='api-id'>Memcachier API ID</h3>
+
+All of the API paths include a `<memcachier_id>` variable. In order to find this ID, you'll need to use the `/login` path.
+> This is not the same thing as the "Memcachier ID" listed on your analytics dashboard.
+
+**HTTP Request**
+
+`GET https://analytics.memcachier.com/api/login`
+
+**Response**
+
+| Status | Response                                 |
+| ------ | ---------------------------------------- |
+| 200    | JSON response with memcachier id         |
+| 403    | "You are not authorized to perform this action." |
+| 404    | "No cache found."                        |
+| 500    | "Server error"                           |
+
+**Example:**
+
+```shell
+curl "https://analytics.memcachier.com/api/v1/login"
+  --user CRED_USERNAME:CRED_PASSWORD
+```
+
+**Returns**:
+
+```json
+{
+    "cache_id": 1561
+}
+```
+
+<h3 id='api-stats'>Stats</h3>
+
+This endpoint retrieves all the statistics for your cache.
+
+**HTTP Request**
+
+`GET https://analytics.memcachier.com/api/v1/<memcachier_id>/stats`
+
+**Response**
+
+| Status | Response                                 |
+| ------ | ---------------------------------------- |
+| 200    | JSON response with stats                 |
+| 403    | "You are not authorized to perform this action." |
+| 500    | "Server error: a.b.c.totallyaserver.com:1234,..." |
+
+**Example:**
+
+```shell
+curl "https://analytics.memcachier.com/api/v1/<memcachier_id>/stats"
+  --user "CRED_USERNAME:CRED_PASSWORD"
+```
+
+**Returns:**
+
+```json
+{
+    "a.b.c.totallyaserver.com:12345": {
+        "auth_cmds": 19,
+        "auth_errors": 0,
+        "bytes": 0,
+        "bytes_read": 960,
+        "bytes_written": 22233,
+        "cas_badval": 0,
+        "cas_hits": 0,
+        "cas_misses": 0,
+        "cmd_delete": 0,
+        "cmd_flush": 0,
+        "cmd_get": 0,
+        "cmd_set": 0,
+        "cmd_touch": 0,
+        "curr_connections": 0,
+        "curr_items": 0,
+        "decr_hits": 0,
+        "decr_misses": 0,
+        "delete_hits": 0,
+        "delete_misses": 0,
+        "evictions": 0,
+        "expired": 0,
+        "get_hits": 0,
+        "get_misses": 0,
+        "incr_hits": 0,
+        "incr_misses": 0,
+        "limit_maxbytes": 28835840,
+        "time": 1500651085,
+        "total_connections": 19,
+        "total_items": 0,
+        "touch_hits": 0,
+        "touch_misses": 0
+    }
+}
+```
+
+<h3 id='api-history'>History</h3>
+
+This endpoint retrieves the statistical history of a cache.
+
+**HTTP Request**
+
+`GET https://analytics.memcachier.com/api/v1/<memcachier_id>/history`
+
+**Response**
+
+| Status | Response                                 |
+| ------ | ---------------------------------------- |
+| 200    | JSON response with stats                 |
+| 403    | "You are not authorized to perform this action." |
+| 500    | "Server error"                           |
+
+**Example:**
+
+```shell
+curl "https://analytics.memcachier.com/api/v1/<memcachier_id>/history"
+  --user "CRED_USERNAME:CRED_PASSWORD"
+```
+
+**Returns:**
+
+```json
+  [{
+    "memcachier_id": "11",
+    "server": "a.b.c.totallyaserver.memcachier.com",
+    "stats": {
+        "auth_cmds": 158,
+        "auth_errors": 0,
+        "bytes": 0,
+        "bytes_read": 3840,
+        "bytes_written": 178754,
+        "cas_badval": 0,
+        "cas_hits": 0,
+        "cas_misses": 0,
+        "cmd_delete": 0,
+        "cmd_flush": 0,
+        "cmd_get": 0,
+        "cmd_set": 0,
+        "cmd_touch": 0,
+        "curr_connections": 2,
+        "curr_items": 0,
+        "decr_hits": 0,
+        "decr_misses": 0,
+        "delete_hits": 0,
+        "delete_misses": 0,
+        "evictions": 0,
+        "expired": 0,
+        "get_hits": 0,
+        "get_misses": 0,
+        "incr_hits": 0,
+        "incr_misses": 0,
+        "limit_maxbytes": 1153433600,
+        "time": 1490731542,
+        "total_connections": 158,
+        "total_items": 0,
+        "touch_hits": 0,
+        "touch_misses": 0
+    },
+    "timestamp": "1490731541096"
+    }, … ]
+```
+
+<h3 id='api-flush'>Flush</h3>
+
+This endpoint will flush all of the data from the cache cache.
+
+**HTTP Request**
+
+`POST https://analytics.memcachier.com/api/v1/<memcachier_id>/flush`
+
+**Response**
+
+| Status | Response                                 |
+| ------ | ---------------------------------------- |
+| 200    | ""                                       |
+| 403    | "You are not authorized to perform this action." |
+| 500    | "Server error: a.b.c.totallyaserver.com:1234,..." |
+
+**Example:**
+
+```shell
+curl "https://analytics.memcachier.com/api/v1/<memcachier_id>/flush" -X POST
+  --user "CRED_USERNAME:CRED_PASSWORD"
+```
+
+> Certain credentials may not have permission to flush the cache, which will produce a 403 error.
+
+<h3 id='api-list-cred'>List Credentials</h3>
+
+The endpoint returns a list of all the credentials connected to the cache.
+
+**HTTP Request**
+
+`GET https://analytics.memcachier.com/api/v1/<memcachier_id>/credentials`
+
+**Response**
+
+| Status | Response                                 |
+| ------ | ---------------------------------------- |
+| 200    | JSON list of credentials                 |
+| 403    | "You are not authorized to perform this action." |
+| 500    | "Server error"                           |
+
+**Example:**
+
+```shell
+curl "https://analytics.memcachier.com/api/v1/<memcachier_id>/credentials"
+  --user "CRED_USERNAME:CRED_PASSWORD"
+```
+
+**Returns:**
+
+```json
+  [
+    {
+        "cache_id": 14,
+        "flush_capability": false,
+        "id": 44,
+        "sasl_username": "CRED_USERNAME",
+        "uuid": null,
+        "write_capability": true,
+        "api_capability": true,
+        "primary": true,
+    },
+    {
+        "cache_id": 14,
+        "flush_capability": false,
+        "id": 43,
+        "sasl_username": "789101",
+        "uuid": null,
+        "write_capability": true,
+        "api_capability": true,
+        "primary": false,
+    }, ...
+]
+```
+
+<h3 id='api-create-cred'>Create Credentials</h3>
+
+This endpoint creates a new set of credentials which can be used to connect to the cache.
+
+**HTTP Request**
+
+`POST https://analytics.memcachier.com/api/v1/<memcachier_id>/credentials`
+
+**Response**
+
+| Status | Response                                 |
+| ------ | ---------------------------------------- |
+| 200    | JSON of new credential properties        |
+| 403    | "You are not authorized to perform this action." |
+| 500    | "Server error"                           |
+
+**Example:**
+
+```shell
+curl "https://analytics.memcachier.com/api/v1/<memcachier_id>/credentials" -X POST
+  --user "CRED_USERNAME:CRED_PASSWORD"
+```
+
+**Returns:**
+
+```json
+{
+    "cache_id": 14,
+    "id": null,
+    "sasl_password": "CRED_PASSWORD",
+    "sasl_username": "CRED_USERNAME",
+    "uuid": null,
+    "primary": false,
+    "flush_capability": true,
+    "write_capability": true,
+    "api_capability": true,
+}
+```
+
+<h3 id='api-update-cred'>Update Credentials</h3>
+
+This endpoint updates the capabilities of a specific set of credentials.
+
+**HTTP Request**
+
+`POST https://analytics.memcachier.com/api/v1/<memcachier_id>/credentials/<cred_id>`
+
+**Query Parameters**
+
+| Parameter        | Default | Description                              |
+| ---------------- | ------- | ---------------------------------------- |
+| flush_capability | true    | Authorize this set of credentials to flush the cache. |
+| write_capability | true    | Authorize this set of credentials to write to the cache. |
+| api_capability   | true    | Authorize this set of credentials to use this API. |
+
+**Response**
+
+| Status | Response                                 |
+| ------ | ---------------------------------------- |
+| 200    | JSON of new credential properties        |
+| 403    | "You are not authorized to perform this action." |
+| 500    | "Server error"                           |
+
+**Example:**
+
+```shell
+curl "https://analytics.memcachier.com/api/v1/<memcachier_id>/credentials/<cred_username>" -X PATCH
+  -d '{"flush_capability":"false"}'
+  --user "CRED_USERNAME:CRED_PASSWORD"
+```
+
+**Returns:**
+
+```json
+{
+    "flush_capability": false,
+    "write_capability": true,
+    "api_capability": true,
+}
+```
+
+<h3 id='api-promote-cred'> Promote Credentials</h3>
+
+This endpoint promotes a set of credentials to primary.
+
+**HTTP Request**
+
+`POST https://analytics.memcachier.com/api/v1/<memcachier_id>/credentials/primary/<cred_id>`
+
+**Response**
+
+| Status | Response                                 |
+| ------ | ---------------------------------------- |
+| 200    | JSON of new credential properties        |
+| 403    | "You are not authorized to perform this action." |
+| 500    | "Server error"                           |
+
+**Example:**
+
+```shell
+curl "https://analytics.memcachier.com/api/v1/<memcachier_id>/credentials/primary/<cred_username>" -X POST
+  --user "CRED_USERNAME:CRED_PASSWORD"
+```
+
+**Returns:**
+
+```json
+{
+    "cache_id": 14,
+    "id": null,
+    "sasl_username": "CRED_USERNAME",
+    "uuid": null,
+    "primary": true,
+    "flush_capability": false,
+    "write_capability": true,
+    "api_capability": true,
+}
+```
+
+<h3 id='api-delete-cred'>Delete Credentials</h3>
+
+This endpoint deletes a set of credentials
+
+**HTTP Request**
+
+`POST https://analytics.memcachier.com/api/v1/<memcachier_id>/credentials/primary/<cred_id>`
+
+**Response**
+
+| Status | Response                                 |
+| ------ | ---------------------------------------- |
+| 200    | ""                                       |
+| 403    | "You are not authorized to perform this action." |
+| 500    | "Server error"                           |
+
+**Example:**
+
+```shell
+curl "https://analytics.memcachier.com/api/v1/<memcachier_id>/credentials/primary/<cred_username>" -X DELETE
+  --user "CRED_USERNAME:CRED_PASSWORD"
+```
 
 
 <h2 id="newrelic">New Relic integration</h2>
