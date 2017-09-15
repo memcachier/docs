@@ -1095,12 +1095,31 @@ All of the API paths include a `<memcachier_id>` variable. In order to find this
 
 **Response**
 
-| Status | Response                                 |
-| ------ | ---------------------------------------- |
-| 200    | JSON response with memcachier id         |
-| 403    | "You are not authorized to perform this action." |
-| 404    | "No cache found."                        |
-| 500    | "Server error"                           |
+
+<table class="table table-bordered">
+<tbody>
+<tr>
+<th>Status</th>
+<th>Response</th>
+</tr>
+<tr>
+<td>200</td>
+<td>JSON response with memcachier ID</td>
+</tr>
+<tr>
+<td>403</td>
+<td>"You are not authorized to perform this action."</td>
+</tr>
+<tr>
+<td>404</td>
+<td>"No cache found."</td>
+</tr>
+<tr>
+<td>500</td>
+<td>"Server error"</td>
+</tr>
+</tbody>
+</table>
 
 **Example:**
 
@@ -1127,11 +1146,26 @@ This endpoint retrieves all the statistics for your cache.
 
 **Response**
 
-| Status | Response                                 |
-| ------ | ---------------------------------------- |
-| 200    | JSON response with stats                 |
-| 403    | "You are not authorized to perform this action." |
-| 500    | "Server error: a.b.c.totallyaserver.com:1234,..." |
+<table class="table table-bordered">
+<tbody>
+<tr>
+<th>Status</th>
+<th>Response</th>
+</tr>
+<tr>
+<td>200</td>
+<td>JSON response with stats</td>
+</tr>
+<tr>
+<td>403</td>
+<td>"You are not authorized to perform this action."</td>
+</tr>
+<tr>
+<td>500</td>
+<td>"Server error: a.b.c.totallyaserver.com:1234,..."</td>
+</tr>
+</tbody>
+</table>
 
 **Example:**
 
@@ -1190,11 +1224,27 @@ This endpoint retrieves the statistical history of a cache.
 
 **Response**
 
-| Status | Response                                 |
-| ------ | ---------------------------------------- |
-| 200    | JSON response with stats                 |
-| 403    | "You are not authorized to perform this action." |
-| 500    | "Server error"                           |
+<table class="table table-bordered">
+<tbody>
+<tr>
+<th>Status</th>
+<th>Response</th>
+</tr>
+<tr>
+<td>200</td>
+<td>JSON response with historical stats</td>
+</tr>
+<tr>
+<td>403</td>
+<td>"You are not authorized to perform this action."</td>
+</tr>
+<tr>
+<td>500</td>
+<td>"Server error"</td>
+</tr>
+</tbody>
+</table>
+
 
 **Example:**
 
@@ -1256,11 +1306,26 @@ This endpoint will flush all of the data from the cache cache.
 
 **Response**
 
-| Status | Response                                 |
-| ------ | ---------------------------------------- |
-| 200    | ""                                       |
-| 403    | "You are not authorized to perform this action." |
-| 500    | "Server error: a.b.c.totallyaserver.com:1234,..." |
+<table class="table table-bordered">
+<tbody>
+<tr>
+<th>Status</th>
+<th>Response</th>
+</tr>
+<tr>
+<td>200</td>
+<td>""</td>
+</tr>
+<tr>
+<td>403</td>
+<td>"You are not authorized to perform this action."</td>
+</tr>
+<tr>
+<td>500</td>
+<td>"Server error: a.b.c.totallyaserver.com:1234,..."</td>
+</tr>
+</tbody>
+</table>
 
 **Example:**
 
@@ -1281,11 +1346,26 @@ The endpoint returns a list of all the credentials connected to the cache.
 
 **Response**
 
-| Status | Response                                 |
-| ------ | ---------------------------------------- |
-| 200    | JSON list of credentials                 |
-| 403    | "You are not authorized to perform this action." |
-| 500    | "Server error"                           |
+<table class="table table-bordered">
+<tbody>
+<tr>
+<th>Status</th>
+<th>Response</th>
+</tr>
+<tr>
+<td>200</td>
+<td>JSON list of credentials</td>
+</tr>
+<tr>
+<td>403</td>
+<td>"You are not authorized to perform this action."</td>
+</tr>
+<tr>
+<td>500</td>
+<td>"Server error"</td>
+</tr>
+</tbody>
+</table>
 
 **Example:**
 
@@ -1331,11 +1411,26 @@ This endpoint creates a new set of credentials which can be used to connect to t
 
 **Response**
 
-| Status | Response                                 |
-| ------ | ---------------------------------------- |
-| 200    | JSON of new credential properties        |
-| 403    | "You are not authorized to perform this action." |
-| 500    | "Server error"                           |
+<table class="table table-bordered">
+<tbody>
+<tr>
+<th>Status</th>
+<th>Response</th>
+</tr>
+<tr>
+<td>200</td>
+<td>JSON of new credential set</td>
+</tr>
+<tr>
+<td>403</td>
+<td>"You are not authorized to perform this action."</td>
+</tr>
+<tr>
+<td>500</td>
+<td>"Server error"</td>
+</tr>
+</tbody>
+</table>
 
 **Example:**
 
@@ -1370,19 +1465,53 @@ This endpoint updates the capabilities of a specific set of credentials.
 
 **Query Parameters**
 
-| Parameter        | Default | Description                              |
-| ---------------- | ------- | ---------------------------------------- |
-| flush_capability | true    | Authorize this set of credentials to flush the cache. |
-| write_capability | true    | Authorize this set of credentials to write to the cache. |
-| api_capability   | true    | Authorize this set of credentials to use this API. |
+<table class="table table-bordered">
+<tbody>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+<tr>
+<td>flush_capability</td>
+<td>true</td>
+<td>Authorize this set of credentials to flush the cache.</td>
+</tr>
+<tr>
+<td>write_capability</td>
+<td>true</td>
+<td>Authorize this set of credentials to write to the cache.</td>
+</tr>
+<tr>
+<td>api_capability</td>
+<td>true</td>
+<td>Authorize this set of credentials to use this API.</td>
+</tr>
+</tbody>
+</table>
 
 **Response**
 
-| Status | Response                                 |
-| ------ | ---------------------------------------- |
-| 200    | JSON of new credential properties        |
-| 403    | "You are not authorized to perform this action." |
-| 500    | "Server error"                           |
+<table class="table table-bordered">
+<tbody>
+<tr>
+<th>Status</th>
+<th>Response</th>
+</tr>
+<tr>
+<td>200</td>
+<td>JSON of new credential properties</td>
+</tr>
+<tr>
+<td>403</td>
+<td>"You are not authorized to perform this action."</td>
+</tr>
+<tr>
+<td>500</td>
+<td>"Server error"</td>
+</tr>
+</tbody>
+</table>
 
 **Example:**
 
@@ -1412,11 +1541,26 @@ This endpoint promotes a set of credentials to primary.
 
 **Response**
 
-| Status | Response                                 |
-| ------ | ---------------------------------------- |
-| 200    | JSON of new credential properties        |
-| 403    | "You are not authorized to perform this action." |
-| 500    | "Server error"                           |
+<table class="table table-bordered">
+<tbody>
+<tr>
+<th>Status</th>
+<th>Response</th>
+</tr>
+<tr>
+<td>200</td>
+<td>JSON of promoted credential set</td>
+</tr>
+<tr>
+<td>403</td>
+<td>"You are not authorized to perform this action."</td>
+</tr>
+<tr>
+<td>500</td>
+<td>"Server error"</td>
+</tr>
+</tbody>
+</table>
 
 **Example:**
 
@@ -1450,11 +1594,26 @@ This endpoint deletes a set of credentials
 
 **Response**
 
-| Status | Response                                 |
-| ------ | ---------------------------------------- |
-| 200    | ""                                       |
-| 403    | "You are not authorized to perform this action." |
-| 500    | "Server error"                           |
+<table class="table table-bordered">
+<tbody>
+<tr>
+<th>Status</th>
+<th>Response</th>
+</tr>
+<tr>
+<td>200</td>
+<td>""</td>
+</tr>
+<tr>
+<td>403</td>
+<td>"You are not authorized to perform this action."</td>
+</tr>
+<tr>
+<td>500</td>
+<td>"Server error"</td>
+</tr>
+</tbody>
+</table>
 
 **Example:**
 
