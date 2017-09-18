@@ -1082,12 +1082,13 @@ curl "https://analytics.memcachier.com/api/v1/:memcachier_id/:action"
   --user CRED_USERNAME:CRED_PASSWORD
 ```
 
-> Make sure to replace `CRED_USERNAME:CRED_PASSWORD` with your credential username and password found on the analytics dashboard.
+*Make sure to replace `CRED_USERNAME:CRED_PASSWORD` with your credential username and password found on the analytics dashboard.*
 
 <h3 id='api-id'>Memcachier API ID</h3>
 
 All of the API paths include a `<memcachier_id>` variable. In order to find this ID, you'll need to use the `/login` path.
-> This is not the same thing as the "Memcachier ID" listed on your analytics dashboard.
+
+*This is not the same thing as the "Memcachier ID" listed on your analytics dashboard.*
 
 **HTTP Request**
 
@@ -1334,7 +1335,7 @@ curl "https://analytics.memcachier.com/api/v1/<memcachier_id>/flush" -X POST
   --user "CRED_USERNAME:CRED_PASSWORD"
 ```
 
-> Certain credentials may not have permission to flush the cache, which will produce a 403 error.
+*Certain credentials may not have permission to flush the cache, which will produce a 403 error.*
 
 <h3 id='api-list-cred'>List Credentials</h3>
 
