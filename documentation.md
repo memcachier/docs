@@ -775,7 +775,7 @@ environment variables that the MemCachier add-on setups. For example:
 ```javascript
 var memjs = require('memjs')
 var mc = memjs.Client.create()
-client.get('hello', function(val) {
+mc.get('hello', function(val) {
     alert(val)
 })
 ```
