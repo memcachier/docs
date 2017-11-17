@@ -1,13 +1,12 @@
 
-
-<h2 id="ruby-puma-webserver">Ruby Puma Webserver</h2>
+## Ruby Puma Webserver
 
 If you are using the [Puma](http://puma.io/) webserver for your Ruby app (Rails
 or otherwise), then you should take some additional steps due to the
 multi-threaded runtime being used. This applies to all threaded webservers for
 Ruby, not just Puma.
 
-First, please refer to the documentation on [Rails](#rails-3-and-4) or
+First, please refer to the documentation on [Rails](#rails-3-4) or
 [Ruby](#ruby) above appropriately, and then take these additional steps.
 
 Dalli by default uses a single connection to each server. This works fine

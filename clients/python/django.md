@@ -1,6 +1,5 @@
 
-
-<h2 id="django">Django</h2>
+## Django
 
 <p class="alert alert-info">
 We support the <code>pylibmc</code> memcache client as it has great performance
@@ -27,7 +26,7 @@ for Ubuntu users on how to do this.
 
 Once `libmemcached` is installed, then install `pylibmc` and `django-pylibmc`:
 
-```text
+```shell
 $ pip install pylibmc django-pylibmc
 ```
 

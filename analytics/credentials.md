@@ -1,9 +1,8 @@
 
-
-<h2 id="credentials">Credentials</h2>
+## Credentials
 
 In order to connect a memcache client to MemCachier, you use a
-username and password listed on the [analytics dashboard](#analytics)
+username and password listed on the [analytics dashboard](#memcachier-analytics)
 for your cache. Each cache can have multiple sets of credentials.
 One of these sets of credentials is distinguished as
 *primary*, meaning that, for hosted platforms like Heroku,

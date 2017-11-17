@@ -1,6 +1,5 @@
 
-
-<h2 id="clients">Client library support</h2>
+## Client library support
 
 MemCachier will work with any memcached binding that supports [SASL
 authentication](https://en.wikipedia.org/wiki/Simple_Authentication_and_Security_Layer)

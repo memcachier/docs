@@ -1,6 +1,5 @@
 
-
-<h2 id="symfony2">Symfony2</h2>
+## Symfony2
 
 The [Symfony2](http://symfony.com/) framework is a great choice with
 MemCachier. It supports caching and storing sessions in MemCachier.

@@ -30,3 +30,4 @@ cat misc/using_memcachier.md >> doc.md
 cat misc/value_limit.md >> doc.md
 cat misc/localhost_error.md >> doc.md
 cat misc/support.md >> doc.md
+./check_links.py

@@ -1,13 +1,12 @@
 
-
-<h2 id="node.js">Node.js</h2>
+## Node.js
 
 For Node.js we recommend the use of the
 [memjs](https://github.com/alevy/memjs) client library. It is written
 and supported by MemCachier itself! To install, use the [node package
 manager (npm)](https://npmjs.org/):
 
-```text
+```shell
 npm install memjs
 ```
 

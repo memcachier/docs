@@ -1,6 +1,5 @@
 
-
-<h2 id="laravel">Laravel</h2>
+## Laravel
 
 We have community provided support for the Laravel PHP webframework. You can
 find a caching backend with MemCachier support on Github

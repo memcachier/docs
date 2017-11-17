@@ -1,6 +1,5 @@
 
-
-<h2 id="python">Python</h2>
+## Python
 
 <p class="alert alert-info">
 We support the <code>pylibmc</code> memcache client as it has great performance
@@ -20,7 +19,7 @@ Windows. We also have a
 for Ubuntu users on how to do this. Once it's installed, then install
 `pylibmc`:
 
-```term
+```shell
 $ pip install pylibmc
 ```
 

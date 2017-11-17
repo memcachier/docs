@@ -1,6 +1,5 @@
 
-
-<h2 id="protocols">Supported Protocols: ASCII &amp; Binary</h2>
+## Supported Protocols: ASCII & Binary
 
 MemCachier supports both the memcache binary and ASCII protocols. Our preferred
 method is to use the binary protocol as it natively supports user
@@ -13,7 +12,7 @@ protocol in a very simple way. Once the connection is established, you should
 send a `set` command with your username as the key and your password as the
 value. For example:
 
-```text
+```shell
 $ telnet 35865.1e4cfd.us-east-3.ec2.prod.memcachier.com 11211
 >
 > set 15F38e 0 0 32

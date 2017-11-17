@@ -1,6 +1,5 @@
 
-
-<h2 id="localhost-errors">Errors about app trying to connect to localhost</h2>
+## Errors about app trying to connect to localhost
 
 By default, most memcache client look for the environment variables,
 `MEMCACHE_SERVERS`, `MEMCACHE_USERNAME` and `MEMCACHE_PASSWORD` for

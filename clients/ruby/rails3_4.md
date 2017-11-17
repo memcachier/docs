@@ -1,6 +1,5 @@
 
-
-<h2 id="rails3">Rails 3 & 4</h2>
+## Rails 3 & 4
 
 Start by adding the [dalli](https://github.com/mperham/dalli) gem to your Gemfile.
 
@@ -10,7 +9,7 @@ gem 'dalli'
 
 Then bundle install:
 
-```text
+```shell
 $ bundle install
 ```
 

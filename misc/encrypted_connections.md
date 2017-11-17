@@ -1,6 +1,5 @@
 
-
-<h2 id="tls">Encrypted Connections (TLS)</h2>
+## Encrypted Connections (TLS)
 
 <p class="alert alert-info">
 We generally don't recommend using TLS to secure your connection. Why?
@@ -36,7 +35,7 @@ runs your app, using Heroku's [multiple
 buildpack](https://devcenter.heroku.com/articles/using-multiple-buildpacks-for-an-app)
 feature:
 
-```term
+```shell
 $ heroku buildpacks:add https://github.com/memcachier/memcachier-tls-buildpack.git
 ```
 

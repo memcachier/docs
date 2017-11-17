@@ -1,9 +1,8 @@
 
-
-<h2 id="1mb-limit">Key-Value size limit (1MB)</h2>
+## Key-Value size limit (1MB)
 
 MemCachier has a maximum size that a key-value object can be of
-__1MB__. This applies to both key-value pairs created through a `set`
+**1MB**. This applies to both key-value pairs created through a `set`
 command, or existing key-value pairs grown through the use of an
 `append` or `prepend` command. In the later case, the size of the
 key-value pair with the new data added to it, must still be less than

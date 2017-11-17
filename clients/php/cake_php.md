@@ -1,6 +1,5 @@
 
-
-<h2 id="cakephp">CakePHP</h2>
+## CakePHP
 
 The CakePHP framework has excellent support for caching and can be easily used
 with MemCachier as the provider. To setup CakePHP with MemCachier, you'll need

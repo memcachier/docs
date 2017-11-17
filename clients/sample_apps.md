@@ -1,6 +1,5 @@
 
-
-<h2 id="sample-apps">Sample applications</h2>
+## Sample applications
 
 We've built a number of working sample apps, too. Though keep in mind that
 these apps are built for Heroku, so they expect `MEMCACHIER_SERVERS`,

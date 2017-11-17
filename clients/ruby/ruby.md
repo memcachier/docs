@@ -1,6 +1,5 @@
 
-
-<h2 id="ruby">Ruby</h2>
+## Ruby
 
 Start by adding the [dalli](https://github.com/mperham/dalli) gem to your
 Gemfile.
@@ -11,7 +10,7 @@ gem 'dalli'
 
 Then bundle install:
 
-```text
+```shell
 $ bundle install
 ```
 

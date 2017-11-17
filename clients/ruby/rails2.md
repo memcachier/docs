@@ -1,6 +1,5 @@
 
-
-<h2 id="rails2">Rails 2</h2>
+## Rails 2
 
 Start by adding the [dalli](https://github.com/mperham/dalli) gem to your
 Gemfile. You will need to use dalli **v1.0.5** as later versions of Dalli don't
@@ -12,7 +11,7 @@ gem 'dalli', '~>1.0.5'
 
 Then bundle install:
 
-```text
+```shell
 $ bundle install
 ```
 

@@ -1,6 +1,5 @@
 
-
-<h2 id="java">Java</h2>
+## Java
 
 For Java we recommend using the
 [SpyMemcached](https://code.google.com/p/spymemcached/) client. We also

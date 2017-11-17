@@ -1,6 +1,5 @@
 
-
-<h2 id="wordpress">WordPress</h2>
+## WordPress
 
 We support WordPress through two different options. The first you can find
 [here](https://github.com/memcachier/wordpress-cache), and uses the binary

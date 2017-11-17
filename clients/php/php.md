@@ -1,6 +1,5 @@
 
-
-<h2 id="php">PHP</h2>
+## PHP
 
 We recommended you use the [PHP Memcached
 client](http://www.php.net/manual/en/book.memcached.php) to connect with
@@ -13,8 +12,8 @@ build it against a version of libmemcached (a C library that the PHP client
 relies upon) that support SASL authentication, which often isn't enabled by
 default. If you have trouble, please open a [support
 ticket](http://support.memcachier.com/) with us. Alternatively, you could use a
-[pure PHP client](#php-memcachesasl) that MemCachier supports, instructions on
-how are [here](#php-memcachesasl).
+[pure PHP client](#alternative-php-client----memcachesasl) that MemCachier
+supports, instructions on how are [here](#alternative-php-client----memcachesasl).
 
 First, if using composer, you'll need to modify your `composer.json` file to
 include the module:
@@ -81,7 +80,7 @@ API calls you can make against MemCachier.
 We’ve built a small PHP example here: [MemCachier PHP sample
 app](https://github.com/memcachier/examples-php).
 
-<h3 id="php-session">PHP Session Support</h3>
+### PHP Session Support
 
 You can configure PHP to store sessions in MemCachier as follows.
 
@@ -104,7 +103,7 @@ session_start();
 $_SESSION['test'] = 42;
 ```
 
-<h3 id="php-memcachesasl">Alternative PHP Client -- MemcacheSASL</h3>
+### Alternative PHP Client -- MemcacheSASL
 
 This is not our recommended client for using MemCachier from PHP. We recommend
 the [php memcached](#php) client. However, it is an easier client to use as

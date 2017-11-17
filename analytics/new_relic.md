@@ -1,6 +1,5 @@
 
-
-<h2 id="newrelic">New Relic integration</h2>
+## New Relic integration
 
 MemCachier supports integration with your New Relic dashboard if you
 happen to be a customer of both MemCachier and New Relic. Currently

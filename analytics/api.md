@@ -1,22 +1,25 @@
 
-
-<h2 id="analytics-api">Analytics API</h2>
+## Analytics API
 
 You can also access features available on the analytics dashboard via the API.
-- [Authenticate](#api-auth)
-- [Memcachier API ID](#api-id)
-- [Stats](#api-stats)
-- [History](#api-history)
-- [Flush](#api-flush)
-- [List Credentials](#api-list-cred)
-- [Add Credentials](#api-create-cred)
-- [Update Credentails](#api-update-cred)
-- [Promote Credentials](#api-promote-cred)
-- [Delete Credentials](#api-delete-cred)
 
-<h3 id='api-auth'>Authentication</h3>
+  - [Authenticate](#authentication)
+  - [Memcachier API ID](#memcachier-api-id)
+  - [Stats](#stats)
+  - [History](#history)
+  - [Flush](#flush)
+  - [List Credentials](#list-credentials)
+  - [Create Credentials](#create-credentials)
+  - [Update Credentials](#update-credentials)
+  - [Promote Credentials](#promote-credentials)
+  - [Delete Credentials](#delete-credentials)
 
-Memcachier uses credentials to allow access to the API. After you've created a cache, you can find your credentials on the [analytics dashboard](https://analytics.memcachier.com/). Only credentials that have the API capability will be allowed to use this API.
+### Authentication
+
+Memcachier uses credentials to allow access to the API. After you've created a
+cache, you can find your credentials on the
+[analytics dashboard](https://analytics.memcachier.com/). Only credentials that
+have the API capability will be allowed to use this API.
 
 Memcachier expects for your credentials to be included in the header of all API requests.
 
@@ -25,11 +28,13 @@ curl "https://analytics.memcachier.com/api/v1/:memcachier_id/:action"
   --user CRED_USERNAME:CRED_PASSWORD
 ```
 
-*Make sure to replace `CRED_USERNAME:CRED_PASSWORD` with your credential username and password found on the analytics dashboard.*
+*Make sure to replace `CRED_USERNAME:CRED_PASSWORD` with your credential
+username and password found on the analytics dashboard.*
 
-<h3 id='api-id'>Memcachier API ID</h3>
+### Memcachier API ID
 
-All of the API paths include a `<memcachier_id>` variable. In order to find this ID, you'll need to use the `/login` path.
+All of the API paths include a `<memcachier_id>` variable. In order to find
+this ID, you'll need to use the `/login` path.
 
 *This is not the same thing as the "Memcachier ID" listed on your analytics dashboard.*
 
@@ -80,7 +85,7 @@ curl "https://analytics.memcachier.com/api/v1/login"
 }
 ```
 
-<h3 id='api-stats'>Stats</h3>
+### Stats
 
 This endpoint retrieves all the statistics for your cache.
 
@@ -158,7 +163,7 @@ curl "https://analytics.memcachier.com/api/v1/<memcachier_id>/stats"
 }
 ```
 
-<h3 id='api-history'>History</h3>
+### History
 
 This endpoint retrieves the statistical history of a cache.
 
@@ -240,7 +245,7 @@ curl "https://analytics.memcachier.com/api/v1/<memcachier_id>/history"
     }, … ]
 ```
 
-<h3 id='api-flush'>Flush</h3>
+### Flush
 
 This endpoint will flush all of the data from the cache cache.
 
@@ -280,7 +285,7 @@ curl "https://analytics.memcachier.com/api/v1/<memcachier_id>/flush" -X POST
 
 *Certain credentials may not have permission to flush the cache, which will produce a 403 error.*
 
-<h3 id='api-list-cred'>List Credentials</h3>
+### List Credentials
 
 The endpoint returns a list of all the credentials connected to the cache.
 
@@ -345,7 +350,7 @@ curl "https://analytics.memcachier.com/api/v1/<memcachier_id>/credentials"
 ]
 ```
 
-<h3 id='api-create-cred'>Create Credentials</h3>
+### Create Credentials
 
 This endpoint creates a new set of credentials which can be used to connect to the cache.
 
@@ -399,7 +404,7 @@ curl "https://analytics.memcachier.com/api/v1/<memcachier_id>/credentials" -X PO
 }
 ```
 
-<h3 id='api-update-cred'>Update Credentials</h3>
+### Update Credentials
 
 This endpoint updates the capabilities of a specific set of credentials.
 
@@ -475,7 +480,7 @@ curl "https://analytics.memcachier.com/api/v1/<memcachier_id>/credentials/<cred_
 }
 ```
 
-<h3 id='api-promote-cred'> Promote Credentials</h3>
+### Promote Credentials
 
 This endpoint promotes a set of credentials to primary.
 
@@ -528,7 +533,7 @@ curl "https://analytics.memcachier.com/api/v1/<memcachier_id>/credentials/primar
 }
 ```
 
-<h3 id='api-delete-cred'>Delete Credentials</h3>
+### Delete Credentials
 
 This endpoint deletes a set of credentials
 
