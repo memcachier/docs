@@ -1,5 +1,6 @@
 #! /bin/bash
 
+# construct doc.md
 cat intro.md > doc.md
 cat misc/supported_protocols.md >> doc.md
 cat clients/ruby/ruby.md >> doc.md
@@ -30,4 +31,14 @@ cat misc/using_memcachier.md >> doc.md
 cat misc/value_limit.md >> doc.md
 cat misc/localhost_error.md >> doc.md
 cat misc/support.md >> doc.md
+# check doc.md for dangling links
 ./check_links.py
+# create direct and heroku version of doc.md
+./flavor.py doc.md doc.direct.md direct
+./flavor.py doc.md doc.heroku.md heroku
+# overwrite heroku doc
+rm -f memcachier.md
+devcenter pull https://devcenter.heroku.com/articles/memcachier
+mv memcachier.md memcachier.old.md
+head -n 4 memcachier.old.md > memcachier.md
+cat doc.heroku.md >> memcachier.md

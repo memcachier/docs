@@ -4,12 +4,24 @@
 Our analytics dashboard is a simple tool that gives you more insight into how
 you’re using memcache. Here's a screenshot of the dashboard:
 
+**IF(direct)**
 <p style="text-align:center;">
 <img style="width:80%;" src="/images/analytics.png" alt="Analytics dashboard">
 </p>
 
 To access your application's analytics dashboard login to your
 [account](https://www.memcachier.com/caches) and view one of your caches.
+**ENDIF**
+
+**IF(heroku)**
+![Analytics Dashboard](https://s3.amazonaws.com/heroku-devcenter-files/article-images/674-imported-1443570238-674-imported-1443554707-analytics.png)
+
+To access your application's analytics dashboard run:
+
+```shell
+$ heroku addons:open memcachier
+```
+**ENDIF**
 
 The analytics displayed are:
 

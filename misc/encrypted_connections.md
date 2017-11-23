@@ -1,6 +1,7 @@
 
 ## Encrypted Connections (TLS)
 
+**IF(direct)**
 <p class="alert alert-info">
 We generally don't recommend using TLS to secure your connection. Why?
 Memcache is normally only used when performance is important and so
@@ -14,6 +15,22 @@ HTTPS, but the HTTPS connection is very likely terminated at a load
 balancer, and then unsecured HTTP used to talk between the load
 balancer and your application.
 </p>
+**ENDIF**
+
+**IF(heroku)**
+>note
+>We generally don't recommend using TLS to secure your connection. Why?
+>Memcache is normally only used when performance is important and so
+>low latency is critical. This means we expect your MemCachier cache
+>and your application that accesses it runs in the same datacenter, for
+>example the Amazon EC2 `us-east-1` datacenter. All your traffic are
+>running over, and only over, the internal datacenter network. This is
+>a <strong>highly secure</strong> network that can't be sniffed on or
+>tampered with. For example, your web application is probably speaking
+>HTTPS, but the HTTPS connection is very likely terminated at a load
+>balancer, and then unsecured HTTP used to talk between the load
+>balancer and your application.
+**ENDIF**
 
 It is possible to connect to MemCachier using TLS encrypted sockets.
 While no existing clients support TLS connections natively, we provide

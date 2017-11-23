@@ -10,6 +10,8 @@ MemCachier Guides:
   - [Building a Rails 3 App with MemCachier](https://devcenter.heroku.com/articles/building-a-rails-3-application-with-memcache)
   - [Rails + Rack::Cache + MemCachier](https://devcenter.heroku.com/articles/rack-cache-memcached-rails31)
   - [Django and MemCachier](https://devcenter.heroku.com/articles/django-memcache)
+  - [Java Webapp Runner Guide](https://devcenter.heroku.com/articles/java-webapp-runner)
+  - [Heroku's Guide to Caching](https://devcenter.heroku.com/articles/caching-strategies)
 
 Framework and Client Documentation:
 

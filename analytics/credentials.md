@@ -4,19 +4,30 @@
 In order to connect a memcache client to MemCachier, you use a
 username and password listed on the [analytics dashboard](#memcachier-analytics)
 for your cache. Each cache can have multiple sets of credentials.
-One of these sets of credentials is distinguished as
-*primary*, meaning that, for hosted platforms like Heroku,
+One of these sets of credentials is distinguished as *primary*,
+**IF(direct)**
+meaning that, for hosted platforms like Heroku,
 it is linked to the hosted platform MemCachier addon.
+**ENDIF**
+**IF(heroku)**
+meaning that it is linked to the Heroku MemCachier addon.
+**ENDIF**
 
 From the *Credentials* panel on the analytics dashboard, it
 is possible to create new credentials, delete existing credentials and
 promote secondary credentials to primary credentials. This makes it
 possible to rotate credentials by creating a new set of secondary
-credentials and promoting them to primary. For caches associated with
-hosted platforms, promoting a set of secondary credentials to primary
-causes the configuration variables on the hosted platform to be
-updated. For example, rotating the credentials on a Heroku-associated
-cache causes an update of the `MEMCACHIER_USERNAME` and
+credentials and promoting them to primary.
+**IF(direct)**
+For caches associated with hosted platforms, promoting a set of secondary
+credentials to primary causes the configuration variables on the hosted
+platform to be updated. For example, rotating the credentials on a
+Heroku-associated cache
+**ENDIF**
+**IF(heroku)**
+Promoting a set of secondary credentials to primary
+**ENDIF**
+causes an update of the `MEMCACHIER_USERNAME` and
 `MEMCACHIER_PASSWORD` configuration variables on your Heroku app and a
 restart of your dynos to pick up the new values.
 

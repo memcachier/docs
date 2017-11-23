@@ -1,6 +1,12 @@
 
 ## Django
 
+**IF(direct)**
+<p class="alert alert-info">
+We’ve built a small Django example here:
+<a href="https://github.com/memcachier/examples-django">MemCachier Django sample app</a>.
+</p>
+
 <p class="alert alert-info">
 We support the <code>pylibmc</code> memcache client as it has great performance
 and Python 3 support. However, it can sometimes be difficult to install locally
@@ -11,6 +17,32 @@ You'll also need the <a
 href="https://github.com/jaysonsantos/django-bmemcached">django-bmemcached</a>
 package.
 </p>
+**ENDIF**
+
+**IF(heroku)**
+>callout
+>We’ve built a small Django example.
+><a class="github-source-code" href="http://github.com/memcachier/examples-django">Source code</a> or
+>[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=http://github.com/memcachier/examples-django).
+><br>
+>We also have a tutorial on using Django and MemCachier together
+>[here](https://devcenter.heroku.com/articles/django-memcache).
+
+>callout
+>We support the `pylibmc` memcache client as it has great performance and
+>Python 3 support. However, it can sometimes be difficult to install locally as
+>it relies on the C `libmemcached` library. If you prefer, you can try a pure
+>python client,
+>[python-binary-memcached](https://github.com/jaysonsantos/python-binary-memcached)
+>which also works well. You'll also need the
+>[django-bmemcached](ttps://github.com/jaysonsantos/django-bmemcached) package.
+**ENDIF**
+
+Here we explain how you setup and install MemCachier with Django. Please
+see the [Django caching
+guide](https://docs.djangoproject.com/en/dev/topics/cache/#the-per-site-cache)
+for how you effectively use MemCachier. Django supports
+whole site caching, per-view caching and fragement caching.
 
 MemCachier has been tested with the `pylibmc` memcache client. This is a great
 client, fully-featured, high-performance and Python 2 & 3 support. Sadly, the
@@ -20,9 +52,13 @@ mechanism (SASL). This is easily solved by using the `django-pylibmc` package.
 
 The `pylibmc` client relies on the C `libmemcached` library. This should be
 fairly straight-forward to install with your package manager on Linux or
-Windows. We also have a [blog
-post](http://blog.memcachier.com/2014/11/05/ubuntu-libmemcached-and-sasl-support/)
+Windows. For Mac OSX users, homebrew provides and easy solution. We also have a
+[blog post](http://blog.memcachier.com/2014/11/05/ubuntu-libmemcached-and-sasl-support/)
 for Ubuntu users on how to do this.
+**IF(heroku)**
+You only need to be concerned about this for local development, the Heroku
+platform includes `libmemcached`.
+**ENDIF**
 
 Once `libmemcached` is installed, then install `pylibmc` and `django-pylibmc`:
 
@@ -38,6 +74,7 @@ pylibmc==1.5.1
 django-pylibmc==0.6.1
 ```
 
+**IF(direct)**
 <p class="alert alert-info">
 <b>Heroku Users:</b> The above <code>pylibmc</code> requirements must be added
 directly to your <code>requirements.txt</code> file. They shouldn't be placed
@@ -46,6 +83,7 @@ in an included pip requirement file. The Heroku Python buildpack checks the
 <code>pylibmc</code> to trigger bootstrapping <code>libmemcached</code>, which
 is prerequisite for installing <code>pylibmc</code>.
 </p>
+**ENDIF**
 
 Next, configure your settings.py file the following way:
 
@@ -90,11 +128,13 @@ CACHES = {
 }
 ```
 
+**IF(direct)**
 The values for `<MEMCACHIER_SERVERS>`, `<MEMCACHIER_USERNAME>`, and
 `<MEMCACHIER_PASSWORD>` are listed on your [cache overview
 page](https://www.memcachier.com/caches). Note that Django expects
 <MEMCACHIER_SERVERS> to be semicolon-delimited (while we provide it
 comma-eliminated).
+**ENDIF**
 
 Finally, we also *strongly* recommend that you place the following
 code in your `wsgi.py` file to correct a serious performance bug
@@ -116,14 +156,12 @@ cache.set("foo", "bar")
 print cache.get("foo")
 ```
 
-We’ve built a small Django example here: [MemCachier Django sample
-app](https://github.com/memcachier/examples-django).
-
 You may also be interested in the
 [django-heroku-memcacheify](http://github.com/rdegges/django-heroku-memcacheify)
 pip, which fully configures MemCachier with one line of code for any Django app
 the pip supports.
 
+**IF(direct)**
 <p class="alert alert-info">
 A confusing error message you may get from <code>pylibmc</code> is
 <b>MemcachedError: error 37 from memcached_set: SYSTEM ERROR (Resource
@@ -133,3 +171,15 @@ key-value pairs. To work around this, either consider sharding the data or
 using a different technology. The benefit of an in-memory key-value store
 diminishes at 1MB and higher.
 </p>
+**ENDIF**
+
+**IF(heroku)**
+>note
+>A confusing error message you may get from `pylibmc` is
+>**MemcachedError: error 37 from memcached_set: SYSTEM ERROR (Resource
+>temporarily unavailable)**. This indicates that you are trying to
+>store a value larger than 1MB. MemCachier has a hard limit of 1MB for
+>the size of key-value pairs. To work around this, either consider
+>sharding the data or using a different technology. The benefit of an
+>in-memory key-value store diminishes at 1MB and higher.
+**ENDIF**

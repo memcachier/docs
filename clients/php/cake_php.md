@@ -10,11 +10,18 @@ Cache::config('default', array(
     'engine' => 'Memcached',
     'prefix' => 'mc_',
     'duration' => '+7 days',
-    'servers' => explode(',', <MEMCACHIER_SERVERS>),
     'compress' => false,
     'persistent' => 'memcachier',
+**IF(direct)**    
+    'servers' => explode(',', <MEMCACHIER_SERVERS>),
     'login' => <MEMCACHIER_USERNAME>,
     'password' => <MEMCACHIER_PASSWORD>,
+**ENDIF**
+**IF(heroku)**
+    'servers' => explode(',', getenv('MEMCACHIER_SERVERS')),
+    'login' => getenv('MEMCACHIER_USERNAME'),
+    'password' => getenv('MEMCACHIER_PASSWORD'),
+**ENDIF**
     'serialize' => 'php'
 ));
 ```

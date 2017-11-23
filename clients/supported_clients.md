@@ -51,7 +51,7 @@ chances are good that other SASL binary protocol packages will also work.
 <td>
   <a href="http://www.php.net/manual/en/book.memcached.php">php-memcached</a>
   <b>or</b>
-  <a href="http://github.com/ronnywang/PHPMemcacheSASL">PHPMemcacheSASL</a>
+  <a href="https://github.com/ronnywang/PHPMemcacheSASL">PHPMemcacheSASL</a>
 </td>
 </tr>
 <tr>
@@ -65,7 +65,7 @@ chances are good that other SASL binary protocol packages will also work.
 <td>
   <a href="http://code.google.com/p/spymemcached/">SpyMemcached</a>
   <b>or</b>
-  <a href="https://code.google.com/p/xmemcached/">XMemcached</a>
+  <a href="https://github.com/killme2008/xmemcached">XMemcached</a>
 </td>
 </tr>
 <tr>

@@ -1,10 +1,30 @@
 
 ## PHP
 
+**IF(direct)**
+<p class="alert alert-info">
+We’ve built a small PHP example here:
+<a href="https://github.com/memcachier/examples-php">MemCachier PHP sample app</a>.
+</p>
+**ENDIF**
+
+**IF(heroku)**
+>callout
+>We’ve built a small PHP example.
+><a class="github-source-code" href="https://github.com/memcachier/examples-php">Source code</a> or
+>[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=https://github.com/memcachier/examples-php).
+
+>callout
+>Heroku recently improved their PHP support, please see their
+>[documentation](https://devcenter.heroku.com/articles/php-support)
+>if you aren't familiar with the new model.
+**ENDIF**
+
 We recommended you use the [PHP Memcached
 client](http://www.php.net/manual/en/book.memcached.php) to connect with
-MemCachier. It supports the full protocol and has great performance. We also
-recommend that you use the [composer dependency
+MemCachier. It supports the full protocol and has great performance.
+**IF(direct)**
+We also recommend that you use the [composer dependency
 manager](https://getcomposer.org/) for PHP, although that is up to you.
 
 It can be difficult to get the memcached client to work as it requires that you
@@ -17,6 +37,12 @@ supports, instructions on how are [here](#alternative-php-client----memcachesasl
 
 First, if using composer, you'll need to modify your `composer.json` file to
 include the module:
+**ENDIF**
+
+**IF(heroku)**
+First, you'll need to modify your `composer.json` file to include the
+module:
+**ENDIF**
 
 ```js
 {
@@ -26,6 +52,16 @@ include the module:
     }
 }
 ```
+
+Next, ensure that your new requirements are "frozen" to `composer.lock` by running:
+
+```shell
+$ composer update
+```
+
+**IF(heroku)**
+For more information on enabling the extension and potential troubleshooting (e.g. when you don't have the `memcached` extension available on your local computer), refer to the [using optional extensions extensions](/articles/php-support#using-optional-extensions) section of Heroku's PHP reference documentation.
+**ENDIF**
 
 Then, you can connect to MemCachier using the client:
 
@@ -53,46 +89,70 @@ $m->setOption(Memcached::OPT_SERVER_FAILURE_LIMIT, 1);
 $m->setOption(Memcached::OPT_AUTO_EJECT_HOSTS, TRUE);
 
 // setup authentication
+**IF(direct)**
 $m->setSaslAuthData( <MEMCACHIER_USERNAME>
                    , <MEMCACHIER_PASSWORD> );
+**ENDIF**
+**IF(heroku)**
+$m->setSaslAuthData( getenv("MEMCACHIER_USERNAME")
+                   , getenv("MEMCACHIER_PASSWORD") );
+**ENDIF**
 
 // We use a consistent connection to memcached, so only add in the
 // servers first time through otherwise we end up duplicating our
 // connections to the server.
 if (!$m->getServerList()) {
     // parse server config
+**IF(direct)**
     $servers = explode(",", <MEMCACHIER_SERVERS>);
+**ENDIF**
+**IF(heroku)**
+    $servers = explode(",", getenv("MEMCACHIER_SERVERS"));
+**ENDIF**
     foreach ($servers as $s) {
         $parts = explode(":", $s);
-        $m->addServers($parts[0], $parts[1]);
+        $m->addServer($parts[0], $parts[1]);
     }
 }
 ```
 
+**IF(direct)**
 The values for `<MEMCACHIER_SERVERS>`, `<MEMCACHIER_USERNAME>`, and
 `<MEMCACHIER_PASSWORD>` are listed on your [cache overview
 page](https://www.memcachier.com/caches).
+**ENDIF**
 
 You should look at the PHP [Memcached client
 documentation](http://www.php.net/manual/en/book.memcached.php) for a list of
 API calls you can make against MemCachier.
 
-We’ve built a small PHP example here: [MemCachier PHP sample
-app](https://github.com/memcachier/examples-php).
-
 ### PHP Session Support
 
 You can configure PHP to store sessions in MemCachier as follows.
 
-First, start by configuring an appropriate `.user.ini` in your document root.
+First, start by configuring an appropriate `.user.ini` in your document
+**IF(direct)**
+root.
+**ENDIF**
+**IF(heroku)**
+root (see [heroku ini
+guide](https://devcenter.heroku.com/articles/custom-php-settings#user-ini-files-recommended)).
+**ENDIF**
 It should contain the following:
 
 ```php
 session.save_handler=memcached
 memcached.sess_binary=1
+**IF(direct)**
 session.save_path="PERSISTENT=myapp_session <MEMCACHIER_SERVERS>"
 memcached.sess_sasl_username=<MEMCACHIER_USERNAME>
 memcached.sess_sasl_password=<MEMCACHIER_PASSWORD>
+**ENDIF**
+**IF(heroku)**
+session.save_path="PERSISTENT=myapp_session ${MEMCACHIER_SERVERS}"
+memcached.sess_sasl_username=${MEMCACHIER_USERNAME}
+memcached.sess_sasl_password=${MEMCACHIER_PASSWORD}
+**ENDIF**
 ```
 
 In your code you should then be able to run:
@@ -105,6 +165,7 @@ $_SESSION['test'] = 42;
 
 ### Alternative PHP Client -- MemcacheSASL
 
+**IF(direct)**
 This is not our recommended client for using MemCachier from PHP. We recommend
 the [php memcached](#php) client. However, it is an easier client to use as
 it's a pure PHP implementation while the [recommended php client](#php)
@@ -112,6 +173,15 @@ requires a C extension to be installed with
 [SASL](http://en.wikipedia.org/wiki/Simple_Authentication_and_Security_Layer)
 support. It doesn't support multiple proxy servers like the memcached client
 but is otherwise quite good.
+**ENDIF**
+
+**IF(heroku)**
+>note
+>This is not our recommended client for using MemCachier from PHP. We
+>recommend the [php memcached](#php) client. However, it may work
+>better for you if you are running into any problems with the php
+>memcached client.
+**ENDIF**
 
 You should first install the
 [PHPMemcacheSASL](https://github.com/memcachier/PHPMemcacheSASL) client. You
@@ -138,23 +208,34 @@ use MemCachier\MemcacheSASL;
 
 // Create client
 $m = new MemcacheSASL();
+**IF(direct)**
 $servers = explode(",", <MEMCACHIER_SERVERS>);
+**ENDIF**
+**IF(heroku)**
+$servers = explode(",", getenv("MEMCACHIER_SERVERS"));
+**ENDIF**
 foreach ($servers as $s) {
     $parts = explode(":", $s);
     $m->addServer($parts[0], $parts[1]);
 }
 
 // Setup authentication
+**IF(direct)**
+$m->setSaslAuthData( <MEMCACHIER_USERNAME>
+                   , <MEMCACHIER_PASSWORD> );
+**ENDIF**
+**IF(heroku)**
 $m->setSaslAuthData( getenv("MEMCACHIER_USERNAME")
                    , getenv("MEMCACHIER_PASSWORD") );
+**ENDIF**
 
+// Test client
 $m->add("foo", "bar");
 echo $m->get("foo");
 ```
 
+**IF(direct)**
 The values for `<MEMCACHIER_SERVERS>`, `<MEMCACHIER_USERNAME>`, and
 `<MEMCACHIER_PASSWORD>` are listed on your [cache overview
 page](https://www.memcachier.com/caches).
-
-We’ve built a small PHP example here: [MemCachier PHP sample
-app](https://github.com/memcachier/examples-php).
+**ENDIF**

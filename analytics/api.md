@@ -1,7 +1,8 @@
 
 ## Analytics API
 
-You can also access features available on the analytics dashboard via the API.
+You can also access features available on the [analytics dashboard](#memcachier-analytics)
+via the API.
 
   - [Authenticate](#authentication)
   - [Memcachier API ID](#memcachier-api-id)
@@ -18,7 +19,7 @@ You can also access features available on the analytics dashboard via the API.
 
 Memcachier uses credentials to allow access to the API. After you've created a
 cache, you can find your credentials on the
-[analytics dashboard](https://analytics.memcachier.com/). Only credentials that
+[analytics dashboard](#memcachier-analytics). Only credentials that
 have the API capability will be allowed to use this API.
 
 Memcachier expects for your credentials to be included in the header of all API requests.
