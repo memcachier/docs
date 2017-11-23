@@ -52,7 +52,7 @@ runs your app, using Heroku's [multiple
 buildpack](https://devcenter.heroku.com/articles/using-multiple-buildpacks-for-an-app)
 feature:
 
-```shell
+```term
 $ heroku buildpacks:add https://github.com/memcachier/memcachier-tls-buildpack.git
 ```
 

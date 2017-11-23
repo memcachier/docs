@@ -35,7 +35,7 @@ platform includes `libmemcached`.
 
 Once it's installed, then install `pylibmc`:
 
-```shell
+```term
 $ pip install pylibmc
 ```
 

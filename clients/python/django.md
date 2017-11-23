@@ -62,7 +62,7 @@ platform includes `libmemcached`.
 
 Once `libmemcached` is installed, then install `pylibmc` and `django-pylibmc`:
 
-```shell
+```term
 $ pip install pylibmc django-pylibmc
 ```
 

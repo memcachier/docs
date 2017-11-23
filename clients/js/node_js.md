@@ -20,7 +20,7 @@ For Node.js we recommend the use of the
 and supported by MemCachier itself! To install, use the [node package
 manager (npm)](https://npmjs.org/):
 
-```shell
+```term
 $ npm install memjs
 ```
 

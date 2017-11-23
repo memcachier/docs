@@ -18,7 +18,7 @@ To access your application's analytics dashboard login to your
 
 To access your application's analytics dashboard run:
 
-```shell
+```term
 $ heroku addons:open memcachier
 ```
 **ENDIF**

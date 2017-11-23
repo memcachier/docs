@@ -55,7 +55,7 @@ module:
 
 Next, ensure that your new requirements are "frozen" to `composer.lock` by running:
 
-```shell
+```term
 $ composer update
 ```
 

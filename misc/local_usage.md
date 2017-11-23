@@ -35,13 +35,13 @@ modification locally.
 
 On Ubuntu:
 
-```shell
+```term
 $ sudo apt-get install memcached
 ```
 
 Or on OS X (with Homebrew):
 
-```shell
+```term
 $ brew install memcached
 ```
 
@@ -53,6 +53,6 @@ please refer to the [Memcache.org homepage](http://memcached.org)
 
 To run memcached simply execute the following command:
 
-```shell
+```term
 $ memcached -v
 ```

@@ -12,7 +12,7 @@ protocol in a very simple way. Once the connection is established, you should
 send a `set` command with your username as the key and your password as the
 value. For example:
 
-```shell
+```term
 $ telnet 35865.1e4cfd.us-east-3.ec2.prod.memcachier.com 11211
 >
 > set 15F38e 0 0 32

@@ -24,7 +24,7 @@ gem 'dalli'
 
 Then run bundle install:
 
-```shell
+```term
 $ bundle install
 ```
 
@@ -80,7 +80,7 @@ cache.stats
 The easiest way to test that your setup is working is through the
 heroku console:
 
-```shell
+```term
 $ heroku run console --app <app>
 >> require 'dalli'
 >> cache = Dalli::Client.new(ENV["MEMCACHIER_SERVERS"].split(","),
@@ -93,7 +93,7 @@ $ heroku run console --app <app>
 
 And then fetch the value back:
 
-```shell
+```term
 >> cache.get('memcachier')
 => "rocks"
 ```

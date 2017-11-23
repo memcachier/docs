@@ -11,7 +11,7 @@ gem 'dalli', '~>1.0.5'
 
 Then run bundle install:
 
-```shell
+```term
 $ bundle install
 ```
 
@@ -75,7 +75,7 @@ puts Rails.cache.read("foo")
 
 To test locally you can simply use the rails console:
 
-```shell
+```term
 rails console
 >> Rails.cache.write('memcachier', 'rocks')
 => true

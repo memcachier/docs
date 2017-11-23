@@ -24,7 +24,7 @@ have the API capability will be allowed to use this API.
 
 Memcachier expects for your credentials to be included in the header of all API requests.
 
-```shell
+```term
 curl "https://analytics.memcachier.com/api/v1/:memcachier_id/:action"
   --user CRED_USERNAME:CRED_PASSWORD
 ```
@@ -73,7 +73,7 @@ this ID, you'll need to use the `/login` path.
 
 **Example:**
 
-```shell
+```term
 curl "https://analytics.memcachier.com/api/v1/login"
   --user CRED_USERNAME:CRED_PASSWORD
 ```
@@ -119,7 +119,7 @@ This endpoint retrieves all the statistics for your cache.
 
 **Example:**
 
-```shell
+```term
 curl "https://analytics.memcachier.com/api/v1/<memcachier_id>/stats"
   --user "CRED_USERNAME:CRED_PASSWORD"
 ```
@@ -198,7 +198,7 @@ This endpoint retrieves the statistical history of a cache.
 
 **Example:**
 
-```shell
+```term
 curl "https://analytics.memcachier.com/api/v1/<memcachier_id>/history"
   --user "CRED_USERNAME:CRED_PASSWORD"
 ```
@@ -279,7 +279,7 @@ This endpoint will flush all of the data from the cache cache.
 
 **Example:**
 
-```shell
+```term
 curl "https://analytics.memcachier.com/api/v1/<memcachier_id>/flush" -X POST
   --user "CRED_USERNAME:CRED_PASSWORD"
 ```
@@ -319,7 +319,7 @@ The endpoint returns a list of all the credentials connected to the cache.
 
 **Example:**
 
-```shell
+```term
 curl "https://analytics.memcachier.com/api/v1/<memcachier_id>/credentials"
   --user "CRED_USERNAME:CRED_PASSWORD"
 ```
@@ -384,7 +384,7 @@ This endpoint creates a new set of credentials which can be used to connect to t
 
 **Example:**
 
-```shell
+```term
 curl "https://analytics.memcachier.com/api/v1/<memcachier_id>/credentials" -X POST
   --user "CRED_USERNAME:CRED_PASSWORD"
 ```
@@ -465,7 +465,7 @@ This endpoint updates the capabilities of a specific set of credentials.
 
 **Example:**
 
-```shell
+```term
 curl "https://analytics.memcachier.com/api/v1/<memcachier_id>/credentials/<cred_username>" -X PATCH
   -d '{"flush_capability":"false"}'
   --user "CRED_USERNAME:CRED_PASSWORD"
@@ -514,7 +514,7 @@ This endpoint promotes a set of credentials to primary.
 
 **Example:**
 
-```shell
+```term
 curl "https://analytics.memcachier.com/api/v1/<memcachier_id>/credentials/primary/<cred_username>" -X POST
   --user "CRED_USERNAME:CRED_PASSWORD"
 ```
@@ -567,7 +567,7 @@ This endpoint deletes a set of credentials
 
 **Example:**
 
-```shell
+```term
 curl "https://analytics.memcachier.com/api/v1/<memcachier_id>/credentials/primary/<cred_username>" -X DELETE
   --user "CRED_USERNAME:CRED_PASSWORD"
 ```
