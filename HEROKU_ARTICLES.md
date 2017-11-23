@@ -8,18 +8,19 @@ vim memcachier.md
 devcenter push memcachier.md
 ~~~~
 
+The `devcenter` CLI can be found here: https://github.com/heroku/devcenter-cli
+
 ## Heroku Owned
 
-https://devcenter.heroku.com/articles/releases
-https://devcenter.heroku.com/articles/java-webapp-runner
-https://devcenter.heroku.com/articles/caching-strategies
-https://devcenter.heroku.com/articles/http-caching-ruby-rails
+  - https://devcenter.heroku.com/articles/releases
+  - https://devcenter.heroku.com/articles/java-webapp-runner
+  - https://devcenter.heroku.com/articles/caching-strategies
+  - https://devcenter.heroku.com/articles/http-caching-ruby-rails
 
 ## MemCachier Owned
 
-https://devcenter.heroku.com/articles/memcachier
-https://devcenter.heroku.com/articles/django-memcache
-https://devcenter.heroku.com/articles/advanced-memcache
-https://devcenter.heroku.com/articles/rack-cache-memcached-rails31
-https://devcenter.heroku.com/articles/building-a-rails-3-application-with-the-memcache-addon
-
+  - https://devcenter.heroku.com/articles/memcachier
+  - https://devcenter.heroku.com/articles/django-memcache
+  - https://devcenter.heroku.com/articles/advanced-memcache
+  - https://devcenter.heroku.com/articles/rack-cache-memcached-rails31
+  - https://devcenter.heroku.com/articles/building-a-rails-3-application-with-the-memcache-addon
