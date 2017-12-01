@@ -32,7 +32,7 @@ cat documentation/misc/value_limit.md >> doc.md
 cat documentation/misc/localhost_error.md >> doc.md
 cat documentation/misc/support.md >> doc.md
 # check doc.md for dangling links
-./check_links.py
+./check_links.py doc.md
 # create direct and heroku version of doc.md
 ./flavor.py doc.md doc.direct.md direct
 ./flavor.py doc.md doc.heroku.md heroku

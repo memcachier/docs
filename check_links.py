@@ -1,13 +1,17 @@
 #! /bin/python3
 
 import re
+import sys
+
+if len(sys.argv) < 2:
+    print("Usage: check_links.py in.md")
 
 rx_header = re.compile("^#+ (.+)$")
 set_header = set()
 rx_link = re.compile(".*]\(#(.+?)\).*")
 set_link = set()
 
-with open("doc.md") as f:
+with open(sys.argv[1]) as f:
     for l in f:
         # get available header links
         hr = rx_header.match(l.strip())
