@@ -12,6 +12,9 @@ The `devcenter` CLI can be found here: https://github.com/heroku/devcenter-cli
 
 Web based articles admin interface is here: https://devcenter.heroku.com/admin
 
+*Note: new articles can only be created via the web based admin interface as they
+need to be approved before they are published.*
+
 ## Heroku Owned
 
   - https://devcenter.heroku.com/articles/releases
