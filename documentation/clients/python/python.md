@@ -131,3 +131,43 @@ diminishes at 1MB and higher.
 >sharding the data or using a different technology. The benefit of an
 >in-memory key-value store diminishes at 1MB and higher.
 **ENDIF**
+
+### Alternative client: `python-binary-memcached`
+
+This is a pure python client that supports the binary protocol and SASL
+authentication.
+
+To install `python-binary-memcached`:
+
+```term
+$ pip install python-binary-memcached
+```
+
+Be sure to update your `requirements.txt` file with these new requirements
+(note that your versions may differ than what’s below):
+
+```text
+python-binary-memcached==0.26.1
+```
+
+Next, configure your memcached client in the following way:
+
+```python
+import bmemcached
+import os
+
+servers = os.environ.get('MEMCACHIER_SERVERS', '').split(',')
+user = os.environ.get('MEMCACHIER_USERNAME', '')
+passw = os.environ.get('MEMCACHIER_PASSWORD', '')
+
+mc = bmemcached.Client(servers, username=user, password=passw)
+
+mc.enable_retry_delay(True)  # Enabled by default. Sets retry delay to 5s.
+```
+
+After this, you can start writing cache code in your Python app:
+
+```python
+mc.set("foo", "bar")
+print(mc.get("foo"))
+```
