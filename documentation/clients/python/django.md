@@ -4,7 +4,7 @@
 **IF(direct)**
 <p class="alert alert-info">
 We’ve built a small Django example here:
-<a href="https://github.com/memcachier/examples-django">MemCachier Django sample app</a>.
+<a href="https://github.com/memcachier/examples-django2">MemCachier Django sample app</a>.
 </p>
 
 <p class="alert alert-info">
@@ -23,7 +23,7 @@ package.
 >callout
 >We’ve built a small Django example.
 ><a class="github-source-code" href="http://github.com/memcachier/examples-django">Source code</a> or
->[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=http://github.com/memcachier/examples-django).
+>[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=http://github.com/memcachier/examples-django2).
 ><br>
 >We also have a tutorial on using Django and MemCachier together
 >[here](https://devcenter.heroku.com/articles/django-memcache).
@@ -45,10 +45,11 @@ for how you effectively use MemCachier. Django supports
 whole site caching, per-view caching and fragement caching.
 
 MemCachier has been tested with the `pylibmc` memcache client. This is a great
-client, fully-featured, high-performance and Python 2 & 3 support. Sadly, the
-Django integration of `pylibmc` and other memcache clients doesn't work
-out-of-the-box with MemCachier as they don't expose the authentication
-mechanism (SASL). This is easily solved by using the `django-pylibmc` package.
+client, fully-featured, high-performance and Python 2 & 3 support. As of Version
+1.11 Django has out-of-the-box support for `pylibmc`. Older Django versions
+require `django-pylibmc` to work with MemCachier. Please follow the instructions
+in this [example](http://github.com/memcachier/examples-django) if you wish to
+use an older version.
 
 The `pylibmc` client relies on the C `libmemcached` library. This should be
 fairly straight-forward to install with your package manager on Linux or
@@ -60,10 +61,10 @@ You only need to be concerned about this for local development, the Heroku
 platform includes `libmemcached`.
 **ENDIF**
 
-Once `libmemcached` is installed, then install `pylibmc` and `django-pylibmc`:
+Once `libmemcached` is installed, then install `pylibmc`:
 
 ```term
-$ pip install pylibmc django-pylibmc
+$ pip install pylibmc
 ```
 
 Be sure to update your `requirements.txt` file with these new requirements
@@ -71,7 +72,6 @@ Be sure to update your `requirements.txt` file with these new requirements
 
 ```text
 pylibmc==1.5.1
-django-pylibmc==0.6.1
 ```
 
 **IF(direct)**
@@ -88,41 +88,47 @@ is prerequisite for installing <code>pylibmc</code>.
 Next, configure your settings.py file the following way:
 
 ```python
-os.environ['MEMCACHE_SERVERS'] = os.environ.get('MEMCACHIER_SERVERS', '').replace(',', ';')
-os.environ['MEMCACHE_USERNAME'] = os.environ.get('MEMCACHIER_USERNAME', '')
-os.environ['MEMCACHE_PASSWORD'] = os.environ.get('MEMCACHIER_PASSWORD', '')
+servers = os.environ['MEMCACHIER_SERVERS']
+username = os.environ['MEMCACHIER_USERNAME']
+password = os.environ['MEMCACHIER_PASSWORD']
 
 CACHES = {
     'default': {
         # Use pylibmc
-        'BACKEND': 'django_pylibmc.memcached.PyLibMCCache',
-
-        # Use binary memcache protocol (needed for authentication)
-        'BINARY': True,
+        'BACKEND': 'django.core.cache.backends.memcached.PyLibMCCache',
 
         # TIMEOUT is not the connection timeout! It's the default expiration
         # timeout that should be applied to keys! Setting it to `None`
         # disables expiration.
         'TIMEOUT': None,
 
+        'LOCATION': servers,
+
         'OPTIONS': {
-            # Enable faster IO
-            'tcp_nodelay': True,
+            # Use binary memcache protocol (needed for authentication)
+            'binary': True,
+            'username': username,
+            'password': password,
+            'behaviors': {
+                # Enable faster IO
+                'no_block': True,
+                'tcp_nodelay': True,
 
-            # Keep connection alive
-            'tcp_keepalive': True,
+                # Keep connection alive
+                'tcp_keepalive': True,
 
-            # Timeout settings
-            'connect_timeout': 2000, # ms
-            'send_timeout': 750 * 1000, # us
-            'receive_timeout': 750 * 1000, # us
-            '_poll_timeout': 2000, # ms
+                # Timeout settings
+                'connect_timeout': 2000, # ms
+                'send_timeout': 750 * 1000, # us
+                'receive_timeout': 750 * 1000, # us
+                '_poll_timeout': 2000, # ms
 
-            # Better failover
-            'ketama': True,
-            'remove_failed': 1,
-            'retry_timeout': 2,
-            'dead_timeout': 30,
+                # Better failover
+                'ketama': True,
+                'remove_failed': 1,
+                'retry_timeout': 2,
+                'dead_timeout': 30,
+            }
         }
     }
 }
@@ -131,22 +137,8 @@ CACHES = {
 **IF(direct)**
 The values for `<MEMCACHIER_SERVERS>`, `<MEMCACHIER_USERNAME>`, and
 `<MEMCACHIER_PASSWORD>` are listed on your [cache overview
-page](https://www.memcachier.com/caches). Note that Django expects
-<MEMCACHIER_SERVERS> to be semicolon-delimited (while we provide it
-comma-eliminated).
+page](https://www.memcachier.com/caches).
 **ENDIF**
-
-Finally, we also *strongly* recommend that you place the following
-code in your `wsgi.py` file to correct a serious performance bug
-([#11331](https://code.djangoproject.com/ticket/11331)) with Django
-and memcached. The fix enables persistent connections under Django,
-which by default uses a new connection for each request:
-
-```python
-# Fix django closing connection to MemCachier after every request (#11331)
-from django.core.cache.backends.memcached import BaseMemcachedCache
-BaseMemcachedCache.close = lambda self, **kwargs: None
-```
 
 After this, you can start writing cache code in your Django app:
 

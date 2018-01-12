@@ -1,6 +1,6 @@
 
 Memcache is a technology that helps web apps and mobile app backends
-in two main ways: performance and scalability. You should consider
+in two main ways: *performance* and *scalability*. You should consider
 using memcache when your pages are loading too slowly or your app is
 having scalability issues. Even for small sites it can be a great
 technology, making page loads snappy and future proofing for scale.
@@ -9,9 +9,9 @@ This article shows how to create a simple application in Django,
 deploy it to Heroku, then add caching with Memcache to alleviate a
 performance bottleneck.
 
-This article should work for both *Python 2 & 3* as the client library
-we recommned, `pylibmc`, recently added support in version `1.4.0` for
-Python 3.
+This article mainly targets *Python 3* since *Django 2* no longer supports
+*Python 2*. If you want to use Python 2 with an older version of Django this
+guide should however still work.
 
 >callout
 >We’ve built a sample app that can be seen running
@@ -39,48 +39,51 @@ explanation of these commands can be found in
 
 ```term
 $ mkdir django_queue && cd django_queue
-$ virtualenv venv --distribute
+$ virtualenv venv
 $ source venv/bin/activate
-$ pip install Django psycopg2 dj-database-url
+$ pip install Django django-heroku gunicorn
 $ django-admin.py startproject django_queue .
 $ pip freeze > requirements.txt
 $ python manage.py runserver
-Validating models...
+Performing system checks...
 
-0 errors found
-Django version 1.4, using settings 'django_queue.settings'
-Development server is running at http://127.0.0.1:8000/
+System check identified no issues (0 silenced).
+
+Django version 2.0, using settings 'django_queue.settings'
+Starting development server at http://127.0.0.1:8000/
 Quit the server with CONTROL-C.
 ```
 
 Visiting [http://localhost:8000](http://localhost:8000) will show a
 "hello, world" landing page.
 
-### Configure the database
+### The Procfile
 
-Configure the application to use [Heroku's Postgres
-database](heroku-postgresql). Edit the file, `django_queue/settings.py`
-and replace the existing `DATABASES` setting with the following lines
-instead:
+The [Procfile](procfile) lets Heroku know how to start your app. Create it in
+your project root and and add the following line:
 
-```python
-import dj_database_url
-DATABASES = {'default': dj_database_url.config(default='postgres://localhost')}
+```text
+web: gunicorn django_queue.wsgi --log-file -
 ```
 
-This will use PostgreSQL both on Heroku and on your local machine. If
-you'd prefer to use SQLite locally for less setup, then you acn
-instead put the follwing line in `django_queue/settings.py`:
+### Configure Django for Heroku
+
+Django requires some special configuration in order to work on Heroku, mainly
+for the database to work and the static files to be served. Luckily, there is a
+[`django-heroku`](https://github.com/heroku/django-heroku) package that takes care
+of all that. So on the bottom of the file `django_queue/settings.py` add the
+following lines:
 
 ```python
-# use sqlite for local development (when DATABASE_URL isn't
-# defined, as that is # what dj_database_url is looking for).
-curdir = os.path.dirname(os.path.abspath(
-    inspect.getfile(inspect.currentframe())))
-sqlite_db = 'sqlite://localhost/' + curdir + '/../queue.sqlite'
-
-DATABASES = {'default': dj_database_url.config(default=sqlite_db)}
+# Configure Django App for Heroku.
+import django_heroku
+django_heroku.settings(locals())
 ```
+
+For more information about these Heroku specific settings see
+[Configuring Django Apps for Heroku](django-app-configuration). *Note:
+`django-heroku` only supports Python 3. For Python 2 please follow the
+instructions in [Configuring Django Apps for Heroku](django-app-configuration)*
 
 ### Commit to git
 
@@ -88,9 +91,10 @@ Code needs to be added to a git repository before it can be deployed
 to Heroku. First, edit `.gitignore` and adding the following
 lines to exclude unnecessary files:
 
-```term
+```text
 venv
 *.pyc
+db.sqlite3
 ```
 
 Then initialize a repo and make a commit:
@@ -98,7 +102,7 @@ Then initialize a repo and make a commit:
 ```term
 $ git init
 $ git add .
-$ git commit -m "empty django app"
+$ git commit -m "Empty django app"
 ```
 
 ### Deploy to Heroku
@@ -107,9 +111,8 @@ Create an app using `heroku create`:
 
 ```term
 $ heroku create
-Creating empty-beach-6144... done, stack is cedar-14
-http://empty-beach-6144.herokuapp.com/ | git@heroku.com:empty-beach-6144.git
-Git remote heroku added
+Creating app... done, ⬢ blooming-ridge-97247
+https://blooming-ridge-97247.herokuapp.com/ | https://git.heroku.com/blooming-ridge-97247.git
 ```
 
 And then deploy the app:
@@ -134,25 +137,25 @@ per line on the page. It will have actions to add new items to the end
 and remove older items from the front. Basically, it is a queue. Items
 in the queue are just strings.
 
-First, make the Django `queue` app:
+First, make the Django `mc_queue` app:
 
 ```term
-$ python manage.py startapp queue
+$ python manage.py startapp mc_queue
 ```
 
-Add `queue` to the list of installed apps in
+Add `mc_queue` to the list of installed apps in
 [`django_queue/settings.py`](https://github.com/memcachier/examples-django2/blob/master/django_queue/settings.py):
 
 ```python
 INSTALLED_APPS = (
   'django.contrib.auth',
   # ...
-  'queue',
+  'mc_queue',
 )
 ```
 
 And create a simple model in
-[`django_queue/queue/models.py`](https://github.com/memcachier/examples-django2/blob/master/queue/models.py):
+[`mc_queue/models.py`](https://github.com/memcachier/examples-django2/blob/master/queue/models.py):
 
 ```python
 from django.db import models
@@ -161,29 +164,37 @@ class QueueItem(models.Model):
   text = models.CharField(max_length=200)
 ```
 
-Use `syncdb` to create the `queue_queueitems` table locally, along with
-all other default Django tables:
-
-> callout
-> You will be prompted to create a superuser.  Respond with "no" and hit return.
+Use `makemigrations` and `migrate` to create the `mc_queue_queueitems` table
+locally, along with all other default Django tables:
 
 ```term
-$ python manage.py syncdb
+$ python manage.py makemigrations mc_queue
+$ python manage.py migrate
 ```
 
-Next, setup routes in `django_queue/urls.py` for remove, add, and index
-methods.  View the source in
-[Github](https://github.com/memcachier/examples-django2/blob/master/django_queue/urls.py)
-for `urls.py`.
+Next, setup routes in
+[`django_queue/urls.py`](https://github.com/memcachier/examples-django2/blob/master/django_queue/urls.py)
+for add, remove, and index methods:
+
+```python
+# ...
+from mc_queue import views
+urlpatterns = [
+    # ...
+    path('add', views.add),
+    path('remove', views.remove),
+    path('', views.index),
+]
+```
 
 Add corresponding views in
-[`queue/views.py`](https://github.com/memcachier/examples-django2/blob/master/queue/views.py):
+[`mc_queue/views.py`](https://github.com/memcachier/examples-django2/blob/master/queue/views.py):
 
 ```python
 from django.http import HttpResponse
-from django.core.context_processors import csrf
+from django.template.context_processors import csrf
 from django.shortcuts import render_to_response, redirect
-from queue.models import QueueItem
+from mc_queue.models import QueueItem
 
 def index(request):
   queue = QueueItem.objects.order_by("id")
@@ -203,17 +214,17 @@ def remove(request):
   return redirect("/")
 ```
 
-And create a template, `templates/index.html`, that has display code.
+And create a template, `mc_queue/templates/index.html`, that has display code.
 View the source for this file in
-[Github](https://github.com/memcachier/examples-django2/blob/master/django_queue/templates/index.html).
+[Github](https://github.com/memcachier/examples-django2/blob/master/mc_queue/templates/index.html). Django will automatically check each apps `templates` folder for templates.
 
-Lastly, configure the `templates` directory in
-`django_queue/settings.py`.  See `settings.py` in
-[Github](https://github.com/memcachier/examples-django2/blob/master/django_queue/settings.py)
-for an example `templates` setting.
+```term
+$ mkdir mc_queue/templates
+$ wget -O mc_queue/templates/index.html https://raw.githubusercontent.com/memcachier/examples-django2/master/mc_queue/templates/index.html
+```
 
-Visit `http://localhost:8000` again and play with the basic queue app.
-A screenshot has been included below:
+Execute `python manage.py runserver` and visit `http://localhost:8000` again
+and play with the basic queue app. A screenshot has been included below:
 
 ![Simple Queue App](https://s3.amazonaws.com/heroku-devcenter-files/article-images/1445331522-queue.png 'App Screenshot')
 
@@ -234,11 +245,12 @@ And deploy these changes to Heroku:
 $ git push heroku master
 ```
 
-Finally, sync your database on Heroku to create the `queue_queueitem`
+Finally, migrate your database on Heroku to create the `mc_queue_queueitem`
 table, and restart the Heroku app:
 
 ```term
-$ heroku run python manage.py syncdb
+$ heroku run python manage.py makemigrations mc_queue
+$ heroku run python manage.py migrate
 $ heroku restart
 ```
 
@@ -270,13 +282,11 @@ of [config vars](config-vars) containing your memcache credentials.
 
 ### Configure Django with MemCachier
 
-We advise configuring the connection to MemCachier by setting the
-appropriate environment variables so that Django will simply load them
-each time your app starts. These are the `MEMCACHE_SERVERS`,
-`MEMCACHE_USERNAME` and `MEMCACHE_PASSWORD` variables. When you
-provision MemCachier we set corresponding variables but under the
-`MEMCACHIER_*` prefix (i.e, `MEMCACHIER_SERVERS`), so you'll need to
-map them across to `MEMCACHE_*` variables correctly.
+> callout
+> As of Django 1.11 we can use its native `pylibmc` backend. For older versions
+> of Django you will need to install `django-pylibmc`. See an
+> [older version](https://github.com/memcachier/docs/blob/8a9437cc2285d034b8fe2c3e38423489be32ce17/heroku_articles/django-memcache.md#start-using-memcache)
+> of this article for more information.
 
 To have your application operate correctly in both development and
 production mode, add the following to `django_queue/settings.py`:
@@ -285,15 +295,39 @@ production mode, add the following to `django_queue/settings.py`:
 def get_cache():
   import os
   try:
-    os.environ['MEMCACHE_SERVERS'] = os.environ['MEMCACHIER_SERVERS'].replace(',', ';')
-    os.environ['MEMCACHE_USERNAME'] = os.environ['MEMCACHIER_USERNAME']
-    os.environ['MEMCACHE_PASSWORD'] = os.environ['MEMCACHIER_PASSWORD']
+    servers = os.environ['MEMCACHIER_SERVERS']
+    username = os.environ['MEMCACHIER_USERNAME']
+    password = os.environ['MEMCACHIER_PASSWORD']
     return {
       'default': {
-        'BACKEND': 'django_pylibmc.memcached.PyLibMCCache',
-        'TIMEOUT': 500,
-        'BINARY': True,
-        'OPTIONS': { 'tcp_nodelay': True }
+        'BACKEND': 'django.core.cache.backends.memcached.PyLibMCCache',
+        # TIMEOUT is not the connection timeout! It's the default expiration
+        # timeout that should be applied to keys! Setting it to `None`
+        # disables expiration.
+        'TIMEOUT': None,
+        'LOCATION': servers,
+        'OPTIONS': {
+          'binary': True,
+          'username': username,
+          'password': password,
+          'behaviors': {
+            # Enable faster IO
+            'no_block': True,
+            'tcp_nodelay': True,
+            # Keep connection alive
+            'tcp_keepalive': True,
+            # Timeout settings
+            'connect_timeout': 2000, # ms
+            'send_timeout': 750 * 1000, # us
+            'receive_timeout': 750 * 1000, # us
+            '_poll_timeout': 2000, # ms
+            # Better failover
+            'ketama': True,
+            'remove_failed': 1,
+            'retry_timeout': 2,
+            'dead_timeout': 30,
+          }
+        }
       }
     }
   except:
@@ -308,18 +342,16 @@ CACHES = get_cache()
 
 This change to `settings.py` configures the cache for both development
 and production.  If the `MEMCACHIER_*` environment variables exist,
-the cache will be setup with `django-pylibmc`, connecting to
+the cache will be setup with `pylibmc`, connecting to
 MemCachier. Whereas, if the `MEMCACHIER_*` environment variables
 don't exist -- hence development mode -- Django's simple in-memory
 cache is used instead.
 
-Next, you need to modify your `requirements.txt` file to include
-`django-pylibmc`.
-
 ### Libraries
 
-As `libmemcached` is required to install `pylibmc` and
-`django-pylibmc`. You'll need to install it locally (which is a
+To install `pylibmc` the C library `libmemcached` is required. Heroku comes with
+`libmemcached` installed so you wont need to worry about it. However, if you
+want to test `pylibmc` locally you'll need to install it (which is a
 platform-dependant process).
 
 In Ubuntu:
@@ -346,25 +378,27 @@ $ brew install libmemcached
 > libmemcached supports SASL. To do this, please follow our
 > [guide](http://blog.memcachier.com/2014/11/05/ubuntu-libmemcached-and-sasl-support/).
 
-Then, install the `django-pylibmc` Python modules:
-
-> callout
-> `/opt/local` may not be where libmemcached was installed.  Replace
-> `/opt/local` with the correct directory if needed.
+Then, install the `pylibmc` Python modules:
 
 ```term
-$ LIBMEMCACHED=/opt/local pip install pylibmc
-$ pip install django-pylibmc
+$ pip install pylibmc
 ```
 
-Update your `requirements.txt` file with the new dependencies:
+> callout
+> If pylibmc installation is unable to find `libmemcached` you may need to
+> specify it: `LIBMEMCACHED=/opt/local pip install pylibmc` if `libmemcached`
+> was installed in `/opt/local`. Replace `/opt/local` with the correct
+> directory if needed.
+
+Update your `requirements.txt` file with the new dependencies (if you did not
+install `pylibmc` locally, just add `pylibmc==1.5.2` to your
+`requirements.txt`):
 
 ```term
 $ pip freeze > requirements.txt
 $ cat requirements.txt
 ...
-pylibmc==1.4.0
-django-pylibmc==0.5.0
+pylibmc==1.5.2
 ```
 
 Finally, commit and deploy these changes:
@@ -379,7 +413,7 @@ $ git push heroku master
 Verify that you've configured memcache correctly before you move
 forward.
 
-To do this, run the Django shell.  On your local machine run `python
+To do this, run the Django shell. On your local machine run `python
 manage.py shell` and in Heroku run `heroku run python manage.py
 shell`.  Run a quick test to make sure your cache is configured
 properly:
@@ -388,41 +422,23 @@ properly:
 >>> from django.core.cache import cache
 >>> cache.get("foo")
 >>> cache.set("foo", "bar")
-True
 >>> cache.get("foo")
 'bar'
 ```
 
-`bar` should be printed to the screen when `foo` is fetched from the
-cache.  If you don't see `bar` your cache is not configured correctly.
-
-### Optimize Performance
-
-Django has an unfortunate bug where it opens a new connection the
-memcached on every single request. This is particuarly bad with cloud
-services like MemCachier as a new connection requires authentication,
-and so is fairly expensive to setup.
-
-Due to this, we *strongly* recommend that you place the following code
-in your `wsgi.py` file to correct this serious performance bug
-([#11331](https://code.djangoproject.com/ticket/11331)) with Django
-and memcached. The fix enables persistent connections under Django:
-
-```python
-# Fix django closing connection to MemCachier after every request (#11331)
-from django.core.cache.backends.memcached import BaseMemcachedCache
-BaseMemcachedCache.close = lambda self, **kwargs: None
-```
+Exit with `ctrl-d`. After the second `get` command, `bar` should be printed to
+the screen when `foo` is fetched from the cache. If you don't see `bar` your
+cache is not configured correctly.
 
 ### Modify the application
 
 With a proper connection to memcache, the queue database query code can
 be modified to check the cache first.  Below is a new version of the
-`index` view in `django_queue/queue/views.py`:
+`index` view in `mc_queue/views.py`:
 
 ```python
+# ...
 from django.core.cache import cache
-from django.core.context_processors import csrf
 import time
 
 QUEUE_KEY = "queue"
@@ -430,18 +446,19 @@ QUEUE_KEY = "queue"
 def index(request):
   queue = cache.get(QUEUE_KEY)
   if not queue:
-    time.sleep(2) # simulate a slow query.
+    time.sleep(2)  # simulate a slow query.
     queue = QueueItem.objects.order_by("id")
     cache.set(QUEUE_KEY, queue)
   c = {'queue': queue}
   c.update(csrf(request))
   return render_to_response('index.html', c)
+# ...
 ```
 
 The above code first checks the cache to see if the `queue` key exists
 in the cache.  If it does not, a database query is executed and the
 cache is updated.  Subsequent pageloads will not need to perform the
-database query.  The `time.sleep(2)` queue exists to simulate a slow
+database query.  The `time.sleep(2)` only exists to simulate a slow
 query.
 
 You may notice that there's a bug in this code.  Visit
@@ -472,6 +489,7 @@ out of date -- namely, to modify the `add` and `remove` views to
 delete the `queue` key.  Below are the new methods:
 
 ```python
+# ...
 def add(request):
   item = QueueItem(text=request.POST["text"])
   item.save()
@@ -495,6 +513,7 @@ deleting it will allow the first pageload to avoid having to go to the
 database.  Here's a better version of the same code:
 
 ```python
+# ...
 def add(request):
   item = QueueItem(text=request.POST["text"])
   item.save()

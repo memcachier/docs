@@ -21,6 +21,7 @@ need to be approved before they are published.*
   - https://devcenter.heroku.com/articles/java-webapp-runner
   - https://devcenter.heroku.com/articles/caching-strategies
   - https://devcenter.heroku.com/articles/http-caching-ruby-rails
+  - https://devcenter.heroku.com/articles/increasing-application-performance-with-http-cache-headers
 
 ## MemCachier Owned
 

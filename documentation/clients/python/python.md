@@ -1,9 +1,12 @@
 
 ## Python
 
+Here we explain how you setup and install MemCachier with Python.
+
 **IF(direct)**
 <p class="alert alert-info">
-We support the <code>pylibmc</code> memcache client as it has great performance
+We recommend the <a href="https://github.com/lericson/pylibmc">pylibmc</a>
+memcache client as it has great performance
 and Python 3 support. However, it can sometimes be difficult to install locally
 as it relies on the C <code>libmemcached</code> library. If you prefer, you can
 try a pure python client, <a
@@ -13,17 +16,17 @@ href="https://github.com/jaysonsantos/python-binary-memcached">python-binary-mem
 
 **IF(heroku)**
 >callout
->We support the `pylibmc` memcache client as it has great performance and
+>We recommend the [pylibmc](https://github.com/lericson/pylibmc) memcache client
+>as it has great performance and
 >Python 3 support. However, it can sometimes be difficult to install locally as
 >it relies on the C `libmemcached` library. If you prefer, you can try a pure
 >python client,
 >[python-binary-memcached](https://github.com/jaysonsantos/python-binary-memcached).
 **ENDIF**
 
-Here we explain how you setup and install MemCachier with Python.
+### Recommended client: `pylibmc`
 
-MemCachier has been tested with the `pylibmc` memcache client. This
-client relies on the C libmemcached library. This should be fairly
+This client relies on the C libmemcached library. This should be fairly
 straight-forward to install with your package manager on Linux or
 Windows. We also have a
 [blog post](http://blog.memcachier.com/2014/11/05/ubuntu-libmemcached-and-sasl-support/)
@@ -43,7 +46,7 @@ Be sure to update your `requirements.txt` file with these new requirements
 (note that your versions may differ than what’s below):
 
 ```text
-pylibmc==1.5.1
+pylibmc==1.5.2
 ```
 
 **IF(direct)**
@@ -66,17 +69,18 @@ is prerequisite for installing <code>pylibmc</code>.
 >`libmemcached`, which is prerequisite for installing `pylibmc`.
 **ENDIF**
 
-Next, configure your settings.py file the following way:
+Next, configure your memcached client in the following way:
 
 ```python
 import pylibmc
+import os
 
 servers = os.environ.get('MEMCACHIER_SERVERS', '').split(',')
 user = os.environ.get('MEMCACHIER_USERNAME', '')
-pass = os.environ.get('MEMCACHIER_PASSWORD', '')
+passw = os.environ.get('MEMCACHIER_PASSWORD', '')
 
 mc = pylibmc.Client(servers, binary=True,
-                    username=user, password=pass,
+                    username=user, password=passw,
                     behaviors={
                       # Faster IO
                       "tcp_nodelay": True,
@@ -102,7 +106,7 @@ After this, you can start writing cache code in your Python app:
 
 ```python
 mc.set("foo", "bar")
-print mc.get("foo")
+print(mc.get("foo"))
 ```
 
 **IF(direct)**
@@ -127,3 +131,43 @@ diminishes at 1MB and higher.
 >sharding the data or using a different technology. The benefit of an
 >in-memory key-value store diminishes at 1MB and higher.
 **ENDIF**
+
+### Alternative client: `python-binary-memcached`
+
+This is a pure python client that supports the binary protocol and SASL
+authentication.
+
+To install `python-binary-memcached`:
+
+```term
+$ pip install python-binary-memcached
+```
+
+Be sure to update your `requirements.txt` file with these new requirements
+(note that your versions may differ than what’s below):
+
+```text
+python-binary-memcached==0.26.1
+```
+
+Next, configure your memcached client in the following way:
+
+```python
+import bmemcached
+import os
+
+servers = os.environ.get('MEMCACHIER_SERVERS', '').split(',')
+user = os.environ.get('MEMCACHIER_USERNAME', '')
+passw = os.environ.get('MEMCACHIER_PASSWORD', '')
+
+mc = bmemcached.Client(servers, username=user, password=passw)
+
+mc.enable_retry_delay(True)  # Enabled by default. Sets retry delay to 5s.
+```
+
+After this, you can start writing cache code in your Python app:
+
+```python
+mc.set("foo", "bar")
+print(mc.get("foo"))
+```

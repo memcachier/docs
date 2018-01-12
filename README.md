@@ -2,6 +2,22 @@
 
 MemCachier documentation.
 
+## Build docs
+
+To compile individual \*.md files into the final documentation execute:
+
+```shell
+$ ./build_docs.sh
+```
+
+This will create `doc.direct.md` with the documentation for our webpage and it
+will create the `memcachier.md` file with the Heroku documentation. Push the
+changes to Heroku:
+
+```shell
+$ devcenter push memcachier.md
+```
+
 ## Get involved!
 
 We are happy to receive bug reports, fixes, documentation
