@@ -23,7 +23,7 @@ with open(sys.argv[1]) as f:
             # NOTE: Heroku works slightly different. It seems to replace special
             # characters with a space and then squashes consecutive spaces
             # (just a guess).
-            h = re.sub("[\(\).:&]", " ", h)
+            h = re.sub("[\(\).:&\+]", " ", h)
             h = re.sub("\s+", "-", h.strip())
             set_header.add(h)
         # get used references
