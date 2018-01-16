@@ -18,7 +18,7 @@ in our <a href="/faq">FAQ</a>.
 
 1. [Supported Protocols: ASCII & Binary](#supported-protocols-ascii-binary)
 2. [Ruby](#ruby)
-3. [Rails 3 & 4](#rails-3-4)
+3. [Rails 3+ (includes Rails 4 & 5)](#rails-3-4)
 4. [Rails 2](#rails-2)
 5. [Ruby Puma Webserver](#ruby-puma-webserver)
 6. [Rack::Cache](#rails-rack-cache)
@@ -93,7 +93,7 @@ Next, setup your app to start using the cache. We have documentation
 for the following languages and frameworks:
 
 * [Ruby](#ruby)
-* [Rails 3 & 4](#rails-3-4)
+* [Rails 3+ (includes Rails 4 & 5)](#rails-3-4)
 * [Rails 2](#rails-2)
 * [Ruby Puma Webserver](#ruby-puma-webserver)
 * [Rack::Cache](#rails-rack-cache)

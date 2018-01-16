@@ -10,8 +10,8 @@ First, please refer to the documentation on [Rails](#rails-3-4) or
 [Ruby](#ruby) above appropriately, and then take these additional steps.
 
 Dalli by default uses a single connection to each server. This works fine
-normally, but can be come a bottleneck in a multi-threaded environment and
-limit performance. In this case, Dalli support connection pooling, where
+normally, but can become a bottleneck in a multi-threaded environment and
+limit performance. In this case, Dalli supports connection pooling, where
 multiple connections are created to MemCachier's servers. To use this, start by
 adding the `connection_pool` gem to your Gemfile:
 
@@ -20,7 +20,7 @@ gem 'connection_pool'
 ```
 
 Next, you'll need to set the `:pool_size` configuration option when setting up
-Dalli. For example, in Rails 3 & 4 your configuration would become:
+Dalli. For example, in Rails your configuration would become:
 
 ```ruby
 config.cache_store = :dalli_store,

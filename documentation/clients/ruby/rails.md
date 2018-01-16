@@ -1,5 +1,5 @@
 
-## Rails 3 & 4
+## Rails 3+ (includes Rails 4 & 5)
 
 **IF(direct)**
 <p class="alert alert-info">
