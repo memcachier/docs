@@ -13,7 +13,7 @@ This article mainly targets *Python 3* since *Django 2* no longer supports
 *Python 2*. If you want to use Python 2 with an older version of Django this
 guide should however still work.
 
->callout
+>note
 >We’ve built a sample app that can be seen running
 >[here](http://memcachier-examples-django2.herokuapp.com).<br>
 ><a class="github-source-code" href="http://github.com/memcachier/examples-django2">Source code</a> or
@@ -39,7 +39,7 @@ explanation of these commands can be found in
 
 ```term
 $ mkdir django_queue && cd django_queue
-$ virtualenv venv
+$ python -m venv venv    # For Python 2 use `virtualenv venv`
 $ source venv/bin/activate
 $ pip install Django django-heroku gunicorn
 $ django-admin.py startproject django_queue .

@@ -25,7 +25,7 @@
 # Django support
 
 | Django integration | Client | Supported / Documented | Version | Activity | Stars |
-| ---                | ---    | ---       | ---     | ---      | ---   |
+| ---                | ---    | ---                    | ---     | ---      | ---   |
 | native | pylibmc | yes / yes* | ![release](https://img.shields.io/pypi/v/django.svg?maxAge=3600) | ![commit](https://img.shields.io/github/last-commit/django/django/master.svg?maxAge=3600) | ![stars](https://img.shields.io/github/stars/django/django.svg?style=social&maxAge=3600) |
 | native | python-memcached | no / no | ![release](https://img.shields.io/pypi/v/django.svg?maxAge=3600) | ![commit](https://img.shields.io/github/last-commit/django/django/master.svg?maxAge=3600) | ![stars](https://img.shields.io/github/stars/django/django.svg?style=social&maxAge=3600) |
 | [django-pylibmc](https://github.com/django-pylibmc/django-pylibmc)<sup>3</sup> | pylibmc | yes / limited<sup>4</sup> | ![release](https://img.shields.io/pypi/v/django-pylibmc.svg?maxAge=3600) | ![commit](https://img.shields.io/github/last-commit/django-pylibmc/django-pylibmc/master.svg?maxAge=3600) | ![stars](https://img.shields.io/github/stars/django-pylibmc/django-pylibmc.svg?style=social&maxAge=3600) |
