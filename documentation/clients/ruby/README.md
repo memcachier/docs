@@ -22,18 +22,23 @@
 <sup>2</sup> We should check if we can support and document this client because
 it is supposedly [faster](https://github.com/basecamp/memcached_bench).
 
-# Rails support
+# Web frameworks
 
-| Rails integration | Client | Supported / Documented | Version | Activity | Stars |
+We document Rails and Sinatra. See popularity
+[here](http://www.timqian.com/star-history/#rails/rails&sinatra/sinatra).
+
+## Rails
+
+| Integration | Client | Supported / Documented | Version | Activity | Stars |
 | ---               | ---    | ---                    | ---     | ---      | ---   |
 | native | dalli | yes / yes* | ![release](https://img.shields.io/gem/v/rails.svg?maxAge=3600) | ![commit](https://img.shields.io/github/last-commit/rails/rails/master.svg?maxAge=3600) | ![stars](https://img.shields.io/github/stars/rails/rails.svg?style=social&maxAge=3600) |
 | [memcached_store](https://github.com/Shopify/memcached_store) | memcached | ? / no | ![release](https://img.shields.io/gem/v/memcached_store.svg?maxAge=3600) | ![commit](https://img.shields.io/github/last-commit/Shopify/memcached_store/master.svg?maxAge=3600) | ![stars](https://img.shields.io/github/stars/Shopify/memcached_store.svg?style=social&maxAge=3600) |
 
 \* Recommended.
 
-# Sinatra support
+## Sinatra
 
-| Sinatra integration | Client | Supported / Documented | Version | Activity | Stars |
+| Integration | Client | Supported / Documented | Version | Activity | Stars |
 | ---                 | ---    | ---                    | ---     | ---      | ---   |
 | native<sup>3</sup> | dalli | yes / no<sup>4</sup> | ![release](https://img.shields.io/gem/v/sinatra.svg?maxAge=3600) | ![commit](https://img.shields.io/github/last-commit/sinatra/sinatra/master.svg?maxAge=3600) | ![stars](https://img.shields.io/github/stars/sinatra/sinatra.svg?style=social&maxAge=3600) |
 | native<sup>3</sup> | memcached | ? / no | ![release](https://img.shields.io/gem/v/sinatra.svg?maxAge=3600) | ![commit](https://img.shields.io/github/last-commit/sinatra/sinatra/master.svg?maxAge=3600) | ![stars](https://img.shields.io/github/stars/sinatra/sinatra.svg?style=social&maxAge=3600) |

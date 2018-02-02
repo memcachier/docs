@@ -22,9 +22,14 @@
 <sup>2</sup> Only one server.  
 <sup>3</sup> C++ bindings.
 
-# Django support
+# Web frameworks
 
-| Django integration | Client | Supported / Documented | Version | Activity | Stars |
+We document Django and should add documentation for Flask. See popularity
+[here](http://www.timqian.com/star-history/#django/django&pallets/flask).
+
+## Django
+
+| Integration | Client | Supported / Documented | Version | Activity | Stars |
 | ---                | ---    | ---                    | ---     | ---      | ---   |
 | native | pylibmc | yes / yes* | ![release](https://img.shields.io/pypi/v/django.svg?maxAge=3600) | ![commit](https://img.shields.io/github/last-commit/django/django/master.svg?maxAge=3600) | ![stars](https://img.shields.io/github/stars/django/django.svg?style=social&maxAge=3600) |
 | native | python-memcached | no / no | ![release](https://img.shields.io/pypi/v/django.svg?maxAge=3600) | ![commit](https://img.shields.io/github/last-commit/django/django/master.svg?maxAge=3600) | ![stars](https://img.shields.io/github/stars/django/django.svg?style=social&maxAge=3600) |
@@ -37,9 +42,9 @@
 <sup>4</sup> Documented in example README.  
 <sup>5</sup> Only one server.
 
-# Helper libraries
+### Helper libraries
 
-## memcachify:
+**memcachify:**  
 ![release](https://img.shields.io/github/tag/rdegges/django-heroku-memcacheify.svg?maxAge=3600) ![commit](https://img.shields.io/github/last-commit/rdegges/django-heroku-memcacheify/master.svg?maxAge=3600) ![stars](https://img.shields.io/github/stars/rdegges/django-heroku-memcacheify.svg?style=social&maxAge=3600)
 
 Sets up `django-pylibmc` with `pylibmc` for MemCachier on Heroku.
