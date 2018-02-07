@@ -48,6 +48,7 @@ Useful [comparison](https://coderseye.com/best-php-frameworks-for-web-developers
 | [MEAN.io](https://github.com/linnovate/mean) | ![stars](https://img.shields.io/github/stars/linnovate/mean.svg?style=social&maxAge=3600) | no | no |
 | [LoopBack](https://github.com/strongloop/loopback) | ![stars](https://img.shields.io/github/stars/strongloop/loopback.svg?style=social&maxAge=3600) | no | no |
 | [fastify](https://github.com/fastify/fastify) | ![stars](https://img.shields.io/github/stars/fastify/fastify.svg?style=social&maxAge=3600) | no | **TODO** |
+| [nest](https://github.com/nestjs/nest) | ![stars](https://img.shields.io/github/stars/nestjs/nest.svg?style=social&maxAge=3600) | no | no |
 
 Useful [list](http://nodeframework.com/)
 
