@@ -15,7 +15,7 @@ cat documentation/clients/php/wordpress.md >> doc.md
 cat documentation/clients/php/cake_php.md >> doc.md
 cat documentation/clients/php/symfony2.md >> doc.md
 cat documentation/clients/php/laravel.md >> doc.md
-cat documentation/clients/js/node_js.md >> doc.md
+cat documentation/clients/node.js/node_js.md >> doc.md
 cat documentation/clients/java/java.md >> doc.md
 cat documentation/clients/supported_clients.md >> doc.md
 cat documentation/clients/sample_apps.md >> doc.md
