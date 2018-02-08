@@ -81,7 +81,7 @@ public class Foo {
 **IF(heroku)**
           AddrUtil.getAddresses(System.getenv("MEMCACHIER_SERVERS")));
 **ENDIF**
-      mc.set("foo", "bar");
+      mc.set("foo", 0, "bar");
       System.out.println(mc.get("foo"));
     } catch (IOException ioe) {
       System.err.println("Couldn't create a connection to MemCachier: \nIOException "
