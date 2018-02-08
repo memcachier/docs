@@ -71,6 +71,7 @@ Useful [comparison](https://blog.usejournal.com/top-6-web-frameworks-for-go-as-o
 | ---       | ---   | ---                  | ---    |
 | [Spring Boot](https://github.com/spring-projects/spring-boot) | ![stars](https://img.shields.io/github/stars/spring-projects/spring-boot.svg?style=social&maxAge=3600) | [yes](https://devcenter.heroku.com/articles/deploying-spring-boot-apps-to-heroku) | **TODO** |
 | [Tomcat](https://github.com/apache/tomcat) | ![stars](https://img.shields.io/github/stars/apache/tomcat.svg?style=social&maxAge=3600) | [yes](https://devcenter.heroku.com/articles/java-webapp-runner) | no |
+| [Jetty](https://github.com/eclipse/jetty.project) | ![stars](https://img.shields.io/github/stars/eclipse/jetty.project.svg?style=social&maxAge=3600) | [yes](https://devcenter.heroku.com/articles/deploy-a-java-web-application-that-launches-with-jetty-runner) | no |
 | [Spark](https://github.com/perwendel/spark) | ![stars](https://img.shields.io/github/stars/perwendel/spark.svg?style=social&maxAge=3600) | no | no |
 
 
