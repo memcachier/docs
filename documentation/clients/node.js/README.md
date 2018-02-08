@@ -2,7 +2,7 @@
 
 | Name | Library | Framework | Deploy |
 | ---  | ---     | ---       | ---    |
-| [Set value](https://github.com/memcachier/examples-node) | `memjs` | express | [![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=https://github.com/memcachier/examples-node) |
+| [Set value](https://github.com/memcachier/examples-node) | `memjs-0.9.x` | `express-3.4.8` | [![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=https://github.com/memcachier/examples-node) |
 
 # Node.js clients
 
