@@ -10,6 +10,7 @@
 | ---     | ---                    | ---           | ---     | ---      | ---   |
 | [spymemcached](https://github.com/dustin/java-memcached-client) ([mirror](https://github.com/couchbase/spymemcached)) | yes / yes\* | yes / yes |  ![release](https://img.shields.io/maven-central/v/net.spy/spymemcached.svg?maxAge=3600) | ![commit](https://img.shields.io/github/last-commit/dustin/java-memcached-client/master.svg?maxAge=3600) | ![stars](https://img.shields.io/github/stars/dustin/java-memcached-client.svg?style=social&maxAge=3600) |
 | [Xmemcached](https://github.com/killme2008/xmemcached) | yes / no | yes / yes |  ![release](https://img.shields.io/maven-central/v/com.googlecode.xmemcached/xmemcached.svg?maxAge=3600) | ![commit](https://img.shields.io/github/last-commit/killme2008/xmemcached/master.svg?maxAge=3600) | ![stars](https://img.shields.io/github/stars/killme2008/xmemcached.svg?style=social&maxAge=3600) |
+| [Memcached-Java-Client](https://github.com/gwhalin/Memcached-Java-Client) | no / no | yes / no |  ![release](https://img.shields.io/maven-central/v/com.whalin/Memcached-Java-Client.svg?maxAge=3600) | ![commit](https://img.shields.io/github/last-commit/gwhalin/Memcached-Java-Client/master.svg?maxAge=3600) | ![stars](https://img.shields.io/github/stars/gwhalin/Memcached-Java-Client.svg?style=social&maxAge=3600) |
 
 \* Recommended.  
 
