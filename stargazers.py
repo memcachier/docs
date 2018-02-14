@@ -68,7 +68,12 @@ repos_top = (repos_ruby[0:1] + repos_python[0:2] + repos_php[0:1] +
              repos_node[0:1] + repos_go[0:1] + repos_java[0:1] +
              repos_rust[0:1])
 
+repos_all = (repos_ruby + repos_python + repos_php + repos_node + repos_go +
+             repos_java + repos_scala + repos_clojure + repos_kotlin +
+             repos_rust)
+
 all_stars = {}
+growth = []
 
 for repo in repos_top:
     page_number = 1
@@ -150,10 +155,13 @@ for repo in repos_top:
 
     all_stars[repo] = (month_list, starred_list)
 
+    growth.append((repo, sum(starred_list[-3:]), sum(starred_list[:-3])))
+
 plt.rc('axes', prop_cycle=(
     cycler('color', ['r', 'g', 'b', 'y', 'c', 'k']*4) +
     cycler('linestyle', ['-']*6 + ['--']*6 + [':']*6 + ['-.']*6)))
 
+# Plot monthly stars
 leg = all_stars.keys()
 for repo in leg:
     plt.figure(1)
@@ -165,4 +173,20 @@ plt.figure(1)
 plt.legend(leg)
 plt.figure(2)
 plt.legend(leg)
+
+# Plot growth
+growth.sort(key=lambda x: -x[1])
+x = range(1, len(growth)+1)
+lables = [l for (l, _, _) in growth]
+grow = [g for (_, g, _) in growth]
+tot = [t for (_, _, t) in growth]
+
+fig, ax = plt.subplots()
+ax.bar(x, grow)
+ax.bar(x, tot, bottom=grow)
+ax.set_yscale("log", nonposy='clip')
+plt.xticks(x, lables, rotation='vertical')
+plt.subplots_adjust(bottom=0.3)
+plt.legend(['Stars added in last 3 month', 'Stars added before'])
+
 plt.show()
