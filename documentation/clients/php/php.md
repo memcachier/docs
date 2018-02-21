@@ -142,16 +142,32 @@ It should contain the following:
 
 ```php
 session.save_handler=memcached
-memcached.sess_binary=1
 **IF(direct)**
-session.save_path="PERSISTENT=myapp_session <MEMCACHIER_SERVERS>"
 memcached.sess_sasl_username=<MEMCACHIER_USERNAME>
 memcached.sess_sasl_password=<MEMCACHIER_PASSWORD>
 **ENDIF**
 **IF(heroku)**
-session.save_path="PERSISTENT=myapp_session ${MEMCACHIER_SERVERS}"
 memcached.sess_sasl_username=${MEMCACHIER_USERNAME}
 memcached.sess_sasl_password=${MEMCACHIER_PASSWORD}
+**ENDIF**
+
+; PHP 7
+memcached.sess_binary_protocol=1
+**IF(direct)**
+session.save_path=<MEMCACHIER_SERVERS>
+**ENDIF**
+**IF(heroku)**
+session.save_path="${MEMCACHIER_SERVERS}"
+**ENDIF**
+memcached.sess_persistent=On
+
+; PHP 5 (uncomment the following and replace PHP 7 section above)
+;memcached.sess_binary=1
+**IF(direct)**
+;session.save_path="PERSISTENT=myapp_session <MEMCACHIER_SERVERS>"
+**ENDIF**
+**IF(heroku)**
+;session.save_path="PERSISTENT=myapp_session ${MEMCACHIER_SERVERS}"
 **ENDIF**
 ```
 
