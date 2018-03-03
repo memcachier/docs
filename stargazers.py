@@ -13,17 +13,23 @@ from urllib.request import Request, urlopen
 import datetime
 import time
 from matplotlib import pyplot as plt
-from datetime import date
+from datetime import date, timedelta
 import pickle
 import numpy as np
 from cycler import cycler
+from urllib.error import HTTPError
 
 access_token = "<YOUR_PERSONAL_ACCESS_TOKEN>"
 
 repos_ruby = ["rails/rails",
               "sinatra/sinatra"]
 repos_python = ["django/django",
-                "pallets/flask"]
+                "pallets/flask",
+                "tornadoweb/tornado",
+                "channelcat/sanic",
+                "bottlepy/bottle",
+                "plotly/dash",
+                "Pylons/pyramid"]
 repos_php = ["laravel/laravel",
              "symfony/symfony",
              "bcit-ci/CodeIgniter",
@@ -42,6 +48,7 @@ repos_node = ["expressjs/express",
               "keystonejs/keystone",
               "linnovate/mean",
               "strongloop/loopback",
+              "hapijs/hapi",
               "fastify/fastify",
               "nestjs/nest"]
 repos_go = ["gin-gonic/gin",
@@ -75,14 +82,15 @@ repos_all = (repos_ruby + repos_python + repos_php + repos_node + repos_go +
 all_stars = {}
 growth = []
 
-for repo in repos_top:
+for repo in repos_python:
     page_number = 1
     stars_remaining = True
     stargazers = {}
+    num_stargazers = 0
 
     print("Getting stargazers for", repo)
 
-    pickle_name = './pickles/' + repo.split("/")[1] + '.pickle'
+    pickle_name = './stargazers/pickles/' + repo.split("/")[1] + '.pickle'
     try:
       f = open(pickle_name, 'rb')
       print('Load ' + pickle_name)
@@ -92,11 +100,21 @@ for repo in repos_top:
       pass
 
     while stars_remaining:
-      query_url = "https://api.github.com/repos/%s/stargazers?page=%s&access_token=%s" % (repo, page_number, access_token)
+      query_url = "https://api.github.com/repos/%s/stargazers?page=%s&per_page=100&access_token=%s" % (repo, page_number, access_token)
 
       req = Request(query_url)
       req.add_header('Accept', 'application/vnd.github.v3.star+json')
-      response = urlopen(req)
+      try:
+          response = urlopen(req)
+      except HTTPError as e:
+          # We get a 422 when repos have more than 40k stars
+          query_url = "https://api.github.com/repos/%s?access_token=%s" % (repo, access_token)
+          req = Request(query_url)
+          req.add_header('Accept', 'application/vnd.github.v3.star+json')
+          response = urlopen(req)
+          data = json.loads(response.read())
+          num_stargazers = data['stargazers_count']
+          break
 
       data = json.loads(response.read())
 
@@ -115,7 +133,7 @@ for repo in repos_top:
         pickle.dump(stargazers, f)
         print('Saved ' + pickle_name + ' with ' + str(page_number) + ' pages')
 
-      if len(data) < 30:
+      if len(data) < 100:
         stars_remaining = False
 
       page_number += 1
@@ -123,17 +141,52 @@ for repo in repos_top:
     # save
     f = open(pickle_name, 'wb')
     pickle.dump(stargazers, f)
+    if num_stargazers > 0:
+      print("- There are more than 40k stars: saving count")
+      pickle_name = './stargazers/' + repo.split("/")[1] + '.pickle'
+      stars = {}
+      try:
+        f = open(pickle_name, 'rb')
+        print('- Load ' + pickle_name)
+        stars = pickle.load(f)
+      except IOError:
+        pass
+      stars[date.today()] = num_stargazers
+      f = open(pickle_name, 'wb')
+      pickle.dump(stars, f)
 
     print("Done getting stargazers for", repo)
 
     starred_month = {}
+    max_date = date(2000, 1,1)
     for stargazer_page in stargazers.values():
       for (_,t) in stargazer_page:
+        dt = date(t.year, t.month, t.day)
+        if dt > max_date:
+          max_date = dt
         d = date(t.year, t.month, 1)
         try:
           starred_month[d] += 1
         except KeyError:
           starred_month[d] = 1
+
+    if num_stargazers > 0:
+      tot_stars = sum(starred_month.values()) # should be 40k
+      for s in sorted(stars.keys()):
+          diff_stars = stars[s] - tot_stars
+          diff_days = (s - max_date).days
+          if diff_days > 0:
+              stars_per_day = diff_stars/diff_days
+              for nd in range(1, diff_days+1):
+                  t = max_date + timedelta(days=nd)
+                  d = date(t.year, t.month, 1)
+                  try:
+                    starred_month[d] += stars_per_day
+                  except KeyError:
+                    starred_month[d] = stars_per_day
+          # move to next date
+          tot_stars = stars[s]
+          max_date = s
 
     start = min(starred_month.keys())
     end = date.today()
@@ -185,6 +238,7 @@ fig, ax = plt.subplots()
 ax.bar(x, grow)
 ax.bar(x, tot, bottom=grow)
 ax.set_yscale("log", nonposy='clip')
+ax.set_ylim([1,max(tot)*2])
 plt.xticks(x, lables, rotation='vertical')
 plt.subplots_adjust(bottom=0.3)
 plt.legend(['Stars added in last 3 month', 'Stars added before'])
