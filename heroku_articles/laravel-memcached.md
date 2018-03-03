@@ -11,9 +11,9 @@ performance bottleneck.
 
 >note
 >The sample sample app built in this guide can be seen running
->[here](http://memcachier-examples-django2.herokuapp.com).<br>
-><a class="github-source-code" href="http://github.com/memcachier/examples-django2">Source code</a> or
-[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=http://github.com/memcachier/examples-django2)
+>[here](https://memcachier-examples-laravel.herokuapp.com/).<br>
+><a class="github-source-code" href="http://github.com/memcachier/examples-laravel">Source code</a> or
+[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=http://github.com/memcachier/examples-laravel)
 
 ## Prerequisites
 
