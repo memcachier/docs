@@ -10,7 +10,7 @@ application, deploy it to Heroku, then add caching with Memcache to alleviate a
 performance bottleneck.
 
 >note
->We’ve built a sample app that can be seen running
+>The sample sample app built in this guide can be seen running
 >[here](http://memcachier-examples-django2.herokuapp.com).<br>
 ><a class="github-source-code" href="http://github.com/memcachier/examples-django2">Source code</a> or
 [![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=http://github.com/memcachier/examples-django2)
@@ -36,10 +36,8 @@ We will start by bootstrapping a Laravel skeleton app:
 
 ```term
 $ composer create-project laravel/laravel --prefer-dist laravel_memcache
-Installing laravel/laravel (v5.1.11)
-  - Installing laravel/laravel (v5.1.11)
-    Downloading: 100%         
-
+Installing laravel/laravel (v5.6.0)
+  - Installing laravel/laravel (v5.6.0): Loading from cache
 Created project in laravel_memcache
 ...
 
@@ -57,7 +55,7 @@ $ echo web: vendor/bin/heroku-php-apache2 public/ > Procfile
 ```
 
 Second, your application needs to trust the Heroku proxies. For this, change
-`$proxies` and `$headers` in `app/Http/Middleware/TrustProxy.php` as follows:
+`$proxies` and `$headers` in `app/Http/Middleware/TrustProxies.php` as follows:
 
 ```php
 // ...
@@ -81,11 +79,11 @@ and commit the work we have done so far:
 
 ```term
 $ git init
-Initialized empty Git repository in ~/hello_laravel_heroku/.git/
+Initialized empty Git repository in ~/laravel_memcache/.git/
 $ git add .
 $ git commit -m "Laravel skeleton for Heroku"
-[master (root-commit) 6ae139d] new laravel project
- 76 files changed, 5458 insertions(+)
+[master (root-commit) 3099e3b] Laravel skeleton for Heroku
+ 84 files changed, 7077 insertions(+)
 ...
 ```
 
@@ -106,7 +104,7 @@ Laravel encryption key:
 ```term
 $ heroku config:set APP_KEY=$(php artisan key:generate --show)
 Setting APP_KEY and restarting ⬢ serene-castle-14546... done, v3
-APP_KEY: E8Ay5w611tCLkqLnGSualCypRR+s8PGSfK20M+0HNIU=
+APP_KEY: base64:E8Ay5w611tCLkqLnGSualCypRR+s8PGSfK20M+0HNIU=
 ```
 
 Second, you need to configure the logger to write to `errorlog`:
@@ -126,46 +124,20 @@ Next, it's time to deploy to Heroku:
 
 ```term
 $ git push heroku master
-Counting objects: 4, done.
+Counting objects: 113, done.
 Delta compression using up to 4 threads.
-Compressing objects: 100% (4/4), done.
-Writing objects: 100% (4/4), 379 bytes | 0 bytes/s, done.
-Total 4 (delta 3), reused 0 (delta 0)
+Compressing objects: 100% (95/95), done.
+Writing objects: 100% (113/113), 181.42 KiB | 5.85 MiB/s, done.
+Total 113 (delta 9), reused 0 (delta 0)
 remote: Compressing source files... done.
 remote: Building source:
 remote:
 remote: -----> Fetching custom git buildpack... done
 remote: -----> PHP app detected
-remote: -----> Resolved 'composer.lock' requirement for PHP to version 5.6.14.
-remote: -----> Installing system packages...
-remote:        - PHP 5.6.14
-remote:        - Apache 2.4.10
-remote:        - Nginx 1.6.0
-remote: -----> Installing PHP extensions...
-remote:        - mbstring (composer.lock; bundled)
-remote:        - zend-opcache (automatic; bundled)
-remote: -----> Installing dependencies...
-remote:        Composer version 1.0.0-alpha10 2015-04-14 21:18:51
-remote:        Loading composer repositories with package information
-remote:        Installing dependencies from lock file
 ...
-remote:          - Installing laravel/framework (v5.1.19)
-remote:            Downloading: 100%
-remote:        
-remote:        Generating optimized autoload files
-remote:        Generating optimized class loader
-remote:        Compiling common classes
-remote: -----> Preparing runtime environment...
-remote: -----> Discovering process types
-remote:        Procfile declares types -> web
-remote:
-remote: -----> Compressing... done, 74.5MB
-remote: -----> Launching... done, v5
-remote:        https://serene-castle-14546.herokuapp.com/ deployed to Heroku
-remote:
 remote: Verifying deploy... done.
 To https://git.heroku.com/serene-castle-14546.git
-   1eb2be6..1b70999  master -> master
+ * [new branch]      master -> master
 ```
 
 And that's it! Type `heroku open` to see the application in your browser.
@@ -240,6 +212,9 @@ connection in `config/database.php`:
 ```
 
 To use this connection locally, set `DB_CONNECTION=sqlite` in the `.env` file.
+Additionally, to make sure artisan does not complain about setting up pgsql from
+non-existing parameters, you can also set a dummy database URL:
+`DATABASE_URL=postgres://u:p@localhost:5432/dummy-db`.
 
 Save the changes so far by committing:
 
@@ -275,18 +250,25 @@ $ php artisan make:model Task
 This will create an empty `Task` model in `app/Task.php`. Don't worry about it,
 Laravel will infer it's fields from the migration.
 
-In case you set up SQLite locally, run the migrations (optional):
+In case you set up SQLite locally, create the database and run the migrations
+(optional):
 
 ```term
-$ php artisan migrate
+$ touch database/database.sqlite
+$ php artisan migrate --force
 ```
 
 Finally, commit and run the migrations on Heroku:
 
 ```term
-$ git commit -am 'Add task model'
+$ git add .
+$ git commit -m 'Add task model'
 $ git push heroku master
-$ heroku run php artisan migrate
+$ heroku run php artisan migrate --force
+...
+Do you really wish to run this command? (yes/no) [no]:
+> y
+...
 ```
 
 ### Add the view tasks functionality
@@ -364,10 +346,10 @@ The task view can now be created as a child view of our layout:
         </div>
       </div>
     @endif
+
+    <!-- TODO: Memcached Stats Card -->
+
   </div>
-
-  <!-- TODO: Memcached Stats Card -->
-
 @endsection
 ```
 
@@ -489,7 +471,7 @@ Route::post('/task', function (Request $request) {
 });
 ```
 
-Now starting a local web server with `php artisan serve` and visit
+Now starting a local web server with `php artisan serve` and visiting
 `localhost:8000` will be a bit more interesting as you can add actual tasks.
 However, to complete our task list we need to be able to remove completed tasks.
 
@@ -534,10 +516,13 @@ Route::delete('/task/{task}', function (Task $task) {
 Now we can push the changes to Heroku and see the result:
 
 ```term
-$ git commit -am 'Add task view'
+$ git add .
+$ git commit -m 'Add task view'
 $ git push heroku master
 $ heroku open
 ```
+
+Having a working task list, it is time to learn how to use memcache.
 
 ## Add caching to Laravel
 
@@ -561,18 +546,19 @@ cache. You can easily get one for free with the
 $ heroku addons:create memcachier:dev
 ```
 
-To set up memcached in Laravel we first need to add dependency to
+Before you can use memcached on your local machine, you need to install the
+`php-memcached` PECL extention via your OS package manager. Then you need to
+uncomment `;extension=memcached.so` in `/etc/php/conf.d/memcached.ini`. On
+Heroku this dependency is already installed and configured.
+
+Now, to set up memcached in Laravel we need to add dependency to
 `composer.json`:
 
 ```term
 $ composer require ext-memcached
 ```
 
-On Heroku this dependency will work out of the box. On your local machine
-however, you will need to install `php-memcached` and uncomment
-`;extension=memcached.so` in `/etc/php/conf.d/memcached.ini`.
-
-Now we need to config the cache in `config/cache.php`:
+Then we need to config the cache in `config/cache.php`:
 
 ```php
 'memcached' => [
@@ -602,11 +588,11 @@ Now we need to config the cache in `config/cache.php`:
     ],
     'servers' => array_map(function($s) {
         $parts = explode(":", $s);
-        return
+        return [
             'host' => $parts[0],
             'port' => $parts[1],
             'weight' => 100,
-        ]
+        ];
       }, explode(",", env('MEMCACHIER_SERVERS', 'localhost:11211')))
 ],
 ```
@@ -734,18 +720,22 @@ $ heroku open
 
 You can see that the first time you access the page, the `Get misses` increase
 by one. This is because the first time `rememberForever` is called, the task
-list is not in the cache. The set command also increased because the task list
+list is not in the cache. The `Set commands` also increased because the task list
 got saved to the cache. If you refresh the page, the misses will stay the same
 but the `Get hits` will increase. Now the task list is served from the cache.
 When you add a new task or delete a cache you will see that your misses will
 increase again since the cache was invalidated.
+
+Note: if you want to see stats in your local setup, you will need to set
+`CACHE_DRIVER=memcached` in your `.env` file and either run a `memcached` server
+locally or configure the `MEMCACHIER_*` variables accordingly.
 
 ### Use memcached for session storage
 
 On Heroku it is a good idea to store sessions in memcached instead of in a file
 on disk because dynos only have an ephemeral filesystem that is not persistent
 across dyno restarts. Memcached works well for sessions that time out, however,
-since memcached is a cache and thus not persistent saving long-lived
+since memcached is a cache and thus not persistent, saving long-lived
 sessions in memcached might not be ideal. For long-lived sessions consider a
 permanent storage option such as you database.
 
@@ -770,7 +760,7 @@ CPU intensive task.
 > Do not cache partials that include forms with CSRF tokens.
 
 Our example does not have any complex partials but for the sake of this
-tutorial let us assume that rendering the task name in the task list is takes a
+tutorial let us assume that rendering the task name in the task list takes a
 lot of CPU cycles and slows down our page.
 
 First, we need to add the package to our app:
@@ -815,7 +805,8 @@ task with `PartialCache::forget('task.name', $task->id);`.
 Let us see the effect of caching the task name partials in our application:
 
 ```term
-$ git commit -am 'Cache task name partial'
+$ git add .
+$ git commit -m 'Cache task name partial'
 $ git push heroku master
 $ heroku open
 ```
