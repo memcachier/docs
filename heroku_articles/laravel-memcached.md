@@ -12,8 +12,8 @@ performance bottleneck.
 >note
 >The sample sample app built in this guide can be seen running
 >[here](https://memcachier-examples-laravel.herokuapp.com/).<br>
-><a class="github-source-code" href="http://github.com/memcachier/examples-laravel">Source code</a> or
-[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=http://github.com/memcachier/examples-laravel)
+><a class="github-source-code" href="http://github.com/memcachier/examples-laravel-heroku">Source code</a> or
+[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=http://github.com/memcachier/examples-laravel-heroku)
 
 ## Prerequisites
 
