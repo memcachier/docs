@@ -22,7 +22,7 @@ package.
 **IF(heroku)**
 >callout
 >We’ve built a small Django example.
-><a class="github-source-code" href="http://github.com/memcachier/examples-django">Source code</a> or
+><a class="github-source-code" href="http://github.com/memcachier/examples-django2">Source code</a> or
 >[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=http://github.com/memcachier/examples-django2).
 ><br>
 >We also have a tutorial on using Django and MemCachier together
