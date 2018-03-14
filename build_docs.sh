@@ -11,10 +11,10 @@ cat documentation/clients/ruby/rack.md >> doc.md
 cat documentation/clients/python/python.md >> doc.md
 cat documentation/clients/python/django.md >> doc.md
 cat documentation/clients/php/php.md >> doc.md
-cat documentation/clients/php/wordpress.md >> doc.md
-cat documentation/clients/php/cake_php.md >> doc.md
-cat documentation/clients/php/symfony2.md >> doc.md
 cat documentation/clients/php/laravel.md >> doc.md
+cat documentation/clients/php/symfony2.md >> doc.md
+cat documentation/clients/php/cake_php.md >> doc.md
+cat documentation/clients/php/wordpress.md >> doc.md
 cat documentation/clients/node.js/node_js.md >> doc.md
 cat documentation/clients/java/java.md >> doc.md
 cat documentation/clients/supported_clients.md >> doc.md

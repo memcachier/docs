@@ -26,15 +26,20 @@ MemCachier. It supports the full protocol and has great performance.
 **IF(direct)**
 We also recommend that you use the [composer dependency
 manager](https://getcomposer.org/) for PHP, although that is up to you.
+**ENDIF**
 
-It can be difficult to get the memcached client to work as it requires that you
-build it against a version of libmemcached (a C library that the PHP client
-relies upon) that support SASL authentication, which often isn't enabled by
-default. If you have trouble, please open a [support
-ticket](http://support.memcachier.com/) with us. Alternatively, you could use a
-[pure PHP client](#alternative-php-client----memcachesasl) that MemCachier
-supports, instructions on how are [here](#alternative-php-client----memcachesasl).
+The `php-memcached` client is not a pure PHP client but a PECL extention that
+makes use of `libmemcached`. You thus need to install `php-memcached` via your
+OS package manager. In older operating systems you have to make sure libmemcached
+has SASL authentication support enabled but for newer operating systems such as
+Ubuntu 16.04 this is the default. After the installation you need to uncomment
+`;extension=memcached.so` in `/etc/php/conf.d/memcached.ini` for the extention
+to work.
+**IF(heroku)**
+On Heroku this dependency is already installed and configured.
+**ENDIF**
 
+**IF(direct)**
 First, if using composer, you'll need to modify your `composer.json` file to
 include the module:
 **ENDIF**
