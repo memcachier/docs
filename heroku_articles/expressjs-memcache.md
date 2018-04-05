@@ -1,29 +1,33 @@
 
-Memcached is a technology that helps web apps and mobile app backends
-in two main ways: *performance* and *scalability*. You should consider
-using memcache when your pages are loading too slowly or your app is
-having scalability issues. Even for small sites it can be a great
-technology, making page loads snappy and future proofing for scale.
+Memcached is a technology that improves the performance and scalability of web
+apps and mobile app backends. You should consider
+using Memcached when your pages are loading too slowly or your app is
+having scalability issues. Even for small sites, Memcached can make page loads
+snappy and help future-proof your app.
 
-This guide will show you how to create a simple [Express 4](https://expressjs.com/)
-application, deploy it on Heroku, then add caching with Memcache to alleviate a
+This guide shows how to create a simple [Express 4](https://expressjs.com/)
+application, deploy it to Heroku, then add Memcached to alleviate a
 performance bottleneck.
 
 >note
->The sample sample app built in this guide can be seen running
->[here](https://memcachier-examples-expressjs.herokuapp.com/).<br>
-><a class="github-source-code" href="http://github.com/memcachier/examples-expressjs">Source code</a> or
-[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=http://github.com/memcachier/examples-expressjs)
+>The sample app in this guide can be seen running
+>[here](https://memcachier-examples-expressjs.herokuapp.com/). You can
+>[view the source code](http://github.com/memcachier/examples-expressjs) or
+>deploy it with this Heroku Button:
+>
+>[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=http://github.com/memcachier/examples-expressjs)
 
 ## Prerequisites
+Before you complete the steps in this guide, make sure you have all of the following:
 
-* Node.js (and ideally some Express.js) knowledge.
-* A Heroku user account. [Signup is free and instant.](https://signup.heroku.com/signup/dc)
-* Familiarity with the [Getting Started on Heroku with Node.js](getting-started-with-nodejs)
-guide, with `npm`, and the [Heroku CLI](https://cli.heroku.com) installed
+* Familiarity with Node.js (and ideally Express.js)
+* A Heroku user account ([signup is free and instant](https://signup.heroku.com/signup/dc))
+* Familiarity with the steps in [Getting Started on Heroku with Node.js](getting-started-with-nodejs)
+guide
+* Node.js, `npm`, and the [Heroku CLI](https://cli.heroku.com) installed
 on your computer.
 
-## Creating a Express.js application on Heroku
+## Deploying an Express.js application to Heroku
 
 Express.js is a very minimalist framework and as such there is no need for an
 application template or bootstrapping of a skeleton app. Simply create a node.js
@@ -235,22 +239,22 @@ $ git commit -am 'Add input validation'
 $ git push heroku master
 ```
 
-## Speed up the application with Memcache
+## Speed up the application with Memcached
 
-Memcache is an in-memory, distributed cache. The primary API for
+Memcached is an in-memory, distributed cache. The primary API for
 interacting with it are `SET(key, value)` and `GET(key)` operations.
-Memcache is like a hashmap (or dictionary) that is spread across
+Memcached is like a hashmap (or dictionary) that is spread across
 multiple servers, where operations are still performed in constant
 time.
 
-The most common usage of memcache is to cache expensive computations and
+The most common usage of Memcached is to cache expensive computations and
 database queries as well as rendered partials or views such that these
 expensive operations don’t need to happen over and over again.
 
-### Set up memcache
+### Set up Memcached
 
-In order to use memcache in your Express app you first need to have an actual
-memcached cache. You can easily get one for free with the
+In order to use Memcached in your Express app you first need to have an actual
+Memcached cache. You can easily get one for free with the
 [MemCachier addon](https://elements.heroku.com/addons/memcachier):
 
 ```term
@@ -483,19 +487,19 @@ Now you will see the likes increasing.
 
 ### Session Caching
 
-On Heroku it is a good idea to store sessions in memcache instead of in a file
+On Heroku it is a good idea to store sessions in Memcached instead of in a file
 on disk for two reasons:
 
 1. Dynos only have an ephemeral filesystem that is not persisted across restarts.
 2. You might have multiple dynos which will not share the same ephemeral filesystem.
 
-Memcache works well for sessions that time out, however,
-since memcache is a cache and thus not persistent, saving long-lived
-sessions in memcache might not be ideal. For long-lived sessions consider a
+Memcached works well for sessions that time out, however,
+since Memcached is a cache and thus not persistent, saving long-lived
+sessions in Memcached might not be ideal. For long-lived sessions consider a
 permanent storage option such as your database.
 
-To use sessions in Express you need `express-session` and to back it by your
-memcache you need `connect-memjs`:
+To use sessions in Express you need `express-session` and to store them in
+Memcached you need `connect-memjs`:
 
 ```term
 $ npm install express-session connect-memjs
