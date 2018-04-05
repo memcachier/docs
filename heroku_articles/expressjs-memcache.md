@@ -314,7 +314,7 @@ app.get('/', validate, function (req, res) {
       else {
         // Prime not in cache (calculate and store)
         prime = calculatePrime(req.query.n)
-        mc.set(prime_key, '' + prime, {expires:0}, function(err, val){})
+        mc.set(prime_key, '' + prime, {expires:0}, function(err, val){/* handle error */})
       }
       // Render view with prime
       res.render('index', { n: req.query.n, prime: prime });
@@ -371,7 +371,7 @@ var cacheView = function(req, res, next) {
     // Cache the rendered view for future requests
     res.sendRes = res.send
     res.send = function(body){
-      mc.set(view_key, body, {expires:0}, function(err, val){})
+      mc.set(view_key, body, {expires:0}, function(err, val){/* handle error */})
       res.sendRes(body);
     }
     next();
@@ -468,7 +468,7 @@ So we need to invalidate the cached view whenever it is updated:
 // ...
 
 app.post('/', function (req, res) {
-  mc.delete('_view_cache_/?n=' + req.body.n, function(err, val){});
+  mc.delete('_view_cache_/?n=' + req.body.n, function(err, val){/* handle error */});
   likes[req.query.n] = (likes[req.query.n] || 0) + 1
   res.redirect('/?n=' + req.query.n)
 });
