@@ -46,7 +46,7 @@ Useful [comparison](https://coderseye.com/best-php-frameworks-for-web-developers
 | Framework | Stars | Heroku documentation | Status |
 | ---       | ---   | ---                  | ---    |
 | [Meteor](https://github.com/meteor/meteor) | ![stars](https://img.shields.io/github/stars/meteor/meteor.svg?style=social&maxAge=3600) | no | **TODO** |
-| [Express](https://github.com/expressjs/express) | ![stars](https://img.shields.io/github/stars/expressjs/express.svg?style=social&maxAge=3600) | no | example |
+| [Express](https://github.com/expressjs/express) | ![stars](https://img.shields.io/github/stars/expressjs/express.svg?style=social&maxAge=3600) | no | documented, tutorial & example |
 | [koa.js](https://github.com/koajs/koa) | ![stars](https://img.shields.io/github/stars/koajs/koa.svg?style=social&maxAge=3600) | no | **TODO** |
 | [Sails.js](https://github.com/balderdashy/sails) | ![stars](https://img.shields.io/github/stars/balderdashy/sails.svg?style=social&maxAge=3600) | no | no |
 | [Keystone.js](https://github.com/keystonejs/keystone) | ![stars](https://img.shields.io/github/stars/keystonejs/keystone.svg?style=social&maxAge=3600) | no | no |
