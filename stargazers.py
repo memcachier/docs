@@ -50,7 +50,8 @@ repos_node = ["expressjs/express",
               "strongloop/loopback",
               "hapijs/hapi",
               "fastify/fastify",
-              "nestjs/nest"]
+              "nestjs/nest",
+              "prerender/prerender"]
 repos_go = ["gin-gonic/gin",
             "astaxie/beego",
             "revel/revel",
@@ -69,10 +70,16 @@ repos_rust = ["SergioBenitez/Rocket",
               "iron/iron",
               "nickel-org/nickel.rs",
               "gotham-rs/gotham",
-              "tomaka/rouille"]
+              "tomaka/rouille",
+              "fengsp/pencil",
+              "Ogeon/rustful",
+              "actix/actix-web",
+              "rustless/rustless",
+              "conduit-rust/conduit",
+              "matt2xu/edge-rs"]
 
 repos_top = (repos_ruby[0:1] + repos_python[0:2] + repos_php[0:1] +
-             repos_node[0:1] + repos_go[0:1] + repos_java[0:1] +
+             repos_node[0:2] + repos_go[0:1] + repos_java[0:1] +
              repos_rust[0:1])
 
 repos_all = (repos_ruby + repos_python + repos_php + repos_node + repos_go +
@@ -82,7 +89,7 @@ repos_all = (repos_ruby + repos_python + repos_php + repos_node + repos_go +
 all_stars = {}
 growth = []
 
-for repo in repos_python:
+for repo in repos_all:
     page_number = 1
     stars_remaining = True
     stargazers = {}
