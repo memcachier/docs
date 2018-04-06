@@ -102,6 +102,15 @@ mc = pylibmc.Client(servers, binary=True,
                     })
 ```
 
+**IF(direct)**
+<p class="alert alert-info">
+The values for `MEMCACHIER_SERVERS`, `MEMCACHIER_USERNAME`, and
+`MEMCACHIER_PASSWORD` are listed on your
+[cache overview page](https://www.memcachier.com/caches). Make sure to add them
+to your environment.
+</p>
+**ENDIF**
+
 After this, you can start writing cache code in your Python app:
 
 ```python

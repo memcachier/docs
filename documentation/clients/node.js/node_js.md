@@ -29,7 +29,14 @@ $ npm install memjs
 
 Using it is straight-forward as memjs understands the `MEMCACHIER_SERVERS`,
 `MEMCACHIER_USERNAME` and `MEMCACHIER_PASSWORD`
-environment variables that the MemCachier add-on setups. For example:
+**IF(heroku)**
+environment variables that the MemCachier add-on setups.
+**ENDIF**
+**IF(direct)**
+environment variables. The values for these variables are listed on your
+[cache overview page](https://www.memcachier.com/caches).
+**ENDIF**
+For example:
 
 ```javascript
 var memjs = require('memjs')

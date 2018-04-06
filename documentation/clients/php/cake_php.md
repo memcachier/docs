@@ -12,19 +12,21 @@ Cache::config('default', array(
     'duration' => '+7 days',
     'compress' => false,
     'persistent' => 'memcachier',
-**IF(direct)**    
-    'servers' => explode(',', <MEMCACHIER_SERVERS>),
-    'login' => <MEMCACHIER_USERNAME>,
-    'password' => <MEMCACHIER_PASSWORD>,
-**ENDIF**
-**IF(heroku)**
     'servers' => explode(',', getenv('MEMCACHIER_SERVERS')),
     'login' => getenv('MEMCACHIER_USERNAME'),
     'password' => getenv('MEMCACHIER_PASSWORD'),
-**ENDIF**
     'serialize' => 'php'
 ));
 ```
+
+**IF(direct)**
+<p class="alert alert-info">
+The values for `MEMCACHIER_SERVERS`, `MEMCACHIER_USERNAME`, and
+`MEMCACHIER_PASSWORD` are listed on your
+[cache overview page](https://www.memcachier.com/caches). Make sure to add them
+to your environment.
+</p>
+**ENDIF**
 
 After that, you should be able to use caching throughout your application like so:
 

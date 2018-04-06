@@ -33,16 +33,9 @@ client object with the correct credentials and settings:
 
 ```ruby
 require 'dalli'
-**IF(direct)**
-cache = Dalli::Client.new(<MEMCACHIER_SERVERS>.split(","),
-                    {:username => <MEMCACHIER_USERNAME>,
-                     :password => <MEMCACHIER_PASSWORD>,
-**ENDIF**
-**IF(heroku)**
 cache = Dalli::Client.new((ENV["MEMCACHIER_SERVERS"] || "").split(","),
                     {:username => ENV["MEMCACHIER_USERNAME"],
                      :password => ENV["MEMCACHIER_PASSWORD"],
-**ENDIF**
                      :failover => true,            # default is true
                      :socket_timeout => 1.5,       # default is 0.5
                      :socket_failure_delay => 0.2, # default is 0.01
@@ -51,9 +44,12 @@ cache = Dalli::Client.new((ENV["MEMCACHIER_SERVERS"] || "").split(","),
 ```
 
 **IF(direct)**
-The values for `<MEMCACHIER_SERVERS>`, `<MEMCACHIER_USERNAME>`, and
-`<MEMCACHIER_PASSWORD>` are listed on your [cache overview
-page](https://www.memcachier.com/caches).
+<p class="alert alert-info">
+The values for `MEMCACHIER_SERVERS`, `MEMCACHIER_USERNAME`, and
+`MEMCACHIER_PASSWORD` are listed on your
+[cache overview page](https://www.memcachier.com/caches). Make sure to add them
+to your environment.
+</p>
 **ENDIF**
 
 Now you can use the cache through simple `get` and `set` operations,

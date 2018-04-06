@@ -62,25 +62,14 @@ import net.spy.memcached.auth.AuthDescriptor;
 public class Foo {
   public static void main(String[] args) {
     AuthDescriptor ad = new AuthDescriptor(new String[] { "PLAIN" },
-**IF(direct)**
-        new PlainCallbackHandler(<MEMCACHIER_USERNAME>,
-            <MEMCACHIER_PASSWORD>));
-**ENDIF**
-**IF(heroku)**
         new PlainCallbackHandler(System.getenv("MEMCACHIER_USERNAME"),
             System.getenv("MEMCACHIER_PASSWORD")));
-**ENDIF**
     try {
       MemcachedClient mc = new MemcachedClient(
           new ConnectionFactoryBuilder()
               .setProtocol(ConnectionFactoryBuilder.Protocol.BINARY)
               .setAuthDescriptor(ad).build(),
-**IF(direct)**
-          AddrUtil.getAddresses(<MEMCACHIER_SERVERS>));
-**ENDIF**
-**IF(heroku)**
           AddrUtil.getAddresses(System.getenv("MEMCACHIER_SERVERS")));
-**ENDIF**
       mc.set("foo", 0, "bar");
       System.out.println(mc.get("foo"));
     } catch (IOException ioe) {
@@ -92,9 +81,12 @@ public class Foo {
 ```
 
 **IF(direct)**
-The values for `<MEMCACHIER_SERVERS>`, `<MEMCACHIER_USERNAME>`, and
-`<MEMCACHIER_PASSWORD>` are listed on your [cache overview
-page](https://www.memcachier.com/caches).
+<p class="alert alert-info">
+The values for `MEMCACHIER_SERVERS`, `MEMCACHIER_USERNAME`, and
+`MEMCACHIER_PASSWORD` are listed on your
+[cache overview page](https://www.memcachier.com/caches). Make sure to add them
+to your environment.
+</p>
 **ENDIF**
 
 **IF(heroku)**

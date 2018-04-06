@@ -94,26 +94,15 @@ $m->setOption(Memcached::OPT_SERVER_FAILURE_LIMIT, 1);
 $m->setOption(Memcached::OPT_AUTO_EJECT_HOSTS, TRUE);
 
 // setup authentication
-**IF(direct)**
-$m->setSaslAuthData( <MEMCACHIER_USERNAME>
-                   , <MEMCACHIER_PASSWORD> );
-**ENDIF**
-**IF(heroku)**
 $m->setSaslAuthData( getenv("MEMCACHIER_USERNAME")
                    , getenv("MEMCACHIER_PASSWORD") );
-**ENDIF**
 
 // We use a consistent connection to memcached, so only add in the
 // servers first time through otherwise we end up duplicating our
 // connections to the server.
 if (!$m->getServerList()) {
     // parse server config
-**IF(direct)**
-    $servers = explode(",", <MEMCACHIER_SERVERS>);
-**ENDIF**
-**IF(heroku)**
     $servers = explode(",", getenv("MEMCACHIER_SERVERS"));
-**ENDIF**
     foreach ($servers as $s) {
         $parts = explode(":", $s);
         $m->addServer($parts[0], $parts[1]);
@@ -122,9 +111,12 @@ if (!$m->getServerList()) {
 ```
 
 **IF(direct)**
-The values for `<MEMCACHIER_SERVERS>`, `<MEMCACHIER_USERNAME>`, and
-`<MEMCACHIER_PASSWORD>` are listed on your [cache overview
-page](https://www.memcachier.com/caches).
+<p class="alert alert-info">
+The values for `MEMCACHIER_SERVERS`, `MEMCACHIER_USERNAME`, and
+`MEMCACHIER_PASSWORD` are listed on your
+[cache overview page](https://www.memcachier.com/caches). Make sure to add them
+to your environment.
+</p>
 **ENDIF**
 
 You should look at the PHP [Memcached client
@@ -147,33 +139,17 @@ It should contain the following:
 
 ```php
 session.save_handler=memcached
-**IF(direct)**
-memcached.sess_sasl_username=<MEMCACHIER_USERNAME>
-memcached.sess_sasl_password=<MEMCACHIER_PASSWORD>
-**ENDIF**
-**IF(heroku)**
 memcached.sess_sasl_username=${MEMCACHIER_USERNAME}
 memcached.sess_sasl_password=${MEMCACHIER_PASSWORD}
-**ENDIF**
 
 ; PHP 7
 memcached.sess_binary_protocol=1
-**IF(direct)**
-session.save_path=<MEMCACHIER_SERVERS>
-**ENDIF**
-**IF(heroku)**
 session.save_path="${MEMCACHIER_SERVERS}"
-**ENDIF**
 memcached.sess_persistent=On
 
 ; PHP 5 (uncomment the following and replace PHP 7 section above)
 ;memcached.sess_binary=1
-**IF(direct)**
-;session.save_path="PERSISTENT=myapp_session <MEMCACHIER_SERVERS>"
-**ENDIF**
-**IF(heroku)**
 ;session.save_path="PERSISTENT=myapp_session ${MEMCACHIER_SERVERS}"
-**ENDIF**
 ```
 
 In your code you should then be able to run:
@@ -229,26 +205,15 @@ use MemCachier\MemcacheSASL;
 
 // Create client
 $m = new MemcacheSASL();
-**IF(direct)**
-$servers = explode(",", <MEMCACHIER_SERVERS>);
-**ENDIF**
-**IF(heroku)**
 $servers = explode(",", getenv("MEMCACHIER_SERVERS"));
-**ENDIF**
 foreach ($servers as $s) {
     $parts = explode(":", $s);
     $m->addServer($parts[0], $parts[1]);
 }
 
 // Setup authentication
-**IF(direct)**
-$m->setSaslAuthData( <MEMCACHIER_USERNAME>
-                   , <MEMCACHIER_PASSWORD> );
-**ENDIF**
-**IF(heroku)**
 $m->setSaslAuthData( getenv("MEMCACHIER_USERNAME")
                    , getenv("MEMCACHIER_PASSWORD") );
-**ENDIF**
 
 // Test client
 $m->add("foo", "bar");
@@ -256,7 +221,10 @@ echo $m->get("foo");
 ```
 
 **IF(direct)**
-The values for `<MEMCACHIER_SERVERS>`, `<MEMCACHIER_USERNAME>`, and
-`<MEMCACHIER_PASSWORD>` are listed on your [cache overview
-page](https://www.memcachier.com/caches).
+<p class="alert alert-info">
+The values for `MEMCACHIER_SERVERS`, `MEMCACHIER_USERNAME`, and
+`MEMCACHIER_PASSWORD` are listed on your
+[cache overview page](https://www.memcachier.com/caches). Make sure to add them
+to your environment.
+</p>
 **ENDIF**

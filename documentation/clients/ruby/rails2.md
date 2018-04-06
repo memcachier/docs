@@ -22,16 +22,9 @@ following:
 ```ruby
 require 'active_support/cache/dalli_store23'
 config.cache_store = :dalli_store,
-**IF(direct)**
-                    <MEMCACHIER_SERVERS>.split(","),
-                    {:username => <MEMCACHIER_USERNAME>,
-                     :password => <MEMCACHIER_PASSWORD>,
-**ENDIF**
-**IF(heroku)**
                     (ENV["MEMCACHIER_SERVERS"] || "").split(","),
                     {:username => ENV["MEMCACHIER_USERNAME"],
                      :password => ENV["MEMCACHIER_PASSWORD"],
-**ENDIF**
                      :failover => true,
                      :socket_timeout => 1.5,
                      :socket_failure_delay => 0.2,
@@ -40,9 +33,12 @@ config.cache_store = :dalli_store,
 ```
 
 **IF(direct)**
-The values for `<MEMCACHIER_SERVERS>`, `<MEMCACHIER_USERNAME>`, and
-`<MEMCACHIER_PASSWORD>` are listed on your [cache overview
-page](https://www.memcachier.com/caches).
+<p class="alert alert-info">
+The values for `MEMCACHIER_SERVERS`, `MEMCACHIER_USERNAME`, and
+`MEMCACHIER_PASSWORD` are listed on your
+[cache overview page](https://www.memcachier.com/caches). Make sure to add them
+to your environment.
+</p>
 
 <p class="alert alert-info">
 In your development environment, Rails.cache defaults to a simple

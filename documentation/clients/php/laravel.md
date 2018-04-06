@@ -38,12 +38,8 @@ Then we need to config the cache in `config/cache.php`:
     'driver' => 'memcached',
     'persistent_id' => 'memcached_pool_id',
     'sasl' => [
-**IF(direct)**
-**ENDIF**
-**IF(heroku)**
         env('MEMCACHIER_USERNAME'),
         env('MEMCACHIER_PASSWORD'),
-**ENDIF**
     ],
     'options' => [
         // some nicer default options
@@ -70,13 +66,17 @@ Then we need to config the cache in `config/cache.php`:
             'port' => $parts[1],
             'weight' => 100,
         ];
-**IF(direct)**
-**ENDIF**
-**IF(heroku)**
       }, explode(",", env('MEMCACHIER_SERVERS', 'localhost:11211')))
-**ENDIF**
 ],
 ```
+**IF(direct)**
+<p class="alert alert-info">
+The values for `MEMCACHIER_SERVERS`, `MEMCACHIER_USERNAME`, and
+`MEMCACHIER_PASSWORD` are listed on your
+[cache overview page](https://www.memcachier.com/caches). Make sure to add them
+to your environment.
+</p>
+**ENDIF**
 
 For Laravel to use memcached as its cache you will need to set the `CACHE_DRIVER`
 **IF(direct)**
