@@ -14,7 +14,7 @@ We’ve built a small Laravel example here:
 ><a class="github-source-code" href="http://github.com/memcachier/examples-laravel-heroku">Source code</a> or
 >[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=http://github.com/memcachier/examples-laravel-heroku).
 ><br>
->We also have a tutorial on using Laravel and MemCachier together
+>We also have a tutorial on using Laravel with MemCachier
 >[here](https://devcenter.heroku.com/articles/laravel-memcache).
 **ENDIF**
 

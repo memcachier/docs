@@ -3,6 +3,13 @@
 | Name | Library | Framework | Deploy |
 | ---  | ---     | ---       | ---    |
 | [Prime numbers](https://github.com/memcachier/examples-php) | `php-memcached` for `php-5.3` |  | [![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=https://github.com/memcachier/examples-php) |
+| [Task list](https://github.com/memcachier/examples-laravel-heroku) | `php-memcached` for `php-7.1.3` | `laravel-5.6` | [![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=https://github.com/memcachier/examples-laravel-heroku) |
+
+# Tutorials
+
+| Name | Framework | Platform |
+| ---  | ---       | ---      |
+| [Memcache intro for Laravel](https://devcenter.heroku.com/articles/laravel-memcache) | Laravel 5.6 | Heroku |
 
 # PHP clients
 
