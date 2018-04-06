@@ -1,27 +1,25 @@
 
-Memcached is a technology that helps web apps and mobile app backends
-in two main ways: *performance* and *scalability*. You should consider
-using memcache when your pages are loading too slowly or your app is
-having scalability issues. Even for small sites it can be a great
-technology, making page loads snappy and future proofing for scale.
+Memcached is a technology that improves the performance and scalability of web apps and mobile app backends. You should consider
+using Memcached when your pages are loading too slowly or your app is
+having scalability issues. Even for small sites, Memcached can make page loads snappy and help future-proof your app.
 
-This guide will show you how to create a simple [Laravel 5.6](http://laravel.com/)
-application, deploy it to Heroku, then add caching with Memcache to alleviate a
-performance bottleneck.
+This guide shows how to create a simple [Laravel 5.6](http://laravel.com/)
+application, deploy it to Heroku, then add Memcached to alleviate a performance bottleneck.
 
 >note
->The sample sample app built in this guide can be seen running
->[here](https://memcachier-examples-laravel.herokuapp.com/).<br>
-><a class="github-source-code" href="http://github.com/memcachier/examples-laravel-heroku">Source code</a> or
-[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=http://github.com/memcachier/examples-laravel-heroku)
+>The sample app in this guide can be seen running
+>[here](https://memcachier-examples-laravel.herokuapp.com/). You can [view the source code](http://github.com/memcachier/examples-laravel-heroku) or deploy it with this Heroku Button:
+>
+>[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=http://github.com/memcachier/examples-laravel-heroku)
 
 ## Prerequisites
+Before you complete the steps in this guide, make sure you have all of the following:
 
-* PHP (and ideally some Laravel) knowledge.
-* A Heroku user account. [Signup is free and instant.](https://signup.heroku.com/signup/dc)
-* Familiarity with the [getting Started with PHP on Heroku](getting-started-with-php)
-guide, with PHP, Composer and the [Heroku CLI](https://cli.heroku.com) installed
-on your computer.
+* Familiarity with PHP (and ideally some Laravel)
+* A Heroku user account ([signup is free and instant](https://signup.heroku.com/signup/dc))
+* Familiarity with the steps in [Getting Started with PHP on Heroku](getting-started-with-php)
+* PHP, Composer, and the [Heroku CLI](heroku-cli) installed
+on your computer
 
 > callout
 > This tutorial is based on the
@@ -30,9 +28,9 @@ on your computer.
 > For more details about the creation and deployment of Laravel applications on
 > Heroku, please consult these resources.
 
-## Creating a Laravel application on Heroku
+## Deploying a Laravel application to Heroku
 
-We will start by bootstrapping a Laravel skeleton app:
+To start, we create a Laravel skeleton app like so:
 
 ```term
 $ composer create-project laravel/laravel --prefer-dist laravel_memcache
@@ -44,52 +42,52 @@ Created project in laravel_memcache
 $ cd laravel_memcache
 ```
 
-### Heroku specific setup
+### Heroku-specific setup
 
-Before we can create a working Heroku application we need to add a few Heroku
-specific changes. First, we need to create a [Procfile](procfile) to let Heroku
-know how to run your application:
+Before we can create a working Heroku application, we need to add a few Heroku-specific changes to the skeleton:
 
-```term
-$ echo web: vendor/bin/heroku-php-apache2 public/ > Procfile
-```
+1. Create a simple [Procfile](procfile) to let Heroku know how to run your application:
 
-Second, your application needs to trust the Heroku proxies. For this, change
+    ```term
+    $ echo web: vendor/bin/heroku-php-apache2 public/ > Procfile
+    ```
+
+2. Your application needs to trust Heroku proxies. Change
 `$proxies` and `$headers` in `app/Http/Middleware/TrustProxies.php` as follows:
 
-```php
-// ...
+    ```php
+    // ...
 
-protected $proxies = '**';
+    protected $proxies = '**';
 
-// ...
+    // ...
 
-protected $headers = Request::HEADER_X_FORWARDED_AWS_ELB;
+    protected $headers = Request::HEADER_X_FORWARDED_AWS_ELB;
 
-// ...
-```
+    // ...
+    ```
 
-> callout
-> This configuration does not work for Laravel <5.6. See
-> [this](https://stackoverflow.com/questions/48681417/laravel-5-6-trustedproxies-error/48684748#48684748)
-> Stackoverflow answer for older versions.
+    > callout
+    > This configuration does not work for Laravel <5.6. See
+    > [this Stack Overflow answer](https://stackoverflow.com/questions/48681417/laravel-5-6-trustedproxies-error/48684748#48684748)
+    >  for older versions.
 
-Before we can create a Heroku application, we need to initialize a Git repository
+3. Before we can create a Heroku application, we need to initialize a Git repository
 and commit the work we have done so far:
 
-```term
-$ git init
-Initialized empty Git repository in ~/laravel_memcache/.git/
-$ git add .
-$ git commit -m "Laravel skeleton for Heroku"
-[master (root-commit) 3099e3b] Laravel skeleton for Heroku
- 84 files changed, 7077 insertions(+)
-...
-```
+    ```term
+    $ git init
+    Initialized empty Git repository in ~/laravel_memcache/.git/
+    $ git add .
+    $ git commit -m "Laravel skeleton for Heroku"
+    [master (root-commit) 3099e3b] Laravel skeleton for Heroku
+     84 files changed, 7077 insertions(+)
+    ...
+    ```
 
-### Create and configure Heroku app
+### Create and configure the Heroku app
 
-Now we are ready to create the Heroku application:
+Now we're ready to create the Heroku application:
 
 ```term
 $ heroku create
@@ -97,30 +95,29 @@ Creating app... done, ⬢ serene-castle-14546
 https://serene-castle-14546.herokuapp.com/ | https://git.heroku.com/serene-castle-14546.git
 ```
 
-Before we can deploy our Laravel skeleton we need to add a couple of
-configurations in the form of environment variables. First, we need to set a
-Laravel encryption key:
+Before we can deploy the Laravel skeleton, we need to add some configuration in the form of [config vars](config-vars):
 
-```term
-$ heroku config:set APP_KEY=$(php artisan key:generate --show)
-Setting APP_KEY and restarting ⬢ serene-castle-14546... done, v3
-APP_KEY: base64:E8Ay5w611tCLkqLnGSualCypRR+s8PGSfK20M+0HNIU=
-```
+1. Set a Laravel encryption key:
 
-Second, you need to configure the logger to write to `errorlog`:
+    ```term
+    $ heroku config:set APP_KEY=$(php artisan key:generate --show)
+    Setting APP_KEY and restarting ⬢ serene-castle-14546... done, v3
+    APP_KEY: base64:E8Ay5w611tCLkqLnGSualCypRR+s8PGSfK20M+0HNIU=
+    ```
 
-```term
-$ heroku config:set LOG_CHANNEL=errorlog
-```
+2. Configure the logger to write to `errorlog`:
 
-Note, if you prefer you may also configure `errorlog` to be your default log
-channel in `config/loging.php`:
+    ```term
+    $ heroku config:set LOG_CHANNEL=errorlog
+    ```
 
-```php
-'driver' => env('LOG_CHANNEL', 'errorlog'),
-```
+    You can optionally configure `errorlog` to be your default log channel in `config/loging.php`:
 
-Next, it's time to deploy to Heroku:
+    ```php
+    'driver' => env('LOG_CHANNEL', 'errorlog'),
+    ```
+
+Now, deploy the Laravel skeleton to Heroku:
 
 ```term
 $ git push heroku master
@@ -140,28 +137,28 @@ To https://git.heroku.com/serene-castle-14546.git
  * [new branch]      master -> master
 ```
 
-And that's it! Type `heroku open` to see the application in your browser.
+Your Laravel app is now deployed to Heroku. Type `heroku open` to open it in your browser.
 
+## Adding task list functionality
 
-## Let's create a task list
+Let's add a task list to the app that enables users to view, add, and
+delete tasks. To accomplish this, we need to:
 
-Having set up the skeleton Laravel application on Heroku it is time to add some
-functionality. We will be creating a task list that allows us to view, add, and
-delete tasks. For this we will first need to set up the database, create a
-table to store tasks and then create the actual views and controller logic.
+1. Set up the database
+2. Create a table to store and manage tasks
+3. Create the views and controller logic
 
 ### Set up the database
 
-Before configuring the database in Laravel we actually need one. On Heroku you
-can add a free development database to your app as follows:
+Before we can configure the database in Laravel, we need to create the database. On Heroku, you
+can add a free development database to your app like so:
 
 ```term
 $ heroku addons:create heroku-postgresql:hobby-dev
 ```
 
-This will creat a PostgreSQL database and add a `DATABASE_URL` with the access
-information to your environment variables. To use this database, you need to
-configure it in `config/database.php`:
+This creates a PostgreSQL database for your app and adds a `DATABASE_URL` config var that contains its URL. To use this database,
+configure it like so in `config/database.php`:
 
 ```php
 <?php
@@ -192,15 +189,13 @@ return [
     // ...
 ```
 
-To make sure this `pgsql` connection is used when the app is running on Heroku
-set the `DB_CONNECTION` variable:
+To make sure this `pgsql` connection is used when the app is running on Heroku, set the `DB_CONNECTION` config var:
 
 ```term
 $ heroku config:set DB_CONNECTION=pgsql
 ```
 
-If you want to test your app locally (optional), we recommend you use SQLite.
-For this, make sure you have `php-sqlite` installed and configure the sqlite
+If you want to test your app locally (optional), we recommend using SQLite. To do so, make sure you have `php-sqlite` installed and configure the SQLite
 connection in `config/database.php`:
 
 ```php
@@ -211,9 +206,9 @@ connection in `config/database.php`:
 ],
 ```
 
-To use this connection locally, set `DB_CONNECTION=sqlite` in the `.env` file.
+To use this connection locally, set `DB_CONNECTION=sqlite` in your app's `.env` file.
 Additionally, to make sure artisan does not complain about setting up pgsql from
-non-existing parameters, you can also set a dummy database URL:
+non-existing parameters, you can also add a dummy database URL to `.env`:
 `DATABASE_URL=postgres://u:p@localhost:5432/dummy-db`.
 
 Save the changes so far by committing:
@@ -222,17 +217,15 @@ Save the changes so far by committing:
 $ git commit -am 'Configure DB connections'
 ```
 
-### Create Task table
+### Create the Tasks table
 
-Now it is time to create the data that will go into the database. In Laravel we
-do this by creating a task list migration:
+Now that we have an empty database, we can add a table to represent the task list. In Laravel, you do this by creating a migration like so:
 
 ```term
 $ php artisan make:migration create_tasks_table --create=tasks
 ```
 
-We want our tasks to have names so lets add `name` to the `tasks` table in
-`database/migrations/<date>_crate_tasks_table.php`:
+Tasks should have names, so let's add `name` to the `tasks` table in the newly created `database/migrations/<date>_crate_tasks_table.php` file:
 
 ```php
 Schema::create('tasks', function (Blueprint $table) {
@@ -242,15 +235,16 @@ Schema::create('tasks', function (Blueprint $table) {
 });
 ```
 
-To easily access the tasks table we create a `Task` model:
+To easily access the `tasks` table from our code, we create a corresponding `Task` model:
 
 ```term
 $ php artisan make:model Task
 ```
-This will create an empty `Task` model in `app/Task.php`. Don't worry about it,
-Laravel will infer it's fields from the migration.
 
-In case you set up SQLite locally, create the database and run the migrations
+This creates an empty `Task` model in `app/Task.php`.
+Laravel automatically infers its fields from the migration.
+
+If you set up SQLite locally, create the database and run the migrations
 (optional):
 
 ```term
@@ -258,7 +252,7 @@ $ touch database/database.sqlite
 $ php artisan migrate --force
 ```
 
-Finally, commit and run the migrations on Heroku:
+Finally, commit your changes and run the migrations on Heroku:
 
 ```term
 $ git add .
@@ -271,12 +265,10 @@ Do you really wish to run this command? (yes/no) [no]:
 ...
 ```
 
-### Add the view tasks functionality
+### Add a view for the task list
 
-To view the tasks stored in the database we will now create a view that lists
-all tasks.
-Before we code the actual task view, we add a layout to put all the
-boilerplate:
+To view the tasks stored in the database, we create a view that lists
+all tasks. We start with a boilerplate layout:
 
 ```php
 <!-- resources/views/layouts/app.blade.php -->
@@ -311,7 +303,7 @@ boilerplate:
 
 ```
 
-The task view can now be created as a child view of our layout:
+We can now create the task list view as a child view of the above layout:
 
 ```php
 <!-- resources/views/tasks.blade.php -->
@@ -353,8 +345,8 @@ The task view can now be created as a child view of our layout:
 @endsection
 ```
 
-Ignore the `TODOs` for now, we will fill them out later. To actually
-access this view we will now connect it to the top route in `routes/web.php`:
+Ignore the `TODOs` for now (we'll fill them out later). To be able to
+access this view, connect it to the top route in `routes/web.php`:
 
 ```php
 <?php
@@ -371,14 +363,12 @@ Route::get('/', function () {
 });
 ```
 
-If you have a local setup, you could now start a web server with
-`php artisan serve` and visit the view at `localhost:8000`. However, it will
-be a pretty boring site as the task list is empty.
+If you have a local setup, you can now start a web server with
+`php artisan serve` and visit the view at `localhost:8000`. However, there isn't much to look at yet because the task list is empty.
 
-### Add the add task functionality
+### Enable task creation
 
-To make our task list more useful we will need to be able to add tasks. So let
-us create a card for that:
+In order for the task list more useful, users need to be able to add tasks. Let's create a card for that:
 
 ```php
 <!-- resources/views/tasks.blade.php -->
@@ -418,10 +408,7 @@ us create a card for that:
 <!-- ... -->
 ```
 
-Since the task name is provided by the user we need to make sure the input is
-sound. In our case we want to make sure the user provides an actual name and
-said name should not exceed 255 characters. If the input fails to validate
-according to this rules we will display the following error view:
+Because the task name is provided by the user, we need to make sure the input is valid. In this case, the name must exist, and it must not exceed 255 characters. If the input fails to validate according to these rules, we want to display the following error view:
 
 ```php
 <!-- resources/views/common/errors.blade.php -->
@@ -439,7 +426,7 @@ according to this rules we will display the following error view:
 @endif
 ```
 
-With the views created we need to properly route them in `routes/web.php`:
+Let's add these new views to `routes/web.php`:
 
 ```php
 // ...
@@ -471,13 +458,12 @@ Route::post('/task', function (Request $request) {
 });
 ```
 
-Now starting a local web server with `php artisan serve` and visiting
-`localhost:8000` will be a bit more interesting as you can add actual tasks.
-However, to complete our task list we need to be able to remove completed tasks.
+Starting a local web server with `php artisan serve` and visiting
+`localhost:8000` is now a bit more interesting because you can add tasks.
 
-### Add the delete task functionality
+### Enable task deletion
 
-To delete a task we will add a button to each item in the task list:
+To complete our task list, we also need to be able to remove completed tasks. To delete a task, we add a Delete button to each item in the task list:
 
 ```php
 <!-- resources/views/tasks.blade.php -->
@@ -522,43 +508,43 @@ $ git push heroku master
 $ heroku open
 ```
 
-Having a working task list, it is time to learn how to use memcache.
+We now have a functioning task list running on Heroku. With this complete, we can learn how to improve its performance with Memcached.
 
-## Add caching to Laravel
+## Adding caching to Laravel
 
-Memcache is an in-memory, distributed cache. The primary API for
-interacting with it are `SET(key, value)` and `GET(key)` operations.
-Memcache is like a hashmap (or dictionary) that is spread across
+Memcached is an in-memory, distributed cache. Its primary API consists of two operations: `SET(key, value)` and `GET(key)`.
+Memcached is like a hashmap (or dictionary) that is spread across
 multiple servers, where operations are still performed in constant
 time.
 
-The most common usage of memcache is to cache expensive database
-queries and HTML renders such that these expensive operations don’t
+The most common use for Memcached is to cache expensive database
+queries and HTML renders so that these expensive operations don’t
 need to happen over and over again.
 
-### Set up memcached
+### Set up Memcached
 
-In order to use memcached in Laravel you first need to have an actual memcached
-cache. You can easily get one for free with the
-[MemCachier addon](https://elements.heroku.com/addons/memcachier):
+To use Memcached in Laravel, you first need to provision an actual Memcached cache. You can easily get one for free with the
+[MemCachier add-on](https://elements.heroku.com/addons/memcachier):
 
 ```term
 $ heroku addons:create memcachier:dev
 ```
 
-Before you can use memcached on your local machine, you need to install the
-`php-memcached` PECL extention via your OS package manager. Then you need to
-uncomment `;extension=memcached.so` in `/etc/php/conf.d/memcached.ini`. On
-Heroku this dependency is already installed and configured.
+To use use Memcached on your local machine, you also need to complete the following steps:
 
-Now, to set up memcached in Laravel we need to add dependency to
+1. Install the `php-memcached` PECL extention via your OS package manager.
+2. Uncomment `;extension=memcached.so` in `/etc/php/conf.d/memcached.ini`.
+
+(On Heroku, this dependency is already installed and configured.)
+
+To set up Memcached in Laravel, we add the following dependency to
 `composer.json`:
 
 ```term
 $ composer require ext-memcached
 ```
 
-Then we need to config the cache in `config/cache.php`:
+We then configure the cache in `config/cache.php`:
 
 ```php
 'memcached' => [
@@ -597,30 +583,26 @@ Then we need to config the cache in `config/cache.php`:
 ],
 ```
 
-For Laravel to use memcached as its cache you will need to set the `CACHE_DRIVER`
-environment variable:
+For Laravel to use Memcached as its cache, you also need to set the `CACHE_DRIVER` config var:
 
 ```term
 $ heroku config:set CACHE_DRIVER=memcached
 ```
 
-### Caching expensive database queries
+### Cache expensive database queries
 
-Memcache is often used to cache expensive database queries. Of course our simple
-task list does not have any expensive queries but for the sake of this tutorial
-let's assume getting all the tasks from the database is a slow operation.
+Memcached is often used to cache the results of expensive database queries. Of course, our simple task list does not have any expensive queries, but let's assume for this tutorial that fetching all of the tasks from the database is a slow operation.
 
-A nice way to add caching to Laravel is with the `rememberForever` function.
-This function takes a key and a function that returns a value as its arguments.
-It will then lookup the key in the cache. If the value is in the cache it will
-return that value. If not, it will execute the function, store the returned
-value in the cache with the given key, and return the value. This means that
-the first time you call `rememberForever` it will execute the expensive
-function but every successive call to `rememberForever` will get the value out
-of the cache.
+The `rememberForever` function makes it easy to add caching to Laravel. You provide two arguments to it:
 
-With `rememberForever` it is trivial to add caching to the task view controller
-in `routes/web.php`:
+* A cache key
+* A function that queries your database and returns results
+
+The `rememberForever` function looks up the key in your cache. If the key is present, its corresponding value is returned. Otherwise, the database function you provided is called. Whatever that function returns is then stored in the cache with the corresponding key for future lookups.
+
+This means that the _first_ time you call `rememberForever`, the expensive database function is called, but every successive call to `rememberForever` obtains the value from the cache.
+
+Use the `rememberForever` function to easily add caching to the task view controller in `routes/web.php`:
 
 ```php
 // Show Tasks
@@ -635,10 +617,9 @@ Route::get('/', function () {
 });
 ```
 
-As you might have noticed we now have a problem if we add or remove a task.
-Since `rememberForever` will get the task list from the cache any changes to
-the data in the database will not show on the task list. For this reason,
-whenever we change the tasks in the database we need to invalidate the cache:
+As you might have noticed, we now have a problem if we add or remove a task.
+Because `rememberForever` fetches the task list from the cache, any changes to the database won't be reflected in the task list. For this reason,
+whenever we change the tasks in the database, we need to **invalidate** the cache:
 
 ```php
 // Add New Task
@@ -661,11 +642,11 @@ Route::delete('/task/{task}', function (Task $task) {
 });
 ```
 
-### Add some stats
+### View Memcached statistics
 
-To demystify the caching operations a bit we can visualize what is going on
-under the hood by showing some memcache stats. First we need to get the
-stats each time the task list is requested in `routes/web.php`:
+To help demystify Memcached caching operations, we can visualize what's going on under the hood.
+
+First, we obtain stats every time the task list is requested in `routes/web.php`:
 
 ```php
 Route::get('/', function () {
@@ -680,7 +661,7 @@ Route::get('/', function () {
 });
 ```
 
-Then we add an extra card for the stats at the bottom of the task view:
+Then, we add a card for the stats at the bottom of the task view:
 
 ```php
 <!-- resources/views/tasks.blade.php -->
@@ -709,8 +690,7 @@ Then we add an extra card for the stats at the bottom of the task view:
 </div>
 ```
 
-Now push the changes to Heroku and see the how the stats change when you play
-with the task list:
+Now push the changes to Heroku and see the how the stats change when you play with the task list:
 
 ```term
 $ git commit -am 'Add caching with MemCachier'
@@ -720,27 +700,24 @@ $ heroku open
 
 You can see that the first time you access the page, the `Get misses` increase
 by one. This is because the first time `rememberForever` is called, the task
-list is not in the cache. The `Set commands` also increased because the task list
-got saved to the cache. If you refresh the page, the misses will stay the same
-but the `Get hits` will increase. Now the task list is served from the cache.
-When you add a new task or delete a cache you will see that your misses will
-increase again since the cache was invalidated.
+list is not in the cache. The `Set commands` also increase because the task list
+is saved to the cache. If you refresh the page, the misses stay the same,
+but the `Get hits` increase because the task list is served from the cache.
 
-Note: if you want to see stats in your local setup, you will need to set
-`CACHE_DRIVER=memcached` in your `.env` file and either run a `memcached` server
-locally or configure the `MEMCACHIER_*` variables accordingly.
+When you add a new task or delete a task, your misses will
+increase again because the cache was invalidated.
 
-### Use memcached for session storage
+>note
+>If you want to see stats in your local setup, you need to set
+`CACHE_DRIVER=memcached` in your `.env` file and either run a `memcached` server locally or configure your `MEMCACHIER_*` environment variables accordingly.
 
-On Heroku it is a good idea to store sessions in memcached instead of in a file
-on disk because dynos only have an ephemeral filesystem that is not persistent
-across dyno restarts. Memcached works well for sessions that time out, however,
-since memcached is a cache and thus not persistent, saving long-lived
-sessions in memcached might not be ideal. For long-lived sessions consider a
-permanent storage option such as you database.
+### Using Memcached for session storage
 
-Changing the session store from a file (default) to memcached can be done easily
-by just setting an environment variable:
+On Heroku, it's not advisable to store session information on disk, because dynos have an ephemeral filesystem that doesn't persist across restarts.
+
+Memcached works well for storing information for short-lived sessions that time out. However, because Memcached is a cache and therefore not persistent, long-lived sessions are better suited to permanent storage options, such as your database.
+
+Changing the session store from a file (default) to memcached can be done easily by setting the `SESSION_DRIVER` config var:
 
 ```term
 $ heroku config:set SESSION_DRIVER=memcached
@@ -750,26 +727,25 @@ $ heroku restart
 ### Caching rendered partials
 
 With the help of
-[laravel-partialcache](https://github.com/spatie/laravel-partialcache) you can
-also cache rendered partials in Laravel. This is essentially the same as
+[laravel-partialcache](https://github.com/spatie/laravel-partialcache), you can cache rendered partials in Laravel. This is similar to
 fragment caching in Ruby on Rails. If you have complex partials in your
-application it is a good idea to cache them because rendering HTML can be a
-CPU intensive task.
+application, it's a good idea to cache them because rendering HTML can be a
+CPU-intensive task.
 
 > warning
 > Do not cache partials that include forms with CSRF tokens.
 
-Our example does not have any complex partials but for the sake of this
-tutorial let us assume that rendering the task name in the task list takes a
+Our example does not include any complex partials, but for the sake of this
+tutorial, let's assume that rendering the task name in the task list takes a
 lot of CPU cycles and slows down our page.
 
-First, we need to add the package to our app:
+First, we need to add the `laravel-partialcache` package to our app:
 
 ```term
 $ composer require spatie/laravel-partialcache
 ```
 
-Second, let us factor out the task name into a partial:
+Second, let's factor out the task name into a partial:
 
 ```php
 <!-- resources/views/task/name.blade.php -->
@@ -796,13 +772,12 @@ Now we can import and cache this partial in our task view:
 <!-- ... -->
 ```
 
-This will cache each task name partial with the ID as it's key. Note that in
-this example we will never have to invalidate a cached partial because the name
+This caches each task name partial with the ID as its key. Note that in
+this example, we never have to invalidate a cached partial because the name
 of a task can never change. However, if you add the functionality to change the
-name of a task you could easily invalidate the cached partial for that given
-task with `PartialCache::forget('task.name', $task->id);`.
+name of a task, you can easily invalidate the cached partial with `PartialCache::forget('task.name', $task->id);`.
 
-Let us see the effect of caching the task name partials in our application:
+Let's see the effect of caching the task name partials in our application:
 
 ```term
 $ git add .
@@ -811,16 +786,16 @@ $ git push heroku master
 $ heroku open
 ```
 
-You should now see an additional get hit for each task in your list.
+You should now see an additional `Get hit` for each task in your list.
 
 ### Caching entire reponses
 
-In Laravel it is also easy to cache the entire rendered HTML response by using
+In Laravel, it's also easy to cache the entire rendered HTML response by using
 [laravel-responsecache](https://github.com/spatie/laravel-responsecache). This
-is essentially the same as view caching in Ruby on Rails. This package is easy
-to use and has good documentation in it's README. However, we cannot use it in
+is similar to view caching in Ruby on Rails. This package is easy
+to use and has good documentation in its README. However, we cannot use it in
 our example because our task list contains forms with CSRF tokens. To use
-this package with memcached you have to set the environment variable
+this package with Memcached, you have to set the config var
 `RESPONSE_CACHE_DRIVER` to `memcached`.
 
 ## Further reading & resources
