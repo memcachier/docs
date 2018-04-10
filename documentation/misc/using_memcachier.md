@@ -7,9 +7,11 @@ MemCachier effectively.
 MemCachier Guides:
 
   - [Advanced Memcache Usage](https://devcenter.heroku.com/articles/advanced-memcache)
-  - [Building a Rails 3 App with MemCachier](https://devcenter.heroku.com/articles/building-a-rails-3-application-with-memcache)
+  - [Building a Rails App with MemCachier](https://devcenter.heroku.com/articles/building-a-rails-3-application-with-memcache)
+  - [Scale Django with MemCachier](https://devcenter.heroku.com/articles/django-memcache)
+  - [Scale Laravel with MemCachier](https://devcenter.heroku.com/articles/laravel-memcache)
+  - [Scale Express.js with MemCachier](https://devcenter.heroku.com/articles/expressjs-memcache)
   - [Rails + Rack::Cache + MemCachier](https://devcenter.heroku.com/articles/rack-cache-memcached-rails31)
-  - [Django and MemCachier](https://devcenter.heroku.com/articles/django-memcache)
   - [Java Webapp Runner Guide](https://devcenter.heroku.com/articles/java-webapp-runner)
   - [Heroku's Guide to Caching](https://devcenter.heroku.com/articles/caching-strategies)
 
