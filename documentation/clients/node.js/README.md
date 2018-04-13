@@ -3,6 +3,13 @@
 | Name | Library | Framework | Deploy |
 | ---  | ---     | ---       | ---    |
 | [Set value](https://github.com/memcachier/examples-node) | `memjs-0.9.x` | `express-3.4.8` | [![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=https://github.com/memcachier/examples-node) |
+| [Prime numbers](https://github.com/memcachier/examples-expressjs) | `memjs-1.2.0` | `express-4.16.3` | [![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=https://github.com/memcachier/examples-expressjs) |
+
+# Tutorials
+
+| Name | Framework | Platform |
+| ---  | ---       | ---      |
+| [Memcache intro for Express.js](https://devcenter.heroku.com/articles/expressjs-memcache) | Express.js 4 | Heroku |
 
 # Node.js clients
 
