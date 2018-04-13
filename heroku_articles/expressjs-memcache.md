@@ -23,15 +23,14 @@ Before you complete the steps in this guide, make sure you have all of the follo
 * Familiarity with Node.js (and ideally Express.js)
 * A Heroku user account ([signup is free and instant](https://signup.heroku.com/signup/dc))
 * Familiarity with the steps in [Getting Started on Heroku with Node.js](getting-started-with-nodejs)
-guide
-* Node.js, `npm`, and the [Heroku CLI](https://cli.heroku.com) installed
+* Node.js, `npm`, and the [Heroku CLI](heroku-cli) installed
 on your computer.
 
 ## Deploying an Express.js application to Heroku
 
-Express.js is a very minimalist framework and as such there is no need for an
-application template or bootstrapping of a skeleton app. Simply create a node.js
-app and add `express` as a depenency:
+Express.js is a minimalist framework that doesn't require an
+application skeleton. Simply create a Node.js
+app and add `express` as a depenency like so:
 
 ```term
 $ mkdir express_memcache
@@ -41,17 +40,15 @@ $ npm init
 $ npm install express
 ```
 
-To make our life a bit easier we will use a template engine. In this tutorial
-we use `ejs` but you could also use `mustache`, `pug`, or `nunjucks` if you
-prefer. So, let's add the template engine to our app:
+To simplify development, we'll use a template engine. This tutorial uses `ejs`, but you can use whichever engine you prefer, including `mustache`, `pug`, or `nunjucks`.
 
 ```term
 $ npm install ejs
 ```
 
-Now that we have installed all the packages we need, we can create our app. We
-will create a page that calculates the largest prime smaller than a number
-a visitor submits. Create `app.js` and fill it with the following code:
+Now that we've installed all the packages we need, we can add our app code. We'll create a page that calculates the largest prime number that's smaller than a number a visitor submits.
+
+Create `app.js` and paste the following code into it:
 
 ```js
 var express = require("express");
@@ -98,8 +95,7 @@ app.get('/', function (req, res) {
 });
 ```
 
-Let's add the correspondig view. Create the file `views/index.ejs` and fill it
-with the following `ejs`-branded html code:
+Now let's add a corresponding view. Create the file `views/index.ejs` and paste the following `ejs`-enhanced HTML into it:
 
 ```html
 <!DOCTYPE html>
@@ -143,22 +139,21 @@ with the following `ejs`-branded html code:
 </html>
 ```
 
-Now you already have a working app which you can start with `node app.js`. For
-it to work on Heroku we will need to create a [`Procfile`](procfile) that
-contains the instructions on how to start the app:
+You now have a working app that you can start by running `node app.js`.
+
+For the app to work on Heroku, we need to create a [`Procfile`](procfile) that indicates how to run it:
 
 ```term
 $ echo web: node app.js > Procfile
 ```
 
-It is time to create a Heroku app. For this we need to create a git repository
-first. Let's start by createing a `.gitignore` file that contains:
+To deploy the app to Heroku, it needs to live in a Git repository. First, create a `.gitignore` file:
 
 ```term
 $ echo node_modules/ > .gitignore
 ```
 
-Then, create the git repository and commit the initial state of the app:
+Then, create the repository and commit the initial state of the app:
 
 ```term
 $ git init
@@ -166,7 +161,7 @@ $ git add .
 $ git commit -m 'Initial express app'
 ```
 
-Finally, create the Heroku app, push the changes, and explore the running app:
+Finally, create the Heroku app, push your code to it, and explore the running app:
 
 ```term
 $ heroku create
@@ -177,26 +172,28 @@ $ heroku open
 
 ## Learn to write Express.js middleware
 
-Our prime calculating app works but has one mayor flaw: A user is able to submit
-invalid input, i.g., a string of letters. We need to validate the input and to
-do so we will create an Express middleware.
+Our prime-calculating app works, but it has one mayor flaw: a user can submit
+invalid input, such as a string of letters. To validate the input, we'll create **middleware** in Express.
 
 > note
-> Note that there are valication middleware packages available for Express and
-> in general you should use those. Here we create our own validation because
-> our case is super simple and it serves as a gentle introduction into creating
-> Express middleware which we will need later.
+> There are several validation middleware packages available for Express, and
+> you should use one of those in most cases. In this tutorial, we create our own validation for demonstration purposes.
 
-Express middleware is basically a function that takes a request, a response,
-and a next function. The function can then modify the request and response
-object at will and either call the next function to execute the next middleware
-or call return to terminate the chain of executing middleware prematurely and
-return a response.
+Express middleware typically consists of a chain of functions that inspect and potentially modify the details of a request and its corresponding response. Each function takes three parameters:
 
-For our purposes we create a validation middleware function that parses the
-submitted query, checks if it is a number below 10000, and if this is the case
-it will call next. If not, it will return an error response. We will add this
-function to `app.js` and call it when processing the `GET` route:
+* The `request` object
+* The `response` object
+* A `next` function that represents the next middleware function in the chain
+
+Each middleware function can modify the `request` and `response`
+objects as necessary. After doing so, it can either call the `next` middleware function or `return` to terminate the chain prematurely.
+
+For our app, we create a validation middleware function that parses the submitted query and checks whether it's a number below 10000.
+
+* If it is, the function calls `next`.
+* If it isn't, the function `return`s an error response.
+
+Add this function to `app.js` and call it when processing the `GET` route:
 
 ```js
 // ...
@@ -217,7 +214,7 @@ app.get('/', validate, function (req, res) {
   // ...
 ```
 
-The validation middleware may return an error message which we now need to
+The validation middleware might return an error message, which we need to
 display in the `index.ejs` view:
 
 ```html
@@ -232,40 +229,39 @@ display in the `index.ejs` view:
 <% } %>
 ```
 
-Let's deploy the changes submit some invalid queries:
+Commit and deploy your changes:
 
 ```term
 $ git commit -am 'Add input validation'
 $ git push heroku master
 ```
 
-## Speed up the application with Memcached
+Open the app and submit some invalid queries to see the error message in action.
 
-Memcached is an in-memory, distributed cache. The primary API for
-interacting with it are `SET(key, value)` and `GET(key)` operations.
+## Adding caching to Express
+
+Memcached is an in-memory, distributed cache. Its primary API consists of two operations: `SET(key, value)` and `GET(key)`.
 Memcached is like a hashmap (or dictionary) that is spread across
 multiple servers, where operations are still performed in constant
 time.
 
-The most common usage of Memcached is to cache expensive computations and
-database queries as well as rendered partials or views such that these
-expensive operations don’t need to happen over and over again.
+The most common use for Memcached is to cache expensive database
+queries and HTML renders so that these expensive operations don’t
+need to happen over and over again.
 
 ### Set up Memcached
 
-In order to use Memcached in your Express app you first need to have an actual
-Memcached cache. You can easily get one for free with the
-[MemCachier addon](https://elements.heroku.com/addons/memcachier):
+To use Memcached in Express, you first need to provision an actual Memcached cache. You can easily get one for free with the
+[MemCachier add-on](https://elements.heroku.com/addons/memcachier):
 
 ```term
 $ heroku addons:create memcachier:dev
 ```
 
-This will add three environment variables to your Heroku application,
-`MEMCACHIER_SERVERS`, `MEMCACHIER_USERNAME`, and `MEMCACHIER_PASSWORD`, so you
-can connect to your cache.
+This adds three config vars to your Heroku application,
+`MEMCACHIER_SERVERS`, `MEMCACHIER_USERNAME`, and `MEMCACHIER_PASSWORD`, so you can connect to your cache.
 
-To use the cache we need to install `memjs` with
+To use the cache in Express, we need to install `memjs` with `npm`:
 
 ```term
 $ npm install memjs
@@ -286,16 +282,16 @@ var mc = memjs.Client.create(process.env.MEMCACHIER_SERVERS, {
 // ...
 ```
 
-### Cache expensive computations
+### Caching expensive computations
 
-There are two reasons why caching expensive computations is a good idea:
+There are two reasons why caching the results of expensive computations is a good idea:
 
-1. The computation takes a lot of time and getting it from the cache is faster.
-2. The computation uses too many CPU cycles and slows down the rest of the app.
+1. Pulling the results from the cache is much faster, resulting in a better user experience.
+2. Expensive computations use significant CPU resources, which can slow down the rest of your app.
 
-Our little prime number calculator does not really have an expensive computation
-as we limit the input to 10000. For the sake of this example however, let's assume
+Our prime number calculator doesn't really have any expensive computations, because we limit the input value to 10000. For the sake of the tutorial, however, let's assume
 that calulating the prime is an expensive computation we would like to cache.
+
 To achieve this, let's modify the `GET` route in `app.js` as follows:
 
 ```js
@@ -329,15 +325,15 @@ app.get('/', validate, function (req, res) {
 // ...
 ```
 
-Deploy it to Heroku and submit some numbers to find primes:
+Deploy these changes to Heroku and submit some numbers to find primes:
 
 ```term
 $ git commit -am 'Add caching'
 $ git push heroku master
 ```
 
-The page should work just as before. However, under the hood already calculated
-primes are now cached. To see what is going on in your cache open the MemCachier
+The page should work just as before. However, under the hood, already calculated
+primes are now cached. To see what's going on in your cache, open the MemCachier
 dashboard:
 
 ```term
@@ -345,17 +341,16 @@ $ heroku addons:open memcachier
 ```
 
 On the dashboard you can refresh the stats each time you request a prime. The
-first time you enter a number the get misses will increase, for any subsequent
-request of the same number you should get an additional get hit.
+first time you enter a number, the `get misses` will increase. For any subsequent
+request of the same number, you should get an additional `get hit`.
 
-### Cache rendered views
+### Caching rendered views
 
-Rendering HTML views is generally an expensive compuation and as such we should
-cache it whenever possible. In Express this can be easily achieved by writing a
-middleware. Let's add a `cacheView` middleware function to `app.js` that checks
-for a given URL (including query parameters) if the view is in the cache. If it
-is, the view is sent immediately. If not, we wrap the send function in the
-response object to cache the rendered view and call the `next` function.
+Rendering HTML views is generally an expensive compuation, and you should
+cache rendered views whenever possible. In Express, you can achieve this easily with middleware. Let's add a `cacheView` middleware function to `app.js` that checks whether the view for a given URL (including query parameters) is in the cache.
+
+* If it is, the view is sent immediately from the cache.
+* If not, we wrap the `send` function in the response object to cache the rendered view and call the `next` function.
 
 ```js
 // ...
@@ -382,8 +377,7 @@ app.get('/', validate, cacheView, function (req, res) {
   // ...
 ```
 
-This is easy enough and works well. However, if the view ever changes we need
-to be careful. To illustrate the case of a changing page, let's add a Like button
+This is easy enough and works well. However, if the view ever changes, we need to be careful. To illustrate the case of a changing page, let's add a "Like" button
 to each number and its calculated largest prime. Let's put the button just below
 the calculated prime in the `index.ejs` file:
 
@@ -405,7 +399,7 @@ the calculated prime in the `index.ejs` file:
 <!-- ... -->
 ```
 
-The like is submitted via `POST` request and to parse its input we will need
+The like is submitted via `POST` request, and to parse its input we need
 the `body-parser` package:
 
 ```term
@@ -416,9 +410,9 @@ We can now create a controller for the `POST` route in `app.js` and store the
 posted like in a variable.
 
 > note
-> Storing likes in a variable is a bad idea. Each time the app restarts it wipes
-> all likes. We just do this here for convenience. In a serious application you
-> would store such information in a database.
+> Storing likes in a variable is a bad idea. Each time the app restarts, it wipes
+> all likes. We do this here only for convenience. In a production application, you
+> should store such information in a database.
 
 ```js
 // ...
@@ -438,7 +432,7 @@ app.post('/', function (req, res) {
 // ...
 ```
 
-In addition, we also need to make sure the likes are passed to the render
+In addition, we also need to make sure the likes are passed to the `render`
 function in the `GET` controller:
 
 ```js
@@ -458,11 +452,10 @@ $ git commit -am 'Add view caching'
 $ git push heroku master
 ```
 
-If you submit a number you will now get the largest prime below it together with
-a Like button. However, when you click on `Like!` the like count will not
+If you submit a number, you will now get the largest prime below it, together with a Like button. However, when you click **Like!**, the like count doesn't
 increase. This is because the view is cached.
 
-So we need to invalidate the cached view whenever it is updated:
+To resolve this, we need to **invalidate** the cached view whenever it is updated:
 
 ```js
 // ...
@@ -483,23 +476,15 @@ $ git commit -am 'Fix view caching'
 $ git push heroku master
 ```
 
-Now you will see the likes increasing.
+Now you can see the number of likes increase.
 
 ### Session Caching
 
-On Heroku it is a good idea to store sessions in Memcached instead of in a file
-on disk for two reasons:
+On Heroku, it's not advisable to store session information on disk, because dynos have an ephemeral filesystem that doesn't persist across restarts.
 
-1. Dynos only have an ephemeral filesystem that is not persisted across restarts.
-2. You might have multiple dynos which will not share the same ephemeral filesystem.
+Memcached works well for storing information for short-lived sessions that time out. However, because Memcached is a cache and therefore not persistent, long-lived sessions are better suited to permanent storage options, such as your database.
 
-Memcached works well for sessions that time out, however,
-since Memcached is a cache and thus not persistent, saving long-lived
-sessions in Memcached might not be ideal. For long-lived sessions consider a
-permanent storage option such as your database.
-
-To use sessions in Express you need `express-session` and to store them in
-Memcached you need `connect-memjs`:
+To use sessions in Express, you need `express-session`. To store the sessions in Memcached, you need `connect-memjs`:
 
 ```term
 $ npm install express-session connect-memjs
