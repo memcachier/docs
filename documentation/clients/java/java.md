@@ -1,49 +1,150 @@
 
 ## Java
 
+For Java we recommend using the
+[XMemcached](https://github.com/killme2008/xmemcached) client. There is also
+the [SpyMemcached](https://github.com/couchbase/spymemcached) client which we
+have recommended in the past. Many MemCachier customers reported problems with
+SpyMemcached in the presence of network issues. SpyMemcached seems to have
+trouble coping with connection timeouts or resets. For this reason we now
+recommend XMemcached.
+
+We also recommend using [Apache Maven](https://maven.apache.org/) or
+[Gradle](https://gradle.org/) as a build tool. Here we show the dependancy
+configuration for Maven but they are similar for Gradle.
+If you aren't using Maven or Gradle and are instead using
+[Apache Ant](https://ant.apache.org/) or your own build system, then
+simply add the `xmemcached` or `spymemcached` jar file as a dependency of your application.
+
+### XMemcached
+
+To use XMemcached with Maven you need to add the `xmemcached` library to
+your dependencies in your `pom.xml` file:
+
+```xml
+<dependency>
+  <groupId>com.googlecode.xmemcached</groupId>
+  <artifactId>xmemcached</artifactId>
+  <version>2.4.3</version>
+</dependency>
+```
+
 **IF(direct)**
 <p class="alert alert-info">
-We’ve built a small Java example here, using Jetty:
+If you are using a version older than 2.4.3, please update to the latest version
+as it contains important bug fixes.
+</p>
+**ENDIF**
+
+**IF(heroku)**
+>callout
+>If you are using a version older than 2.4.3, please update to the latest version
+>as it contains important bug fixes.
+**ENDIF**
+
+Once your build system is configured, you can start adding caching to your Java
+app:
+
+```java
+import net.rubyeye.xmemcached.MemcachedClient;
+import net.rubyeye.xmemcached.MemcachedClientBuilder;
+import net.rubyeye.xmemcached.XMemcachedClientBuilder;
+import net.rubyeye.xmemcached.auth.AuthInfo;
+import net.rubyeye.xmemcached.command.BinaryCommandFactory;
+import net.rubyeye.xmemcached.exception.MemcachedException;
+import net.rubyeye.xmemcached.utils.AddrUtil;
+
+import java.lang.InterruptedException;
+import java.net.InetSocketAddress;
+import java.io.IOException;
+import java.util.List;
+import java.util.concurrent.TimeoutException;
+
+public class App {
+  public static void main( String[] args ) {
+    List<InetSocketAddress> servers =
+      AddrUtil.getAddresses(System.getenv("MEMCACHIER_SERVERS").replace(",", " "));
+    AuthInfo authInfo =
+      AuthInfo.plain(System.getenv("MEMCACHIER_USERNAME"),
+                     System.getenv("MEMCACHIER_PASSWORD"));
+
+    MemcachedClientBuilder builder = new XMemcachedClientBuilder(servers);
+
+    // Configure SASL auth for each server
+    for(InetSocketAddress server : servers) {
+      builder.addAuthInfo(server, authInfo);
+    }
+
+    // Use binary protocol
+    builder.setCommandFactory(new BinaryCommandFactory());
+    // Connection timeout in milliseconds (default: )
+    builder.setConnectTimeout(1000);
+    // Reconnect to servers (default: true)
+    builder.setEnableHealSession(true);
+    // Delay until reconnect attempt in milliseconds (default: 2000)
+    builder.setHealSessionInterval(2000);
+
+    try {
+      MemcachedClient mc = builder.build();
+      try {
+        mc.set("foo", 0, "bar");
+        String val = mc.get("foo");
+        System.out.println(val);
+      } catch (TimeoutException te) {
+        System.err.println("Timeout during set or get: " +
+                           te.getMessage());
+      } catch (InterruptedException ie) {
+        System.err.println("Interrupt during set or get: " +
+                           ie.getMessage());
+      } catch (MemcachedException me) {
+        System.err.println("Memcached error during get or set: " +
+                           me.getMessage());
+      }
+    } catch (IOException ioe) {
+      System.err.println("Couldn't create a connection to MemCachier: " +
+                         ioe.getMessage());
+    }
+  }
+}
+```
+
+**IF(direct)**
+<p class="alert alert-info">
+The values for `MEMCACHIER_SERVERS`, `MEMCACHIER_USERNAME`, and
+`MEMCACHIER_PASSWORD` are listed on your
+[cache overview page](https://www.memcachier.com/caches). Make sure to add them
+to your environment.
+</p>
+**ENDIF**
+
+You may wish to look the `xmemcached`
+[Wiki](https://github.com/killme2008/xmemcached/wiki) or
+[JavaDocs](http://fnil.net/docs/xmemcached/).
+
+### SpyMemcached
+
+**IF(direct)**
+<p class="alert alert-info">
+We’ve built a small Java example, using SpyMemcached with Jetty:
 <a href="https://github.com/memcachier/examples-java">MemCachier Java Jetty sample app</a>.
 </p>
 **ENDIF**
 
 **IF(heroku)**
 >callout
->We’ve built a small Java example with Jetty.
+>We’ve built a small Java example, using SpyMemcached with Jetty.
 ><a class="github-source-code" href="https://github.com/memcachier/examples-java">Source code</a> or
 >[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=https://github.com/memcachier/examples-java).
 **ENDIF**
 
-For Java we recommend using the
-[SpyMemcached](https://code.google.com/p/spymemcached/) client. We also
-recommend using the [Apache Maven](https://maven.apache.org/) build manager for
-working with Java applications. If you aren't using `maven` and are instead
-using [Apache Ant](https://ant.apache.org/) or your own build system, then
-simply add the `spymemcached` jar file as a dependency of your application.
-
-For `maven` however, start by configuring it to have the proper `spymemcached`
-repository:
-
-```xml
-<repository>
-  <id>spy</id>
-  <name>Spy Repository</name>
-  <layout>default</layout>
-  <url>http://files.couchbase.com/maven2/</url>
-  <snapshots>
-    <enabled>false</enabled>
-  </snapshots>
-</repository>
-```
-
-Then add the `spymemcached` library to your dependencies:
+To use SpyMemcached with Maven you need to add the `spymemcached` library to
+your dependencies in your `pom.xml` file:
 
 ```xml
 <dependency>
   <groupId>spy</groupId>
   <artifactId>spymemcached</artifactId>
-  <version>2.12.1</version>
+  <version>2.12.3</version>
   <scope>provided</scope>
 </dependency>
 ```
@@ -61,15 +162,17 @@ import net.spy.memcached.auth.AuthDescriptor;
 
 public class Foo {
   public static void main(String[] args) {
-    AuthDescriptor ad = new AuthDescriptor(new String[] { "PLAIN" },
+    AuthDescriptor ad = new AuthDescriptor(
+        new String[] { "PLAIN" },
         new PlainCallbackHandler(System.getenv("MEMCACHIER_USERNAME"),
-            System.getenv("MEMCACHIER_PASSWORD")));
+                                 System.getenv("MEMCACHIER_PASSWORD")));
     try {
       MemcachedClient mc = new MemcachedClient(
           new ConnectionFactoryBuilder()
               .setProtocol(ConnectionFactoryBuilder.Protocol.BINARY)
               .setAuthDescriptor(ad).build(),
           AddrUtil.getAddresses(System.getenv("MEMCACHIER_SERVERS")));
+
       mc.set("foo", 0, "bar");
       System.out.println(mc.get("foo"));
     } catch (IOException ioe) {
@@ -89,8 +192,7 @@ to your environment.
 </p>
 **ENDIF**
 
-**IF(heroku)**
-You may want to set the above code up as a new `MemCachierClient`
+For convenience, you may want to set the above code up as a new `MemCachierClient`
 class:
 
 ```java
@@ -140,7 +242,15 @@ class SASLConnectionFactoryBuilder extends ConnectionFactoryBuilder {
    }
 }
 ```
-
+**IF(direct)**
+<p class="alert alert-info">
+It is possible that you will run into Java exceptions about the class
+loader. (See Spymemcached
+<a href="http://code.google.com/p/spymemcached/issues/detail?id=155">issue 155</a>.
+The reported issue also contains a suggested work around.
+</p>
+**ENDIF**
+**IF(heroku)**
 >callout
 >It is possible that you will run into Java exceptions about the class
 >loader. (See Spymemcached [issue
