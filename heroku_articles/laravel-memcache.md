@@ -1,10 +1,13 @@
 
-Memcached is a technology that improves the performance and scalability of web apps and mobile app backends. You should consider
-using Memcached when your pages are loading too slowly or your app is
-having scalability issues. Even for small sites, Memcached can make page loads snappy and help future-proof your app.
+Memcache is a technology that improves the performance and scalability of web
+apps and mobile app backends. You should consider
+using Memcache when your pages are loading too slowly or your app is
+having scalability issues. Even for small sites, Memcache can make page loads
+snappy and help future-proof your app.
 
 This guide shows how to create a simple [Laravel 5.6](http://laravel.com/)
-application, deploy it to Heroku, then add Memcached to alleviate a performance bottleneck.
+application, deploy it to Heroku, then add Memcache to alleviate a performance
+bottleneck.
 
 >note
 >The sample app in this guide can be seen running
@@ -339,7 +342,7 @@ We can now create the task list view as a child view of the above layout:
       </div>
     @endif
 
-    <!-- TODO: Memcached Stats Card -->
+    <!-- TODO: Memcache Stats Card -->
 
   </div>
 @endsection
@@ -508,36 +511,41 @@ $ git push heroku master
 $ heroku open
 ```
 
-We now have a functioning task list running on Heroku. With this complete, we can learn how to improve its performance with Memcached.
+We now have a functioning task list running on Heroku. With this complete, we
+can learn how to improve its performance with Memcache.
 
 ## Adding caching to Laravel
 
-Memcached is an in-memory, distributed cache. Its primary API consists of two operations: `SET(key, value)` and `GET(key)`.
-Memcached is like a hashmap (or dictionary) that is spread across
+Memcache is an in-memory, distributed cache. Its primary API consists of two
+operations: `SET(key, value)` and `GET(key)`.
+Memcache is like a hashmap (or dictionary) that is spread across
 multiple servers, where operations are still performed in constant
 time.
 
-The most common use for Memcached is to cache expensive database
+The most common use for Memcache is to cache expensive database
 queries and HTML renders so that these expensive operations don’t
 need to happen over and over again.
 
-### Set up Memcached
+### Set up Memcache
 
-To use Memcached in Laravel, you first need to provision an actual Memcached cache. You can easily get one for free with the
+To use Memcache in Laravel, you first need to provision an actual Memcache
+cache. You can easily get one for free with the
 [MemCachier add-on](https://elements.heroku.com/addons/memcachier):
 
 ```term
 $ heroku addons:create memcachier:dev
 ```
 
-To use use Memcached on your local machine, you also need to complete the following steps:
+To use use Memcache on your local machine, you also need to complete the
+following steps:
 
 1. Install the `php-memcached` PECL extention via your OS package manager.
 2. Uncomment `;extension=memcached.so` in `/etc/php/conf.d/memcached.ini`.
+3. Run `php -m` to make sure the `memcached` module is loaded.
 
 (On Heroku, this dependency is already installed and configured.)
 
-To set up Memcached in Laravel, we add the following dependency to
+To set up Memcache in Laravel, we add the following dependency to
 `composer.json`:
 
 ```term
@@ -583,7 +591,8 @@ We then configure the cache in `config/cache.php`:
 ],
 ```
 
-For Laravel to use Memcached as its cache, you also need to set the `CACHE_DRIVER` config var:
+For Laravel to use Memcache as its cache, you also need to set the
+`CACHE_DRIVER` config var:
 
 ```term
 $ heroku config:set CACHE_DRIVER=memcached
@@ -591,7 +600,7 @@ $ heroku config:set CACHE_DRIVER=memcached
 
 ### Cache expensive database queries
 
-Memcached is often used to cache the results of expensive database queries. Of course, our simple task list does not have any expensive queries, but let's assume for this tutorial that fetching all of the tasks from the database is a slow operation.
+Memcache is often used to cache the results of expensive database queries. Of course, our simple task list does not have any expensive queries, but let's assume for this tutorial that fetching all of the tasks from the database is a slow operation.
 
 The `rememberForever` function makes it easy to add caching to Laravel. You provide two arguments to it:
 
@@ -642,9 +651,10 @@ Route::delete('/task/{task}', function (Task $task) {
 });
 ```
 
-### View Memcached statistics
+### View Memcache statistics
 
-To help demystify Memcached caching operations, we can visualize what's going on under the hood.
+To help demystify Memcache caching operations, we can visualize what's going on
+under the hood.
 
 First, we obtain stats every time the task list is requested in `routes/web.php`:
 
@@ -711,11 +721,11 @@ increase again because the cache was invalidated.
 >If you want to see stats in your local setup, you need to set
 `CACHE_DRIVER=memcached` in your `.env` file and either run a `memcached` server locally or configure your `MEMCACHIER_*` environment variables accordingly.
 
-### Using Memcached for session storage
+### Using Memcache for session storage
 
 On Heroku, it's not advisable to store session information on disk, because dynos have an ephemeral filesystem that doesn't persist across restarts.
 
-Memcached works well for storing information for short-lived sessions that time out. However, because Memcached is a cache and therefore not persistent, long-lived sessions are better suited to permanent storage options, such as your database.
+Memcache works well for storing information for short-lived sessions that time out. However, because Memcache is a cache and therefore not persistent, long-lived sessions are better suited to permanent storage options, such as your database.
 
 Changing the session store from a file (default) to memcached can be done easily by setting the `SESSION_DRIVER` config var:
 
@@ -795,7 +805,7 @@ In Laravel, it's also easy to cache the entire rendered HTML response by using
 is similar to view caching in Ruby on Rails. This package is easy
 to use and has good documentation in its README. However, we cannot use it in
 our example because our task list contains forms with CSRF tokens. To use
-this package with Memcached, you have to set the config var
+this package with Memcache, you have to set the config var
 `RESPONSE_CACHE_DRIVER` to `memcached`.
 
 ## Further reading & resources

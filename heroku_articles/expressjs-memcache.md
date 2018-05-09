@@ -1,12 +1,12 @@
 
-Memcached is a technology that improves the performance and scalability of web
+Memcache is a technology that improves the performance and scalability of web
 apps and mobile app backends. You should consider
-using Memcached when your pages are loading too slowly or your app is
-having scalability issues. Even for small sites, Memcached can make page loads
+using Memcache when your pages are loading too slowly or your app is
+having scalability issues. Even for small sites, Memcache can make page loads
 snappy and help future-proof your app.
 
 This guide shows how to create a simple [Express 4](https://expressjs.com/)
-application, deploy it to Heroku, then add Memcached to alleviate a
+application, deploy it to Heroku, then add Memcache to alleviate a
 performance bottleneck.
 
 >note
@@ -240,18 +240,19 @@ Open the app and submit some invalid queries to see the error message in action.
 
 ## Adding caching to Express
 
-Memcached is an in-memory, distributed cache. Its primary API consists of two operations: `SET(key, value)` and `GET(key)`.
-Memcached is like a hashmap (or dictionary) that is spread across
+Memcache is an in-memory, distributed cache. Its primary API consists of two operations: `SET(key, value)` and `GET(key)`.
+Memcache is like a hashmap (or dictionary) that is spread across
 multiple servers, where operations are still performed in constant
 time.
 
-The most common use for Memcached is to cache expensive database
+The most common use for Memcache is to cache expensive database
 queries and HTML renders so that these expensive operations don’t
 need to happen over and over again.
 
-### Set up Memcached
+### Set up Memcache
 
-To use Memcached in Express, you first need to provision an actual Memcached cache. You can easily get one for free with the
+To use Memcache in Express, you first need to provision an actual Memcache
+cache. You can easily get one for free with the
 [MemCachier add-on](https://elements.heroku.com/addons/memcachier):
 
 ```term
@@ -480,11 +481,16 @@ Now you can see the number of likes increase.
 
 ### Session Caching
 
-On Heroku, it's not advisable to store session information on disk, because dynos have an ephemeral filesystem that doesn't persist across restarts.
+On Heroku, it's not advisable to store session information on disk, because
+dynos have an ephemeral filesystem that doesn't persist across restarts.
 
-Memcached works well for storing information for short-lived sessions that time out. However, because Memcached is a cache and therefore not persistent, long-lived sessions are better suited to permanent storage options, such as your database.
+Memcache works well for storing information for short-lived sessions that time
+out. However, because Memcache is a cache and therefore not persistent,
+long-lived sessions are better suited to permanent storage options, such as
+your database.
 
-To use sessions in Express, you need `express-session`. To store the sessions in Memcached, you need `connect-memjs`:
+To use sessions in Express, you need `express-session`. To store the sessions
+in Memcache, you need `connect-memjs`:
 
 ```term
 $ npm install express-session connect-memjs
