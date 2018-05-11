@@ -27,3 +27,5 @@ We document Spring Boot. There is also stuff like Tomcat and Jetty. See populari
 | ---                | ---    | ---                    | ---     | ---      | ---   |
 | [simple-spring-memcached](https://github.com/ragnor/simple-spring-memcached) | XMemcached | yes / yes* | ![release](https://img.shields.io/maven-central/v/com.google.code.simple-spring-memcached/xmemcached-provider.svg?maxAge=3600) | ![commit](https://img.shields.io/github/last-commit/ragnor/simple-spring-memcached/master.svg?maxAge=3600) | ![stars](https://img.shields.io/github/stars/ragnor/simple-spring-memcached.svg?style=social&maxAge=3600) |
 | [simple-spring-memcached](https://github.com/ragnor/simple-spring-memcached) | SpyMemcached | yes / no | ![release](https://img.shields.io/maven-central/v/com.google.code.simple-spring-memcached/spymemcached-provider.svg?maxAge=3600) | ![commit](https://img.shields.io/github/last-commit/ragnor/simple-spring-memcached/master.svg?maxAge=3600) | ![stars](https://img.shields.io/github/stars/ragnor/simple-spring-memcached.svg?style=social&maxAge=3600) |
+
+\* Recommended.  
