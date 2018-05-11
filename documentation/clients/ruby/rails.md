@@ -1,5 +1,5 @@
 
-## Rails 3+ (includes Rails 4 & 5)
+## Rails
 
 **IF(direct)**
 <p class="alert alert-info">
@@ -14,7 +14,8 @@ We’ve built a small Rails example here:
 ><a class="github-source-code" href="https://github.com/memcachier/examples-rails">Source code</a> or
 >[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=https://github.com/memcachier/examples-rails).
 
-We also have a tutorial on using MemCachier with Rails [here](building-a-rails-3-application-with-memcache).
+We also have a tutorial on using MemCachier with Rails
+[here](building-a-rails-3-application-with-memcache).
 
 Here we explain how you setup and install MemCachier with Rails. Refer
 to the [Rails caching
@@ -102,3 +103,21 @@ rails console
 To test against MemCachier itself, refer to the [Ruby testing
 instructions](#testing-ruby).
 **ENDIF**
+
+### Rails 2
+
+When adding the [dalli](https://github.com/mperham/dalli) gem to your Rails 2
+Gemfile you will need to use dalli **v1.0.5** as later versions of Dalli don't
+support Rails 2.
+
+```ruby
+gem 'dalli', '~>1.0.5'
+```
+
+Also modify `config/environment.rb` to contain:
+
+```ruby
+config.gem 'dalli'
+```
+
+Else proceed just as newer Rails versions.
