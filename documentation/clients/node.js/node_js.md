@@ -1,27 +1,9 @@
 
 ## Node.js
 
-**IF(direct)**
-<p class="alert alert-info">
-We’ve built a small Node.js example here:
-<a href="http://github.com/memcachier/examples-expressjs">MemCachier Node.js sample app</a>.
-</p>
-**ENDIF**
-
-**IF(heroku)**
->callout
->We’ve built a small Node.js example.
-><a class="github-source-code" href="https://github.com/memcachier/examples-expressjs">Source code</a> or
->[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=https://github.com/memcachier/examples-expressjs).
-><br>
->We also have a tutorial on using Express.js with MemCachier
->[here](https://devcenter.heroku.com/articles/expressjs-memcache).
-**ENDIF**
-
 For Node.js we recommend the use of the
 [memjs](https://github.com/memcachier/memjs) client library. It is written
-and supported by MemCachier itself! To install, use the [node package
-manager (npm)](https://npmjs.org/):
+and supported by MemCachier itself! To install, use [npm](https://npmjs.org/):
 
 ```term
 $ npm install memjs
@@ -61,88 +43,4 @@ mc.get('hello', function(err, val) {
     console.log(val.toString('utf8'))
   }
 })
-```
-
-### Espress.js
-
-In Express.js you can use the standard `memjs` interface to get and set values
-as described above to cache expensive computations or database queries. In
-addition there are two Express.js specific ways to use Memcached:
-
-1. Cache rendered views
-2. Store sessions
-
-#### Cache rendered views
-
-To cache rendred views it is best to create an Express.js middleware function
-as such:
-
-```javascript
-var cacheView = function(req, res, next) {
-  var view_key = '_view_cache_' + req.originalUrl || req.url;
-  mc.get(view_key, function(err, val) {
-    if(err == null && val != null) {
-      // Found the rendered view -> send it immediately
-      res.send(val.toString('utf8'));
-      return;
-    }
-    // Cache the rendered view for future requests
-    res.sendRes = res.send
-    res.send = function(body){
-      mc.set(view_key, body, {expires:0}, function(err, val){/* handle error */})
-      res.sendRes(body);
-    }
-    next();
-  });
-}
-```
-
-If you use the `cacheView` middleware you need to take care to invalidate the
-cache whenever the view needs to be re-rendered, e.g., when the content changes.
-This can be done by deleting the cached item:
-
-```javascript
-mc.delete('_view_cache_/?n=' + req.body.n, function(err, val){/* handle error */});
-```
-
-#### Storing Sessions in Memcached
-
-**IF(heroku)**
-On Heroku it is a good idea to store sessions in Memcached instead of in a file
-on disk for two reasons:
-
-1. Dynos only have an ephemeral filesystem that is not persisted across restarts.
-2. You might have multiple dynos which will not share the same ephemeral filesystem.
-**ENDIF**
-
-Memcached works well for sessions that time out, however,
-since Memcached is a cache and thus not persistent, saving long-lived
-sessions in Memcached might not be ideal. For long-lived sessions consider a
-permanent storage option such as your database.
-
-To use sessions in Express you need `express-session` and to store them in
-Memcached you need `connect-memjs`:
-
-```term
-$ npm install express-session connect-memjs
-```
-
-Then you can configure sessions in your app:
-
-```javascript
-var session = require('express-session');
-var MemcachedStore = require('connect-memjs')(session);
-var express = require("express");
-var app = express();
-
-// Session config
-app.use(session({
-  secret: 'ClydeIsASquirrel',
-  resave: 'false',
-  saveUninitialized: 'false',
-  store: new MemcachedStore({
-    servers: [process.env.MEMCACHIER_SERVERS],
-    prefix: '_session_'
-  })
-}));
 ```

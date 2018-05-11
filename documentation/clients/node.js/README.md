@@ -31,5 +31,14 @@
 
 # Web frameworks
 
-We don't document any, but we should document at least Meteor and Express and potentially Koa.js. See popularity
+We document Express and should add documentation for Meteor and maybe Koa.js. See popularity
 [here](http://www.timqian.com/star-history/#expressjs/express&meteor/meteor&koajs/koa&balderdashy/sails&keystonejs/keystone&linnovate/mean&strongloop/loopback&fastify/fastify&nestjs/nest).
+
+
+## Express.js
+
+| Integration | Client | Supported / Documented | Version | Activity | Stars |
+| ---                | ---    | ---                    | ---     | ---      | ---   |
+| native/none | memjs | yes / yes* | - | - | - |
+
+\* Recommended.
