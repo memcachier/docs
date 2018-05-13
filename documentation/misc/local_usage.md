@@ -39,14 +39,14 @@ On Ubuntu:
 $ sudo apt-get install memcached
 ```
 
-Or on OS X (with Homebrew):
+On OS X (with Homebrew):
 
 ```term
 $ brew install memcached
 ```
 
-Or for Windows please refer to [these
-instructions](http://www.heckler.com.br/blog/2013/05/10/memcached-on-windows/)
+For Windows you will need to build memcached from
+[source](https://github.com/memcached/memcached).
 
 For further information and resources (such as the memcached source code)
 please refer to the [Memcache.org homepage](http://memcached.org)
