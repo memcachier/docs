@@ -26,7 +26,7 @@ After you have your MemCachier username, password, and cache ID, you can flush y
 
 ```term
 $ curl "https://analytics.memcachier.com/api/v1/REPLACE_WITH_MEMCACHIER_CACHE_ID/flush" \
-> --user "REPLACE_WITH_MEMCACHIER_USERNAME:REPLACE_WITH_MEMCACHIER_PASSWORD"
+> -X POST --user "REPLACE_WITH_MEMCACHIER_USERNAME:REPLACE_WITH_MEMCACHIER_PASSWORD"
 ```
 
 If the above request returns an error, ensure that your credentials are configured for API access on your analytics dashboard:
