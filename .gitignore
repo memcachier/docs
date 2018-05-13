@@ -1,6 +1,2 @@
-memcachier.md
-memcachier.old.md
-doc.md
-doc.heroku.md
-doc.direct.md
-out/*
+out_direct/*
+out_heroku/*

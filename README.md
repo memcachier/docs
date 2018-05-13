@@ -10,12 +10,12 @@ To compile individual \*.md files into the final documentation execute:
 $ ./build_docs.sh
 ```
 
-This will create `doc.direct.md` with the documentation for our webpage and it
-will create the `memcachier.md` file with the Heroku documentation. Push the
-changes to Heroku:
+This will create the folder `out_direct` with the documentation for our webpage
+as well as the `out_heroku/memcachier.md` file with the Heroku documentation.
+Push the changes to Heroku:
 
 ```shell
-$ devcenter push memcachier.md
+$ devcenter push out_heroku/memcachier.md
 ```
 
 ## Get involved!

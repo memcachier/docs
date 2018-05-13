@@ -5,7 +5,7 @@ Editing Heroku articles:
 ```term
 $ vim heroku_articles/[NAME].md
 $ ./build_heroku.sh [NAME]
-$ devcenter push out/[NAME].md
+$ devcenter push out_heroku/[NAME].md
 ```
 
 The `devcenter` CLI can be found here: https://github.com/heroku/devcenter-cli

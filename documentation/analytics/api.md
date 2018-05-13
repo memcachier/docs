@@ -4,6 +4,19 @@
 You can also access features available on the [analytics dashboard](#memcachier-analytics)
 via the API.
 
+**IF(direct)**
+  - [Authenticate](#analytics-api/authentication)
+  - [Memcachier API ID](#analytics-api/memcachier-api-id)
+  - [Stats](#analytics-api/stats)
+  - [History](#analytics-api/history)
+  - [Flush](#analytics-api/flush)
+  - [List Credentials](#analytics-api/list-credentials)
+  - [Create Credentials](#analytics-api/create-credentials)
+  - [Update Credentials](#analytics-api/update-credentials)
+  - [Promote Credentials](#analytics-api/promote-credentials)
+  - [Delete Credentials](#analytics-api/delete-credentials)
+**ENDIF**
+**IF(heroku)**
   - [Authenticate](#authentication)
   - [Memcachier API ID](#memcachier-api-id)
   - [Stats](#stats)
@@ -14,6 +27,7 @@ via the API.
   - [Update Credentials](#update-credentials)
   - [Promote Credentials](#promote-credentials)
   - [Delete Credentials](#delete-credentials)
+**ENDIF**
 
 ### Authentication
 
