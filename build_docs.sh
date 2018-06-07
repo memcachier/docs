@@ -17,6 +17,7 @@ cat documentation/clients/php/wordpress.md >> doc.md
 cat documentation/clients/node.js/node_js.md >> doc.md
 cat documentation/clients/java/java.md >> doc.md
 cat documentation/clients/java/spring-boot.md >> doc.md
+cat documentation/clients/go/go.md >> doc.md
 cat documentation/clients/supported_clients.md >> doc.md
 cat documentation/clients/sample_apps.md >> doc.md
 cat documentation/misc/local_usage.md >> doc.md
@@ -58,6 +59,7 @@ rm out_direct/*
 ./flavor.py documentation/misc/value_limit.md out_direct/key-value-size-limit-1mb.md direct
 ./flavor.py documentation/misc/encrypted_connections.md out_direct/encrypted-connections.md direct
 # Getting Started / Language Support
+./flavor.py documentation/clients/go/go.md out_direct/go.md direct
 ./flavor.py documentation/clients/java/java.md out_direct/java.md direct
 ./flavor.py documentation/clients/java/spring-boot.md out_direct/spring-boot.md direct
 ./flavor.py documentation/clients/node.js/node_js.md out_direct/node-js.md direct
