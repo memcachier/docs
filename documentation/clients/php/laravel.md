@@ -20,7 +20,13 @@ We’ve built a small Laravel example here:
 
 As of Laravel 5.3, memcached is supported out of the box with the `php-memcached`
 PECL extention. Instructions on how to install `php-memcached` can be found
-[here](#php). Older versions of Laravel require
+**IF(direct)**
+[here](/documentation/php).
+**ENDIF**
+**IF(heroku)**
+[here](#php).
+**ENDIF**
+Older versions of Laravel require
 [`laravel-memcached-plus`](https://github.com/b3it/laravel-memcached-plus) for
 memcached integration.
 

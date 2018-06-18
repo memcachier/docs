@@ -6,8 +6,14 @@ or otherwise), then you should take some additional steps due to the
 multi-threaded runtime being used. This applies to all threaded webservers for
 Ruby, not just Puma.
 
-First, please refer to the documentation on [Rails](#rails) or
-[Ruby](#ruby) appropriately, and then take these additional steps.
+First, please refer to the documentation on
+**IF(direct)**
+[Rails](/documentation/rails) or [Ruby](/documentation/ruby)
+**ENDIF**
+**IF(heroku)**
+[Rails](#rails) or [Ruby](#ruby)
+**ENDIF**
+appropriately, and then take these additional steps.
 
 Dalli by default uses a single connection to each server. This works fine
 normally, but can become a bottleneck in a multi-threaded environment and

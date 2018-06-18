@@ -19,7 +19,7 @@ We’ve built a small Express.js example here:
 **ENDIF**
 
 In Express.js you can use the standard `memjs` interface to get and set values
-as described in our [Node.js documentation](#node-js) to cache expensive
+as described in our Node.js documentation to cache expensive
 computations or database queries:
 
 ```javascript

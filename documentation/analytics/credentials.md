@@ -2,7 +2,13 @@
 ## Credentials
 
 In order to connect a memcache client to MemCachier, you use a
-username and password listed on the [analytics dashboard](#memcachier-analytics)
+username and password listed on the
+**IF(direct)**
+[analytics dashboard](/documentation/memcachier-analytics)
+**ENDIF**
+**IF(heroku)**
+[analytics dashboard](#memcachier-analytics)
+**ENDIF**
 for your cache. Each cache can have multiple sets of credentials.
 One of these sets of credentials is distinguished as *primary*,
 **IF(direct)**

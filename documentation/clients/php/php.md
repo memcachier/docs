@@ -20,6 +20,8 @@ We’ve built a small PHP example here:
 >if you aren't familiar with the new model.
 **ENDIF**
 
+### PHP Memcached Client
+
 We recommended you use the [PHP Memcached
 client](http://www.php.net/manual/en/book.memcached.php) to connect with
 MemCachier. It supports the full protocol and has great performance.
@@ -164,8 +166,8 @@ $_SESSION['test'] = 42;
 
 **IF(direct)**
 This is not our recommended client for using MemCachier from PHP. We recommend
-the [php memcached](#php) client. However, it is an easier client to use as
-it's a pure PHP implementation while the [recommended php client](#php)
+the [php memcached](#php-memcached-client) client. However, it is an easier
+client to use as it's a pure PHP implementation while the recommended php client
 requires a C extension to be installed with
 [SASL](http://en.wikipedia.org/wiki/Simple_Authentication_and_Security_Layer)
 support. It doesn't support multiple proxy servers like the memcached client
@@ -175,7 +177,7 @@ but is otherwise quite good.
 **IF(heroku)**
 >note
 >This is not our recommended client for using MemCachier from PHP. We
->recommend the [php memcached](#php) client. However, it may work
+>recommend the [php memcached](#php-memcached-client) client. However, it may work
 >better for you if you are running into any problems with the php
 >memcached client.
 **ENDIF**
