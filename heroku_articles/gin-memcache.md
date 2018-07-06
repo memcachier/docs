@@ -23,10 +23,10 @@ Before you complete the steps in this guide, make sure you have all of the follo
 * Familiarity with Go (and ideally Gin)
 * A Heroku user account ([signup is free and instant](https://signup.heroku.com/signup/dc))
 * Familiarity with the steps in [Getting Started on Heroku with Go](getting-started-with-go)
-* Go, [govendor](https://github.com/kardianos/govendor) and the [Heroku CLI](heroku-cli) installed on your computer.
+* Go, [govendor](https://github.com/kardianos/govendor), and the [Heroku CLI](heroku-cli) installed on your computer
 * Make sure the `GOPATH` environment variable is set.
 
-## Deploying an Gin application to Heroku
+## Deploying a Gin application to Heroku
 
 Gin is a minimalist framework that doesn't require an application skeleton.
 Simply create a Go app and add `github.com/gin-gonic/gin` as a depenency
