@@ -519,7 +519,7 @@ This configures `simple-spring-memcached` which allows you to use its caching
 annotations. Spring also provides built in caching annotations that can be
 enabled via `simple-spring-memcached`. However, in this tutorial we will use
 the annotations provided `simple-spring-memcached` because they are generally
-more flexible and better suited for a memcached backed cache. Nevertheless,
+more flexible and better suited for a Memcached backed cache. Nevertheless,
 this tutorial would work just as well with Spring's annotations. If you prefer
 to use Spring's built in caching annotations, please refer to the
 [MemCachier documentation](memcachier/#spring-boot).
@@ -527,11 +527,11 @@ to use Spring's built in caching annotations, please refer to the
 ### Cache expensive database queries
 
 Memcache is often used to cache expensive database queries. In this simple
-example we do not have any expensive queries but for the sake learning, let's
+example we do not have any expensive queries but for the sake of learning, let's
 assume that getting all tasks from the database is an expensive operation.
 
 To cache the Task queries we will extend the `TaskRepository` with methods that
-implement caching. Extending a repository in Spring Boot invloves three steps:
+implement caching. Extending a repository in Spring Boot involves three steps:
 
 1. Build an interface with the methods that should be added to the `TaskRepository`
   in `src/main/java/com/memcachier/tutorial/CachedTaskRepository.java`:
@@ -741,7 +741,7 @@ $ heroku open
 Add a new task and you will see all the tasks appear you have added since we
 implemented caching for the task list.
 
-## Further reading & resouces
+## Further reading & resources
 
 * [MemCachier Add-on Page](https://elements.heroku.com/addons/memcachier)
 * [MemCachier Documentation](memcachier)
