@@ -293,14 +293,14 @@ the main application.
     ```python
     # ...
     def create_app():
-      app = Flask(__name__)
+        app = Flask(__name__)
 
-      # ...
+        # ...
 
-      from . import task_list
-      app.register_blueprint(task_list.bp)
+        from . import task_list
+        app.register_blueprint(task_list.bp)
 
-      return app
+        return app
     ```
 
 With the controller set up we can now add the frontend. Flask uses the Jinja
@@ -492,11 +492,11 @@ cache = Cache()
 # ...
 
 def create_app():
-  app = Flask(__name__)
+    app = Flask(__name__)
 
-  # ...
+    # ...
 
-  cache_servers = os.environ.get('MEMCACHIER_SERVERS')
+    cache_servers = os.environ.get('MEMCACHIER_SERVERS')
     if cache_servers == None:
         cache.init_app(app, config={'CACHE_TYPE': 'simple'})
     else:
