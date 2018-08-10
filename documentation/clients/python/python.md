@@ -83,7 +83,7 @@ mc = pylibmc.Client(servers, binary=True,
                     username=user, password=passw,
                     behaviors={
                       # Faster IO
-                      "tcp_nodelay": True,
+                      'tcp_nodelay': True,
 
                       # Keep connection alive
                       'tcp_keepalive': True,
