@@ -90,34 +90,34 @@ Turning the Flask skeleton into a Heroku app is easily done with 2 simple
 steps:
 
 1. Initialize a Git repository and commit the skeleton. Start by adding a
-  `.gitignore` file to make sure you do not commit files you don't want to:
+    `.gitignore` file to make sure you do not commit files you don't want to:
 
-  ```
-  venv/
-  .env
+    ```
+    venv/
+    .env
 
-  *.pyc
-  __pycache__/
+    *.pyc
+    __pycache__/
 
-  instance/
-  ```
+    instance/
+    ```
 
-  Commit all files to the Git repository:
+    Commit all files to the Git repository:
 
-  ```term
-  $ git init
-  $ git add .
-  $ git commit -m 'Flask skeleton'
-  ```
+    ```term
+    $ git init
+    $ git add .
+    $ git commit -m 'Flask skeleton'
+    ```
 
 2. Create a Heroku app:
 
-  ```term
-  $ heroku create
-  ```
+    ```term
+    $ heroku create
+    ```
 
-  In addition to creating the actual Heroku application this command also adds
-  the corresponding remote to your local Git repository.
+    In addition to creating the actual Heroku application this command also adds
+    the corresponding remote to your local Git repository.
 
 We now have a Heroku app but our Flask app is not yet ready for deployment. We
 will go through the deployment steps later but fist let us implement some
@@ -204,35 +204,35 @@ model and add the initial database configuration and migration.
 
 1. Create task model in `task_list/models.py`:
 
-  ```python
-  from task_list import db
+    ```python
+    from task_list import db
 
-  class Task(db.Model):
-      id = db.Column(db.Integer, primary_key=True)
-      name = db.Column(db.Text(), nullable=False)
+    class Task(db.Model):
+        id = db.Column(db.Integer, primary_key=True)
+        name = db.Column(db.Text(), nullable=False)
 
-      def __repr__(self):
-          return '<Task: {}>'.format(self.name)
-  ```
+        def __repr__(self):
+            return '<Task: {}>'.format(self.name)
+    ```
 
     This will give us a task table with an `id` and `name` column.
 
 2. Initialize database and create migrations:
 
-  ```term
-  (venv) $ flask db init
-    Creating directory .../flask_memcache/migrations ... done
-    Creating directory .../flask_memcache/migrations/versions ... done
-    Generating .../flask_memcache/migrations/env.py ... done
-    Generating .../flask_memcache/migrations/README ... done
-    Generating .../flask_memcache/migrations/alembic.ini ... done
-    Generating .../flask_memcache/migrations/script.py.mako ... done
-  (venv) $ flask db migrate -m "task table"
-  INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
-  INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
-  INFO  [alembic.autogenerate.compare] Detected added table 'task'
-    Generating .../flask_memcache/migrations/versions/c90b05ec9bd6_task_table.py ... done
-  ```
+    ```term
+    (venv) $ flask db init
+      Creating directory .../flask_memcache/migrations ... done
+      Creating directory .../flask_memcache/migrations/versions ... done
+      Generating .../flask_memcache/migrations/env.py ... done
+      Generating .../flask_memcache/migrations/README ... done
+      Generating .../flask_memcache/migrations/alembic.ini ... done
+      Generating .../flask_memcache/migrations/script.py.mako ... done
+    (venv) $ flask db migrate -m "task table"
+    INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+    INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+    INFO  [alembic.autogenerate.compare] Detected added table 'task'
+      Generating .../flask_memcache/migrations/versions/c90b05ec9bd6_task_table.py ... done
+    ```
 
     The migration can be found in `migrations/versions/c90b05ec9bd6_task_table.py`.
 
@@ -252,37 +252,37 @@ the main application.
 
 * Create a controller blueprint in `task_list/task_list.py`:
 
-  ```python
-  from flask import (
-      Blueprint, flash, redirect, render_template, request, url_for
-  )
+    ```python
+    from flask import (
+        Blueprint, flash, redirect, render_template, request, url_for
+    )
 
-  from task_list import db
-  from task_list.models import Task
+    from task_list import db
+    from task_list.models import Task
 
-  bp = Blueprint('task_list', __name__)
+    bp = Blueprint('task_list', __name__)
 
-  @bp.route('/', methods=('GET', 'POST'))
-  def index():
-      if request.method == 'POST':
-          name = request.form['name']
-          if not name:
-              flash('Task name is required.')
-          else:
-              db.session.add(Task(name=name))
-              db.session.commit()
+    @bp.route('/', methods=('GET', 'POST'))
+    def index():
+        if request.method == 'POST':
+            name = request.form['name']
+            if not name:
+                flash('Task name is required.')
+            else:
+                db.session.add(Task(name=name))
+                db.session.commit()
 
-      tasks = Task.query.all()
-      return render_template('task_list/index.html', tasks=tasks)
+        tasks = Task.query.all()
+        return render_template('task_list/index.html', tasks=tasks)
 
-  @bp.route('/<int:id>/delete', methods=('POST',))
-  def delete(id):
-      task = Task.query.get(id)
-      if task != None:
-          db.session.delete(task)
-          db.session.commit()
-      return redirect(url_for('task_list.index'))
-  ```
+    @bp.route('/<int:id>/delete', methods=('POST',))
+    def delete(id):
+        task = Task.query.get(id)
+        if task != None:
+            db.session.delete(task)
+            db.session.commit()
+        return redirect(url_for('task_list.index'))
+    ```
 
     This controller contains all functionality to `GET` all tasks and render the
     `task_list` view, to `POST` a new task that will then be saved to the database,
@@ -290,18 +290,18 @@ the main application.
 
 * Register blueprint in `task_list/__init__.py`:
 
-  ```python
-  # ...
-  def create_app():
-    app = Flask(__name__)
-
+    ```python
     # ...
+    def create_app():
+      app = Flask(__name__)
 
-    from . import task_list
-    app.register_blueprint(task_list.bp)
+      # ...
 
-    return app
-  ```
+      from . import task_list
+      app.register_blueprint(task_list.bp)
+
+      return app
+    ```
 
 With the controller set up we can now add the frontend. Flask uses the Jinja
 templating language which allows you to add Python-like control flow statements
@@ -311,96 +311,96 @@ specific template.
 
 * Create a base layout in `task_list/templates/base.html`:
 
-  ```html
-  <!DOCTYPE HTML>
-  <title>{% block title %}{% endblock %} - MemCachier Flask Tutorial</title>
-  <!-- Fonts -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css"
-        rel='stylesheet' type='text/css' />
-  <!-- Bootstrap CSS -->
-  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-        rel="stylesheet" />
+    ```html
+    <!DOCTYPE HTML>
+    <title>{% block title %}{% endblock %} - MemCachier Flask Tutorial</title>
+    <!-- Fonts -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css"
+          rel='stylesheet' type='text/css' />
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          rel="stylesheet" />
 
-  <section class="content">
-    <div class="container">
-      <header>
-        {% block header %}{% endblock %}
-      </header>
-      {% for message in get_flashed_messages() %}
-        <div class="alert alert-danger">
-          <p class="lead">{{ message }}</p>
-        </div>
-      {% endfor %}
-      {% block content %}{% endblock %}
-    </div>
-  </section>
+    <section class="content">
+      <div class="container">
+        <header>
+          {% block header %}{% endblock %}
+        </header>
+        {% for message in get_flashed_messages() %}
+          <div class="alert alert-danger">
+            <p class="lead">{{ message }}</p>
+          </div>
+        {% endfor %}
+        {% block content %}{% endblock %}
+      </div>
+    </section>
 
-  <!-- Bootstrap related JavaScript -->
-  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-  ```
+    <!-- Bootstrap related JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    ```
 
 * Create a view that extends the base layout in
-  `task_list/templates/task_list/index.html`:
+    `task_list/templates/task_list/index.html`:
 
-  ```html
-  {% extends 'base.html' %}
+    ```html
+    {% extends 'base.html' %}
 
-  {% block header %}
-    <h1 style="text-align:center">{% block title %}Task List{% endblock %}</h1>
-  {% endblock %}
+    {% block header %}
+      <h1 style="text-align:center">{% block title %}Task List{% endblock %}</h1>
+    {% endblock %}
 
-  {% block content %}
-    <!-- New Task Card -->
-    <div class="card">
-      <div class="card-body">
-        <h5 class="card-title">New Task</h5>
-
-        <form method="POST">
-          <div class="form-group">
-            <input type="text" class="form-control" placeholder="Task Name"
-                   name="name" required>
-          </div>
-          <button type="submit" class="btn btn-default">
-            <i class="fa fa-plus"></i> Add Task
-          </button>
-        </form>
-      </div>
-    </div>
-
-    <!-- Current Tasks -->
-    {% if tasks %}
+    {% block content %}
+      <!-- New Task Card -->
       <div class="card">
         <div class="card-body">
-          <h5 class="card-title">Current Tasks</h5>
+          <h5 class="card-title">New Task</h5>
 
-          <table class="table table-striped">
-            {% for task in tasks %}
-              <tr>
-                <!-- Task Name -->
-                <td class="table-text">{{ task['name'] }}</td>
-                <!-- Delete Button -->
-                <td>
-                  <form action="{{ url_for('task_list.delete', id=task['id']) }}"
-                        method="POST">
-                    <button type="submit" class="btn btn-danger">
-                      <i class="fa fa-trash"></i> Delete
-                    </button>
-                  </form>
-                </td>
-              </tr>
-            {% endfor %}
-          </table>
+          <form method="POST">
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="Task Name"
+                     name="name" required>
+            </div>
+            <button type="submit" class="btn btn-default">
+              <i class="fa fa-plus"></i> Add Task
+            </button>
+          </form>
         </div>
       </div>
-    {% endif %}
-  {% endblock %}
-  ```
 
-  The view basically consists of two cards, one that contains a form to create
-  new tasks and another containing a table with the existing tasks and a delete
-  button to remove the corresponding task.
+      <!-- Current Tasks -->
+      {% if tasks %}
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Current Tasks</h5>
+
+            <table class="table table-striped">
+              {% for task in tasks %}
+                <tr>
+                  <!-- Task Name -->
+                  <td class="table-text">{{ task['name'] }}</td>
+                  <!-- Delete Button -->
+                  <td>
+                    <form action="{{ url_for('task_list.delete', id=task['id']) }}"
+                          method="POST">
+                      <button type="submit" class="btn btn-danger">
+                        <i class="fa fa-trash"></i> Delete
+                      </button>
+                    </form>
+                  </td>
+                </tr>
+              {% endfor %}
+            </table>
+          </div>
+        </div>
+      {% endif %}
+    {% endblock %}
+    ```
+
+    The view basically consists of two cards, one that contains a form to create
+    new tasks and another containing a table with the existing tasks and a delete
+    button to remove the corresponding task.
 
 Our task list is now functional. Let us save the changes so far with
 ```term
@@ -416,35 +416,35 @@ steps:
 
 1. Install the `gunicorn` server and freeze dependencies into `requirements.txt`:
 
-  ```term
-  (venv) $ pip install gunicorn
-  (venv) $ pip freeze > requirements.txt
-  ```
+    ```term
+    (venv) $ pip install gunicorn
+    (venv) $ pip freeze > requirements.txt
+    ```
 
 2. In order to let Heroku know how to start up your app, you need to add a
     [`Procfile`](procfile):
 
-  ```term
-  $ echo "web: flask db upgrade; gunicorn task_list:'create_app()'" > Procfile
-  ```
+    ```term
+    $ echo "web: flask db upgrade; gunicorn task_list:'create_app()'" > Procfile
+    ```
 
-  This will always run any outstanding migrations before starting up the application.
+    This will always run any outstanding migrations before starting up the application.
 
 3. Set environment variables:
 
-  ```term
-  $ heroku config:set FLASK_APP=task_list
-  $ heroku config:set SECRET_KEY="`< /dev/urandom tr -dc 'a-zA-Z0-9' | head -c16`"
-  ```
+    ```term
+    $ heroku config:set FLASK_APP=task_list
+    $ heroku config:set SECRET_KEY="`< /dev/urandom tr -dc 'a-zA-Z0-9' | head -c16`"
+    ```
 
 4. Deploy app on Heroku:
 
-  ```term
-  $ git add .
-  $ git commit -m 'Add Heroku related config'
-  $ git push heroku master
-  $ heroku open
-  ```
+    ```term
+    $ git add .
+    $ git commit -m 'Add Heroku related config'
+    $ git push heroku master
+    $ heroku open
+    ```
 
 Test the application by adding a few tasks. We now have a functioning task
 list running on Heroku. With this complete, we can learn how to improve
