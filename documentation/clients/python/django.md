@@ -80,15 +80,13 @@ Be sure to update your `requirements.txt` file with these new requirements
 pylibmc==1.5.1
 ```
 
-**IF(direct)**
-<p class="alert alert-info">
-<b>Heroku Users:</b> The above <code>pylibmc</code> requirements must be added
-directly to your <code>requirements.txt</code> file. They shouldn't be placed
-in an included pip requirement file. The Heroku Python buildpack checks the
-<code>requirements.txt</code> file and only that file for the presence of
-<code>pylibmc</code> to trigger bootstrapping <code>libmemcached</code>, which
-is prerequisite for installing <code>pylibmc</code>.
-</p>
+**IF(heroku)**
+>callout
+>Note: The above `pylibmc` requirements must be added directly to your
+>`requirements.txt` file. They shouldn't be placed in an included pip
+>requirement file. The Heroku Python buildpack checks the `requirements.txt`
+>file and only that file for the presence of `pylibmc` to trigger bootstrapping
+>`libmemcached`, which is prerequisite for installing `pylibmc`.
 **ENDIF**
 
 Next, configure your settings.py file the following way:
