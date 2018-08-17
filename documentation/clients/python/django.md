@@ -5,6 +5,12 @@
 <p class="alert alert-info">
 We’ve built a small Django example here:
 <a href="https://github.com/memcachier/examples-django2">MemCachier Django sample app</a>.
+<br>
+Related tutorials:
+<ul>
+  <li><a href="https://devcenter.heroku.com/articles/django-memcache">Scaling a Django Application with Memcache on Heroku</a></li>
+  <li><a href="https://blog.memcachier.com/2018/06/27/django-docker-ecs-tutorial/">MemCachier with Django, Docker and AWS Elastic Container Service</a></li>
+</ul>
 </p>
 
 <p class="alert alert-info">

@@ -5,6 +5,12 @@
 <p class="alert alert-info">
 We’ve built a small Spring Boot example here:
 <a href="https://github.com/memcachier/examples-spring-boot-heroku">MemCachier Spring Boot sample app</a>.
+<br>
+Related tutorials:
+<ul>
+  <li><a href="https://devcenter.heroku.com/articles/spring-boot-memcache">Scaling a Spring Boot Application with Memcache on Heroku</a></li>
+  <li><a href="https://blog.memcachier.com/2018/07/16/spring-boot-on-pivotal-tutorial//">Build a Spring Boot Application on Pivotal Web Services and scale it with Memcache</a></li>
+</ul>
 </p>
 **ENDIF**
 

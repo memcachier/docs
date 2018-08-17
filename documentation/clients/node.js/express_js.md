@@ -5,6 +5,12 @@
 <p class="alert alert-info">
 We’ve built a small Express.js example here:
 <a href="http://github.com/memcachier/examples-expressjs">MemCachier Express.js sample app</a>.
+<br>
+Related tutorials:
+<ul>
+  <li><a href="https://devcenter.heroku.com/articles/expressjs-memcache">Scaling an Express.js Application with Memcache on Heroku</a></li>
+  <li><a href="https://blog.memcachier.com/2018/07/09/scaling-an-express-application-with-memcache-on-amazon-elastic-beanstalk/">Scaling an Express.js Application with Memcache on Amazon Elastic Beanstalk</a></li>
+</ul>
 </p>
 **ENDIF**
 

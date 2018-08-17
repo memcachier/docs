@@ -5,6 +5,11 @@
 <p class="alert alert-info">
 We’ve built a small Rails example here:
 <a href="https://github.com/memcachier/examples-rails">MemCachier Rails sample app</a>.
+<br>
+Related tutorials:
+<ul>
+  <li><a href="https://devcenter.heroku.com/articles/building-a-rails-3-application-with-memcache">Building a Rails 5 Application with Memcache on Heroku</a></li>
+</ul>
 </p>
 **ENDIF**
 

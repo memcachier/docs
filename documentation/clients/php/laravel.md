@@ -5,6 +5,11 @@
 <p class="alert alert-info">
 We’ve built a small Laravel example here:
 <a href="https://github.com/memcachier/examples-laravel-heroku">MemCachier Laravel sample app</a>.
+<br>
+Related tutorials:
+<ul>
+  <li><a href="https://devcenter.heroku.com/articles/laravel-memcache">Scaling a Laravel Application with Memcache on Heroku</a></li>
+</ul>
 </p>
 **ENDIF**
 
