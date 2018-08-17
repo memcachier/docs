@@ -53,14 +53,14 @@ mc.get('hello', function(err, val) {
 })
 ```
 
-In addition there are two Express.js specific ways to use Memcached:
+In addition there are two Express.js specific ways to use Memcache:
 
 1. Cache rendered views
 2. Store sessions
 
 ### Cache rendered views
 
-To cache rendred views it is best to create an Express.js middleware function
+To cache rendered views it is best to create an Express.js middleware function
 as such:
 
 ```javascript
@@ -91,23 +91,23 @@ This can be done by deleting the cached item:
 mc.delete('_view_cache_/?n=' + req.body.n, function(err, val){/* handle error */});
 ```
 
-### Storing Sessions in Memcached
+### Storing Sessions in Memcache
 
 **IF(heroku)**
-On Heroku it is a good idea to store sessions in Memcached instead of in a file
+On Heroku it is a good idea to store sessions in Memcache instead of in a file
 on disk for two reasons:
 
 1. Dynos only have an ephemeral filesystem that is not persisted across restarts.
 2. You might have multiple dynos which will not share the same ephemeral filesystem.
 **ENDIF**
 
-Memcached works well for sessions that time out, however,
-since Memcached is a cache and thus not persistent, saving long-lived
-sessions in Memcached might not be ideal. For long-lived sessions consider a
+Memcache works well for sessions that time out, however,
+since Memcache is a cache and thus not persistent, saving long-lived
+sessions in Memcache might not be ideal. For long-lived sessions consider a
 permanent storage option such as your database.
 
 To use sessions in Express you need `express-session` and to store them in
-Memcached you need `connect-memjs`:
+Memcache you need `connect-memjs`:
 
 ```term
 $ npm install express-session connect-memjs
