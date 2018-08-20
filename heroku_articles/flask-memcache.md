@@ -39,11 +39,10 @@ $ source venv/bin/activate
 (venv) $ pip install Flask
 ```
 
-Now that we've installed the Flask framework, we can add our app code. We'll
-create a task list that allows you to add and remove tasks.
+Now that we've installed the Flask framework, we can add our app code. Let's create a task list that allows you to add and remove tasks.
 
-Flask is very flexible in the way you can structure your application. Let us add
-a minimal skeleton to get started. First, we create an app in
+Flask is very flexible in the way you structure your application. Let's add
+a minimal skeleton to get started. First, create an app in
 `task_list/__init__.py`:
 
 ```python
@@ -60,12 +59,12 @@ def create_app():
 ```
 
 >note
->In our small sample app we will have no use for the `SECRET_KEY`. However, it
->is always a good idea to configure it as larger projects are bound to use it
+>This small sample app will not use the `SECRET_KEY`, but it's
+> always a good idea to configure it. Larger projects almost always use it,
 >and it is used by many Flask addons.
 
 We also need set the `FLASK_APP` environment variable to let Flask know where
-to find the application. We will set all the required environment variable in
+to find the application. For local development, set all required environment variables in
 a `.env` file:
 
 ```
@@ -73,24 +72,23 @@ FLASK_APP=task_list
 FLASK_ENV=development
 ```
 
-To make sure Flask picks up the variables defined in the `.env` file we will
+To make sure Flask picks up the variables defined in the `.env` file,
 install `python-dotenv`:
 
 ```term
 (env) $ pip install python-dotenv
 ```
 
-Now you can run the app with `flask run` and visit it on
-`http://127.0.0.1:5000/` but as there is no functionality yet that would be
-pretty boring.
+Now you can run the app with `flask run` and visit it at
+`http://127.0.0.1:5000/`, but the app doesn't do anything yet.
 
 ### Create a Heroku app
 
-Turning the Flask skeleton into a Heroku app is easily done with 2 simple
+Associate your Flask skeleton with a new Heroku app with the following
 steps:
 
 1. Initialize a Git repository and commit the skeleton. Start by adding a
-    `.gitignore` file to make sure you do not commit files you don't want to:
+    `.gitignore` file to make sure you don't commit files you don't want to. Paste the following into it:
 
     ```
     venv/
@@ -102,7 +100,7 @@ steps:
     instance/
     ```
 
-    Commit all files to the Git repository:
+    Now commit all files to the Git repository:
 
     ```term
     $ git init
@@ -116,11 +114,11 @@ steps:
     $ heroku create
     ```
 
-    In addition to creating the actual Heroku application this command also adds
+    In addition to creating the actual Heroku application, this command adds
     the corresponding remote to your local Git repository.
 
-We now have a Heroku app but our Flask app is not yet ready for deployment. We
-will go through the deployment steps later but fist let us implement some
+We now have a Heroku app, but our Flask app is not yet ready to be deployed to Heroku. We
+will make a few necessary changes later, but first let's implement some
 task list functionality.
 
 ## Add task list functionality
@@ -134,7 +132,7 @@ tasks. To accomplish this, we need to:
 
 ### Set up a PostgreSQL database
 
-Before we can configure a database in Flask, we need to create said
+Before we can configure a database in Flask, we need to create the
 database. On Heroku, you can add a free development database to your app like
 so:
 
@@ -143,7 +141,7 @@ $ heroku addons:create heroku-postgresql:hobby-dev
 ```
 
 This creates a PostgreSQL database for your app and adds a `DATABASE_URL`
-environment variable that contains its URL. To use our database we need a few
+environment variable that contains its URL. To use our database, we need a few
 libraries to manage our database connection, models, and migrations:
 
 ```term
@@ -179,30 +177,29 @@ def create_app():
 ```
 
 This creates a `db` object that is now accessible throughout your Flask app. The
-database is configured via the `SQLALCHEMY_DATABASE_URI` which uses the
-`DATABASE_URL` if available or falls back to a local SQLite database. If you
+database is configured via the `SQLALCHEMY_DATABASE_URI`, which uses the
+`DATABASE_URL` if available. Otherwise, it falls back to a local SQLite database. If you
 want to run the application locally using the SQLite database, you need to
-create the instance folder:
+create an `instance` folder:
 
 ```term
 $ mkdir instance
 ```
 
-The database is now ready to be used. Save the changes with
+The database is now ready to use. Save the changes with:
 
 ```term
 $ git commit -am 'Database setup'
 ```
 
-Note that we imported our database models via `from . import models`. We do not
+Note that the snippet above imports database models with `from . import models`. However, the app doesn't
 have any models yet. Let's change that.
 
 ### Create the Task model
 
-In order to create and store tasks we need to do two things: create a `Task`
-model and add the initial database configuration and migration.
+To create and store tasks, we need to do two things:
 
-1. Create task model in `task_list/models.py`:
+1. Create the `Task` model in `task_list/models.py`:
 
     ```python
     from task_list import db
@@ -215,9 +212,9 @@ model and add the initial database configuration and migration.
             return '<Task: {}>'.format(self.name)
     ```
 
-    This will give us a task table with an `id` and `name` column.
+    This gives us a task table with two columns: `id` and `name`.
 
-2. Initialize database and create migrations:
+2. Initialize the database and create migrations:
 
     ```term
     (venv) $ flask db init
@@ -234,9 +231,9 @@ model and add the initial database configuration and migration.
       Generating .../flask_memcache/migrations/versions/c90b05ec9bd6_task_table.py ... done
     ```
 
-    The migration can be found in `migrations/versions/c90b05ec9bd6_task_table.py`.
+    The new migration can be found in `migrations/versions/c90b05ec9bd6_task_table.py` (your filename's prefix will differ).
 
-Let's save the changes so far:
+Save your changes so far:
 
 ```term
 $ git add .
@@ -245,12 +242,12 @@ $ git commit -m 'Task table setup'
 
 ### Create the task list application
 
-The actual application consists of a view that is displayed in the frontend and
-a controller that implements the functionality in the backend. Flask facilitates
-the organization of backend controllers via blueprints which are registered in
+The actual application consists of a view that is displayed in the front end and
+a controller that implements the functionality in the back end. Flask facilitates
+the organization of back-end controllers via blueprints that are registered in
 the main application.
 
-* Create a controller blueprint in `task_list/task_list.py`:
+1. Create a controller blueprint in `task_list/task_list.py`:
 
     ```python
     from flask import (
@@ -284,11 +281,13 @@ the main application.
         return redirect(url_for('task_list.index'))
     ```
 
-    This controller contains all functionality to `GET` all tasks and render the
-    `task_list` view, to `POST` a new task that will then be saved to the database,
-    and to delete existing tasks.
+    This controller contains all functionality to:
+    * `GET` all tasks and render the
+    `task_list` view
+    * `POST` a new task that will then be saved to the database
+    * Delete existing tasks
 
-* Register blueprint in `task_list/__init__.py`:
+2. Register the blueprint in `task_list/__init__.py`:
 
     ```python
     # ...
@@ -303,13 +302,12 @@ the main application.
         return app
     ```
 
-With the controller set up we can now add the frontend. Flask uses the Jinja
-templating language which allows you to add Python-like control flow statements
-inside `{%  %}` delimiters. For our task list view we first create a
-base layout with all the boilerplate common for all pages and a task list
-specific template.
+With the controller set up, we can now add the front end. Flask uses the Jinja
+templating language, which allows you to add Python-like control flow statements
+inside `{%  %}` delimiters. For our task list view, we first create a
+base layout that includes boilerplate code for all views. We then create a  template specific to the task list.
 
-* Create a base layout in `task_list/templates/base.html`:
+1. Create a base layout in `task_list/templates/base.html`:
 
     ```html
     <!DOCTYPE HTML>
@@ -341,7 +339,7 @@ specific template.
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     ```
 
-* Create a view that extends the base layout in
+2. Create a view that extends the base layout in
     `task_list/templates/task_list/index.html`:
 
     ```html
@@ -398,20 +396,21 @@ specific template.
     {% endblock %}
     ```
 
-    The view basically consists of two cards, one that contains a form to create
-    new tasks and another containing a table with the existing tasks and a delete
-    button to remove the corresponding task.
+    The view consists of two cards: one that contains a form to create
+    new tasks, and another that contains a table with existing tasks and a delete
+    button associated with each task.
 
-Our task list is now functional. Let us save the changes so far with
+Our task list is now functional. Save the changes so far with:
+
 ```term
 $ git add .
 $ git commit -m 'Add task list controller and views'
 ```
-so we are ready to deploy the app on Heroku.
+We are now ready to configure the app to deploy on Heroku.
 
-## Deploy task list app on Heroku
+## Deploy the task list app on Heroku
 
-Deploying the Flask application on Heroku is easily done with 4 simple
+Deploying the Flask application on Heroku is easily done with the following
 steps:
 
 1. Install the `gunicorn` server and freeze dependencies into `requirements.txt`:
@@ -421,23 +420,23 @@ steps:
     (venv) $ pip freeze > requirements.txt
     ```
 
-2. In order to let Heroku know how to start up your app, you need to add a
-    [`Procfile`](procfile):
+2. To let Heroku know how to start up your app, you need to add a
+    [`Procfile`](procfile) to its root directory:
 
     ```term
     $ echo "web: flask db upgrade; gunicorn task_list:'create_app()'" > Procfile
     ```
 
-    This will always run any outstanding migrations before starting up the application.
+    The above command always runs any outstanding database migrations before starting up the application.
 
-3. Set environment variables:
+3. Set your Heroku app's required config vars:
 
     ```term
     $ heroku config:set FLASK_APP=task_list
     $ heroku config:set SECRET_KEY="`< /dev/urandom tr -dc 'a-zA-Z0-9' | head -c16`"
     ```
 
-4. Deploy app on Heroku:
+4. Deploy the app to Heroku:
 
     ```term
     $ git add .
@@ -459,7 +458,7 @@ Memcache is like a hashmap (or dictionary) that is spread across
 multiple servers, where operations are still performed in constant
 time.
 
-The most common use for Memcache is to cache expensive database
+The most common use for Memcache is to cache the results of expensive database
 queries and HTML renders so that these expensive operations don’t
 need to happen over and over again.
 
@@ -528,21 +527,21 @@ def create_app():
   return app
 ```
 
-This configures `Flask-Caching` with MemCachier which allows you to use your
+This configures `Flask-Caching` with MemCachier, which allows you to use your
 Memcache in a few different ways:
 
-* Directly access the cache via `get`, `set`, `delete`, and so on.
-* Cache results of functions with the `memoize` decorator.
-* Cache entire views with the `cached` decorator.
-* Cache Jinja2 snippets.
+* Directly access the cache via `get`, `set`, `delete`, and so on
+* Cache results of functions with the `memoize` decorator
+* Cache entire views with the `cached` decorator
+* Cache Jinja2 snippets
 
 ### Cache expensive database queries
 
-Memcache is often used to cache expensive database queries. In this simple
-example we do not have any expensive queries but for the sake of learning, let's
+Memcache is often used to cache expensive database queries. This simple
+example doesn't include any expensive queries, but for the sake of learning, let's
 assume that getting all tasks from the database is an expensive operation.
 
-To cache the Task query (`tasks = Task.query.all()`) we change the controller
+To cache the Task query (`tasks = Task.query.all()`), we change the controller
 logic in `task_list/task_list.py` like so:
 
 ```python
@@ -565,7 +564,7 @@ def index():
 # ...
 ```
 
-Let us deploy and test this new functionality:
+Deploy and test this new functionality:
 
 ```term
 $ git commit -am 'Add caching with MemCachier'
@@ -573,27 +572,26 @@ $ git push heroku master
 $ heroku open
 ```
 
-To see what is going on in your cache, open the MemCachier dashboard:
+To see what's going on in your cache, open the MemCachier dashboard:
 
 ```term
 $ heroku addons:open memcachier
 ```
 
-The first time you loaded your task list you should have gotten an increase for
-the get misses and the set commands. Every subsequent reload of the task list
-should increase the get hits (refresh the stats in the dashboard).
+The first time you loaded your task list, you should have gotten an increase for the `get miss` and `set` commands. Every subsequent reload of the task list
+should increase `get hit`s (refresh the stats in the dashboard).
 
-Our cache is working but there is still a mayor problem. Add a new task and see
-what happens. No new task appears on our current tasks list. The new task was
-created in our database but our app is serving the stale task list from the
+Our cache is working, but there is still a major problem. Add a new task and see
+what happens. No new task appears on the current tasks list! The new task was
+created in the database, but the app is serving the stale task list from the
 cache.
 
 ### Clear stale data
 
-As important as caching data, is to invalidate it when it becomes stale. In our
-example the cached task list becomes stale whenever a new task is added or an
+When caching data, it's important to **invalidate** that data when the cache becomes stale. In our
+example, the cached task list becomes stale whenever a new task is added or an
 existing task is removed. We need to make sure our cache is invalidated
-whenever one of these two actions are performed.
+whenever one of these two actions is performed.
 
 We achieve this by deleting the `all_tasks` key whenever we create or delete a
 new task in `task_list/task_list.py`:
@@ -631,23 +629,22 @@ $ git commit -am 'Clear stale data from cache'
 $ git push heroku master
 ```
 
-Add a new task and you will see all the tasks appear you have added since we
-implemented caching for the task list.
+Now when you add a new task, all the tasks you've added since implementing caching will appear.
 
 ### Use the Memoization decorator
 
-The pattern we used to store all tasks, namely trying first to get a cached
-value and if unavailable, get the value from the source (computation, database,
-etc.) and store it in the cache for future requests is so common that
-`Flask-Caching` has a decorator for it called `memoize`. We will now change the
+Our caching strategy above (try to obtain a cached value and add a new value to the cache if it's missing) is so common that
+`Flask-Caching` has a decorator for it called `memoize`. Let's change the
 caching code for our database query to use the `memoize` decorator.
 
-Fist, we will need to put the task query into its own function called
-`get_all_tasks` and decorate it with the `memoize` decorator. We then call this
-function to get all tasks. Second, we need to replace the deletion of stale data
+Fist, we put the task query into its own function called
+`get_all_tasks` and decorate it with the `memoize` decorator. We always call this
+function to get all tasks.
+
+Second, we replace the deletion of stale data
 with `cache.delete_memoized(get_all_tasks)`.
 
-In the end `task_list/task_list.py` should look as follows:
+After making these changes, `task_list/task_list.py` should look as follows:
 
 ```python
 # ...
@@ -688,22 +685,21 @@ $ git push heroku master
 ```
 
 >note
->As the `get_all_tasks` function does *not* take any arguments you can also
+>Because the `get_all_tasks` function doesn't take any arguments, you can also
 >decorate it with ` @cache.cached(key_prefix='get_all_tasks')` instead of
 >` @cache.memoize()`. This is slightly more efficient.
 
 ### Cache Jinja2 snippets
 
 With the help of `Flask-Caching`, you can cache Jinja snippets in Flask. This is
-similar to fragment caching in Ruby on Rails or caching rendered partials in
+similar to fragment caching in Ruby on Rails, or caching rendered partials in
 Laravel. If you have complex Jinja snippets in your application, it's a good idea to
-cache them because rendering HTML can be a CPU-intensive task.
+cache them, because rendering HTML can be a CPU-intensive task.
 
 > warning
 > Do not cache snippets that include forms with CSRF tokens.
 
-Let us see how this is done and cache the rendered task entries in the task
-list. We do this with the `{% cache timeout key %}` statement in
+To cache a rendered set of task entries, we use a `{% cache timeout key %}` statement in
 `task_list/templates/task_list/index.html`:
 
 ```html
@@ -722,12 +718,13 @@ list. We do this with the `{% cache timeout key %}` statement in
 <!-- ... -->
 ```
 
-Here the timeout is `None` and the key is a list of strings that will get
-concatenated. As long as the task IDs are not reused, this is all there is to
+Here the timeout is `None` and the key is a list of strings that will be
+concatenated. As long as task IDs are never reused, this is all there is to
 caching rendered snippets. The PostgreSQL database we use on Heroku does not
-reuse IDs so we are all set. However, if you use a database that does reuse IDs
-such as SQLite you will need to delete the fragment when the respective task is
-deleted. This can be easily done by adding the following code to the task delete
+reuse IDs, so we're all set.
+
+If you use a database that _does_ reuse IDs (such as SQLite), you need to delete the fragment when its respective task is
+deleted. You can do this by adding the following code to the task deletion
 logic:
 
 ```python
@@ -743,18 +740,18 @@ $ git commit -am 'Cache task entry fragment'
 $ git push heroku master
 ```
 
-You should now see an additional get hit for each task in your list whenever
+You should now observe an additional `get hit` for each task in your list whenever
 you reload the page (except the first reload).
 
 ### Cache entire views
 
-We can also go one step further and cache entire views. This has to be done
-with care as it can result in unintended side effects if the view frequently
+We can go one step further and cache entire views instead of snippets. This should be done
+with care, because it can result in unintended side effects if a view frequently
 changes or contains forms for user input. In our task list example, both of
 these conditions are true because the task list changes each time a task is
-added or deleted and the view contains forms to add and delete a task.
+added or deleted, and the view contains forms to add and delete a task.
 
-We can cache the task list view with the ` @cache.cached()` decorator in
+You can cache the task list view with the ` @cache.cached()` decorator in
 `task_list/task_list.py`:
 
 ```python
@@ -772,17 +769,16 @@ def index():
 ```
 
 >note
->It is important to note that the ` @cache.cached()` decorator is directly above
->the definiton of the `index()` function, i.e., below the ` @bp.route()`
->decorator.
+>The `@cache.cached()` decorator must be directly above
+>the definition of the `index()` function (i.e., below the `@bp.route()`
+>decorator).
 
 Since we only want to cache the result of the `index()` function when we `GET`
-the view we exclude `POST` request with the `unless` parameter. We could also
+the view, we exclude the `POST` request with the `unless` parameter. We could also
 have separated the `GET` and `POST` routes into two different functions.
 
-As the view changes whenever we add or remove a task we need to delete the
-cached view whenever this happens. The ` @cache.cached()` decorator per default
-uses a key of the form `'view/' + request.path` which in our case is `'view//'`.
+Because the view changes whenever we add or remove a task, we need to delete the
+cached view whenever this happens. By default, the `@cache.cached()` decorator uses a key of the form `'view/' + request.path`, which in our case is `'view//'`.
 Delete this key in the create and delete logic in `task_list/task_list.py` just
 after deleting the cached query:
 
@@ -792,25 +788,23 @@ cache.delete_memoized(get_all_tasks)
 cache.delete('view//')
 ```
 
-To see the effect of view caching let's deploy our application:
+To see the effect of view caching, deploy your application:
 
 ```term
 $ git commit -am 'Cache task list view'
 $ git push heroku master
 ```
 
-On the first refresh you should see the get hit counter increase depending
-on the number of tasks you have as well as an additional get miss and set which
-correspond to the view that is now cached. Any subsequent reload will now
-increase the get hit counter by just one as the whole view is retrieved with
-one get command.
+On the first refresh, you should see the `get hit` counter increase according
+to the number of tasks you have, as well as an additional `get miss` and `set`, which
+correspond to the view that is now cached. Any subsequent reload will
+increase the `get hit` counter by just one, because the entire view is retrieved with a single `get` command.
 
-You might be tempted to think that view caching obsoletes the caching of
-expensive operations or Jinja snippets. This is not the case. It is good
-practice to cache smaller operations within cached larger operations or smaller
-Jinja snippets within larger Jinja snippets. This is called Russian doll caching
-and helps with performance if a larger operation, snippet, or view is removed
-from the cache as the building blocks do not have to be recreated from scratch.
+Note that view caching does _not_ obsolete the caching of
+expensive operations or Jinja snippets. It is good
+practice to cache smaller operations within cached larger operations, or smaller
+Jinja snippets within larger Jinja snippets. This technique (called Russian doll caching) helps with performance if a larger operation, snippet, or view is removed
+from the cache, because the building blocks do not have to be recreated from scratch.
 
 
 ## Further reading & resources
