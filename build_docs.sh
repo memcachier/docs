@@ -9,6 +9,7 @@ cat documentation/clients/ruby/puma.md >> doc.md
 cat documentation/clients/ruby/rack.md >> doc.md
 cat documentation/clients/python/python.md >> doc.md
 cat documentation/clients/python/django.md >> doc.md
+cat documentation/clients/python/flask.md >> doc.md
 cat documentation/clients/php/php.md >> doc.md
 cat documentation/clients/php/laravel.md >> doc.md
 cat documentation/clients/php/symfony2.md >> doc.md
@@ -18,6 +19,7 @@ cat documentation/clients/node.js/node_js.md >> doc.md
 cat documentation/clients/java/java.md >> doc.md
 cat documentation/clients/java/spring-boot.md >> doc.md
 cat documentation/clients/go/go.md >> doc.md
+cat documentation/clients/go/gin.md >> doc.md
 cat documentation/clients/supported_clients.md >> doc.md
 cat documentation/clients/sample_apps.md >> doc.md
 cat documentation/misc/local_usage.md >> doc.md
@@ -60,6 +62,7 @@ rm out_direct/*
 ./flavor.py documentation/misc/encrypted_connections.md out_direct/encrypted-connections.md direct
 # Getting Started / Language Support
 ./flavor.py documentation/clients/go/go.md out_direct/go.md direct
+./flavor.py documentation/clients/go/gin.md out_direct/gin.md direct
 ./flavor.py documentation/clients/java/java.md out_direct/java.md direct
 ./flavor.py documentation/clients/java/spring-boot.md out_direct/spring-boot.md direct
 ./flavor.py documentation/clients/node.js/node_js.md out_direct/node-js.md direct
@@ -71,6 +74,7 @@ rm out_direct/*
 ./flavor.py documentation/clients/php/wordpress.md out_direct/wordpress.md direct
 ./flavor.py documentation/clients/python/python.md out_direct/python.md direct
 ./flavor.py documentation/clients/python/django.md out_direct/django.md direct
+./flavor.py documentation/clients/python/flask.md out_direct/flask.md direct
 ./flavor.py documentation/clients/ruby/ruby.md out_direct/ruby.md direct
 ./flavor.py documentation/clients/ruby/rails.md out_direct/rails.md direct
 ./flavor.py documentation/clients/ruby/puma.md out_direct/ruby-puma-webserver.md direct
