@@ -7,7 +7,7 @@ We generally don't recommend using TLS to secure your connection. Why?
 Memcache is normally only used when performance is important and so
 low latency is critical. This means we expect your MemCachier cache
 and your application that accesses it runs in the same datacenter, for
-example the Amazon EC2 `us-east-1` datacenter. All your traffic are
+example the Amazon EC2 <code>us-east-1</code> datacenter. All your traffic are
 running over, and only over, the internal datacenter network. This is
 a <strong>highly secure</strong> network that can't be sniffed on or
 tampered with. For example, your web application is probably speaking

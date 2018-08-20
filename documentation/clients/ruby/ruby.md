@@ -45,9 +45,9 @@ cache = Dalli::Client.new((ENV["MEMCACHIER_SERVERS"] || "").split(","),
 
 **IF(direct)**
 <p class="alert alert-info">
-The values for `MEMCACHIER_SERVERS`, `MEMCACHIER_USERNAME`, and
-`MEMCACHIER_PASSWORD` are listed on your
-[cache overview page](https://www.memcachier.com/caches). Make sure to add them
+The values for <code>MEMCACHIER_SERVERS</code>, <code>MEMCACHIER_USERNAME</code>, and
+<code>MEMCACHIER_PASSWORD</code> are listed on your
+<a href="https://www.memcachier.com/caches">cache overview page</a>. Make sure to add them
 to your environment.
 </p>
 **ENDIF**
