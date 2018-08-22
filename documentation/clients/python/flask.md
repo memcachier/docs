@@ -197,3 +197,72 @@ from flask_caching import make_template_fragment_key
 key = make_template_fragment_key('item', vary_on=[str(item.id)])
 cache.delete(key)
 ```
+
+### Session caching
+
+Memcache works well for storing information for short-lived sessions that time
+out. However, because Memcache is a cache and therefore not persistent,
+long-lived sessions are better suited to permanent storage options, such as
+your database.
+
+To store sessions in Memcache, you need
+[Flask-Session](https://pythonhosted.org/Flask-Session/).
+
+```term
+$ pip install Flask-Session pylibmc
+```
+
+Be sure to update your `requirements.txt` file with these new requirements
+(note that your versions may differ than what’s below):
+
+```text
+Flask-Session==0.3.1
+pylibmc==1.5.2
+```
+
+Now, configure `Flask-Session`:
+
+```python
+import os
+import pylibmc
+from flask import Flask
+from flask_session import Session
+
+app = Flask(__name__)
+
+servers = os.environ.get('MEMCACHIER_SERVERS').split(',')
+username = os.environ.get('MEMCACHIER_USERNAME')
+passwd = os.environ.get('MEMCACHIER_PASSWORD')
+
+app.config.from_mapping(
+    SESSION_TYPE = 'memcached',
+    SESSION_MEMCACHED =
+        pylibmc.Client(cache_servers.split(','), binary=True,
+                       username=cache_user, password=cache_pass,
+                       behaviors={
+                            # Faster IO
+                            'tcp_nodelay': True,
+                            # Keep connection alive
+                            'tcp_keepalive': True,
+                            # Timeout for set/get requests
+                            'connect_timeout': 2000, # ms
+                            'send_timeout': 750 * 1000, # us
+                            'receive_timeout': 750 * 1000, # us
+                            '_poll_timeout': 2000, # ms
+                            # Better failover
+                            'ketama': True,
+                            'remove_failed': 1,
+                            'retry_timeout': 2,
+                            'dead_timeout': 30,
+                       })
+)
+Session(app)
+```
+
+You can now use sessions in your app like so:
+
+```python
+from flask import session
+session['key'] = 'value'
+session.get('key', 'not set')
+```
