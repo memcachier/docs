@@ -806,6 +806,77 @@ practice to cache smaller operations within cached larger operations, or smaller
 Jinja snippets within larger Jinja snippets. This technique (called Russian doll caching) helps with performance if a larger operation, snippet, or view is removed
 from the cache, because the building blocks do not have to be recreated from scratch.
 
+### Using Memcache for session storage
+
+On Heroku, it's not advisable to store session information on disk, because
+dynos have an ephemeral filesystem that doesn't persist across restarts.
+
+Memcache works well for storing information for short-lived sessions that time
+out. However, because Memcache is a cache and therefore not persistent,
+long-lived sessions are better suited to permanent storage options, such as
+your database.
+
+To store sessions in Memcache, you need
+[Flask-Session](https://pythonhosted.org/Flask-Session/):
+
+```term
+(env) $ pip install Flask-Session
+(venv) $ pip freeze > requirements.txt
+```
+
+Then, configure `Flask-Session` in `task_list/__init__.py`:
+
+```python
+import pylibmc
+from flask_session import Session
+
+# ...
+
+def create_app():
+
+    # ...
+
+    if cache_servers == None:
+        # ...
+    else:
+        # ...
+
+        app.config.update(
+            SESSION_TYPE = 'memcached',
+            SESSION_MEMCACHED =
+                pylibmc.Client(cache_servers.split(','), binary=True,
+                               username=cache_user, password=cache_pass,
+                               behaviors={
+                                    # Faster IO
+                                    'tcp_nodelay': True,
+                                    # Keep connection alive
+                                    'tcp_keepalive': True,
+                                    # Timeout for set/get requests
+                                    'connect_timeout': 2000, # ms
+                                    'send_timeout': 750 * 1000, # us
+                                    'receive_timeout': 750 * 1000, # us
+                                    '_poll_timeout': 2000, # ms
+                                    # Better failover
+                                    'ketama': True,
+                                    'remove_failed': 1,
+                                    'retry_timeout': 2,
+                                    'dead_timeout': 30,
+                               })
+        )
+    Session(app)
+
+    # ...
+```
+
+Our task list app does not have any use for sessions but you can now use
+sessions in your app like so:
+
+```python
+from flask import session
+session['key'] = 'value'
+session.get('key', 'not set')
+```
+
 
 ## Further reading & resources
 
