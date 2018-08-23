@@ -182,3 +182,107 @@ diminishes at 1MB and higher.
 >sharding the data or using a different technology. The benefit of an
 >in-memory key-value store diminishes at 1MB and higher.
 **ENDIF**
+
+
+### Template fragment caching
+
+Django allows you to cache rendered template fragments. To enable fragment
+caching add `{% load cache %}` to the top of each template caching is used in.
+The control statement to cache a fragment has the form
+`{% cache timeout key ... %}` where all additional parameters after the key
+are just appended to the key. In practice this may look as follows:
+
+```html
+{% load cache %}
+<!-- ... -->
+
+<!-- Fragment caching example -->
+{% for item in list %}
+  {% cache None 'item-fragment' item.id %}
+  <div>
+    <!-- fragment that does something with the item -->
+  </div>
+  {% endcache %}
+{% endfor %}
+```
+Here the timeout is `None` but it can also be a variable that contains a time or
+an integer denoting seconds.
+
+The cached snippet from the above example can be invalidated (deleted) as follows:
+
+```python
+from django.core.cache import cache
+from django.core.cache.utils import make_template_fragment_key
+key = make_template_fragment_key("item-fragment", vary_on=[str(item.id)])
+cache.delete(key)
+```
+
+### View caching
+
+Django also provides a decorator to cache views:
+
+```python
+from django.shortcuts import render_to_response
+from django.views.decorators.cache import cache_page
+# ...
+
+timeout = 600 # 10 min
+
+@cache_page(timeout)
+def index(request):
+  # ...
+  return render_template('index.html', ...)
+```
+
+If a cached view ever has to be invalidated explicitly, the key to the view
+needs to be saved:
+
+```python
+from django.shortcuts import render_to_response
+from django.views.decorators.cache import cache_page
+from django.utils.cache import learn_cache_key
+# ...
+
+timeout = None
+view_keys = {}
+
+@cache_page(timeout)
+def index(request):
+  # ...
+  response = render_template('index.html', ...)
+  view_keys['index'] = learn_cache_key(request, response)
+  return response
+```
+
+Now the view can be invalidated with:
+
+```python
+from django.core.cache import cache
+cache.delete(view_keys['index'])
+```
+
+### Session storage
+
+Memcache works well for storing information for short-lived sessions that time
+out. However, because Memcache is a cache and therefore not persistent,
+long-lived sessions are better suited to permanent storage options, such as
+your database.
+
+For short-lived sessions configure `SESSION_ENGINE` to use the cache backend in
+`django_tasklist/settings.py`:
+
+```python
+SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+```
+
+For long-lived sessions Django allows you to use a write-through cache, backed
+by a database. This is the best option for performance while guaranteeing
+persistence. To use the write-through cache, configure the `SESSION_ENGINE` in
+`django_tasklist/settings.py` like so:
+
+```python
+SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
+```
+
+For more information on how to use sessions in Django, please see the
+[Django Session Documentation](https://docs.djangoproject.com/en/dev/topics/http/sessions/)
