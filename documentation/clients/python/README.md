@@ -2,6 +2,8 @@
 
 | Name | Library | Framework | Deploy |
 | ---  | ---     | ---       | ---    |
+| [Task list](https://github.com/memcachier/examples-flask) | `pylibmc-1.5.2` & `Flask-Caching-1.4.0` & `Flask-Session-0.3.1` | `Flask-1.0` | [![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=http://github.com/memcachier/examples-flask) |
+| [Task list](https://github.com/memcachier/examples-django-tasklist) | `pylibmc-1.5.2` | `Django-2.1` | [![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=http://github.com/memcachier/examples-django-tasklist) |
 | [FIFO queue](https://github.com/memcachier/examples-django2) | `pylibmc-1.5.2` | `Django-2.0` | [![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=http://github.com/memcachier/examples-django2) |
 | [Algebra (binary)](https://github.com/memcachier/examples-django) | `pylibmc-1.5.1` | `Django-1.8.16` & `django-pylibmc-0.6.1` | [![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=http://github.com/memcachier/examples-django) |
 | [Algebra (ASCII)](https://github.com/memcachier/examples-django3) | `pymemcache-1.4.0` | `Django-1.8.16` & `memcachier-django-ascii-1.0.0` | [![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=http://github.com/memcachier/examples-django3) |
@@ -24,7 +26,7 @@
 
 # Web frameworks
 
-We document Django and should add documentation for Flask. See popularity
+We document Django and Flask. See popularity
 [here](http://www.timqian.com/star-history/#django/django&pallets/flask).
 
 ## Django
@@ -49,5 +51,10 @@ We document Django and should add documentation for Flask. See popularity
 
 Sets up `django-pylibmc` with `pylibmc` for MemCachier on Heroku.
 
+## Flask
 
-<!-- ## TODO: Flask support (via Werkzeug)  -->
+| Integration | Client | Supported / Documented | Version | Activity | Stars |
+| ---                | ---    | ---                    | ---     | ---      | ---   |
+| native | pylibmc | yes / no | ![release](https://img.shields.io/pypi/v/flask.svg?maxAge=3600) | ![commit](https://img.shields.io/github/last-commit/pallets/flask/master.svg?maxAge=3600) | ![stars](https://img.shields.io/github/stars/pallets/flask.svg?style=social&maxAge=3600) |
+| [Flask-Caching](https://github.com/sh4nks/flask-caching) | pylibmc | yes / yes | ![release](https://img.shields.io/pypi/v/flask-caching.svg?maxAge=3600) | ![commit](https://img.shields.io/github/last-commit/sh4nks/flask-caching/master.svg?maxAge=3600) | ![stars](https://img.shields.io/github/stars/sh4nks/flask-caching.svg?style=social&maxAge=3600) |
+| [Flask-Session](https://github.com/fengsp/flask-session) | pylibmc | yes / yes | ![release](https://img.shields.io/pypi/v/flask-session.svg?maxAge=3600) | ![commit](https://img.shields.io/github/last-commit/fengsp/flask-session/master.svg?maxAge=3600) | ![stars](https://img.shields.io/github/stars/fengsp/flask-session.svg?style=social&maxAge=3600) |
