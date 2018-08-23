@@ -1,55 +1,54 @@
 
-Memcache is a technology that helps web apps and mobile app backends
-in two main ways: *performance* and *scalability*. You should consider
-using memcache when your pages are loading too slowly or your app is
-having scalability issues. Even for small sites it can be a great
-technology, making page loads snappy and future proofing for scale.
+Memcache is a technology that improves the performance and scalability of web
+apps and mobile app backends. You should consider
+using Memcache when your pages are loading too slowly or your app is
+having scalability issues. Even for small sites, Memcache can make page loads
+snappy and help future-proof your app.
 
-This article shows how to create a simple application in Django,
-deploy it to Heroku, then add caching with Memcache to alleviate a
-performance bottleneck.
+This guide shows how to create a simple
+[Django 2.1](https://www.djangoproject.com/) application, deploy it to Heroku,
+then add Memcache to alleviate a performance bottleneck.
 
-This article mainly targets *Python 3* since *Django 2* no longer supports
+This article mainly targets *Python 3* since *Django 2+* no longer supports
 *Python 2*. If you want to use Python 2 with an older version of Django this
 guide should however still work.
 
 >note
->We’ve built a sample app that can be seen running
->[here](http://memcachier-examples-django2.herokuapp.com).<br>
-><a class="github-source-code" href="http://github.com/memcachier/examples-django2">Source code</a> or
-[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=http://github.com/memcachier/examples-django2)
+>The sample app in this guide can be seen running
+>[here](https://memcachier-django-tasklist.herokuapp.com/). You can
+>[view the source code](http://github.com/memcachier/examples-django-tasklist) or deploy
+>it with this Heroku Button:
+>
+>[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=http://github.com/memcachier/examples-django-tasklist)
 
-## Overview
+## Prerequisites
+Before you complete the steps in this guide, make sure you have all of the
+following:
 
-Memcache is an in-memory, distributed cache. The primary API for
-interacting with it are `SET(key, value)` and `GET(key)` operations.
-Memcache is like a hashmap (or dictionary) that is spread across
-multiple servers, where operations are still performed in constant
-time.
+* Familiarity with Python (and ideally Django)
+* A Heroku user account ([signup is free and instant](https://signup.heroku.com/signup/dc))
+* Familiarity with the steps in [Getting Started with Python on Heroku](getting-started-with-python)
+* Python and the [Heroku CLI](heroku-cli) installed on your computer
 
-The most common usage of memcache is to cache expensive database
-queries and HTML renders such that these expensive operations don’t
-need to happen over and over again.
-
-## Create an empty Django app
+## Create a Django application for Heroku
 
 The following commands will create an empty Django app. A detailed
 explanation of these commands can be found in
 [Deploying Python and Django Apps](deploying-python).
 
 ```term
-$ mkdir django_queue && cd django_queue
+$ mkdir django_memcache && cd django_memcache
 $ python -m venv venv    # For Python 2 use `virtualenv venv`
 $ source venv/bin/activate
-$ pip install Django django-heroku gunicorn
-$ django-admin.py startproject django_queue .
-$ pip freeze > requirements.txt
-$ python manage.py runserver
+(venv) $ pip install Django django-heroku gunicorn
+(venv) $ django-admin.py startproject django_tasklist .
+(venv) $ pip freeze > requirements.txt
+(venv) $ python manage.py runserver
 Performing system checks...
 
 System check identified no issues (0 silenced).
 
-Django version 2.0, using settings 'django_queue.settings'
+Django version 2.0, using settings 'django_tasklist.settings'
 Starting development server at http://127.0.0.1:8000/
 Quit the server with CONTROL-C.
 ```
@@ -57,37 +56,38 @@ Quit the server with CONTROL-C.
 Visiting [http://localhost:8000](http://localhost:8000) will show a
 "hello, world" landing page.
 
-### The Procfile
-
-The [Procfile](procfile) lets Heroku know how to start your app. Create it in
-your project root and and add the following line:
-
-```text
-web: gunicorn django_queue.wsgi --log-file -
-```
-
 ### Configure Django for Heroku
 
-Django requires some special configuration in order to work on Heroku, mainly
-for the database to work and the static files to be served. Luckily, there is a
-[`django-heroku`](https://github.com/heroku/django-heroku) package that takes care
-of all that. So on the bottom of the file `django_queue/settings.py` add the
-following lines:
+For the Django app to work on Heroku, some Heroku specific configuration is
+required:
 
-```python
-# Configure Django App for Heroku.
-import django_heroku
-django_heroku.settings(locals())
-```
+1. Add a [`Procfile`](procfile) to let Heroku know how to start your app:
 
-For more information about these Heroku specific settings see
-[Configuring Django Apps for Heroku](django-app-configuration). *Note:
-`django-heroku` only supports Python 3. For Python 2 please follow the
-instructions in [Configuring Django Apps for Heroku](django-app-configuration)*
+    ```term
+    $ echo "web: gunicorn django_tasklist.wsgi --log-file -" > Procfile
+    ```
 
-### Commit to git
+2. Add the Heroku specific configuration to the settings which the Django app
+    requires in order to work on Heroku, mainly for the database to work and
+    the static files to be served. Luckily, there is a
+    [`django-heroku`](https://github.com/heroku/django-heroku) package that
+    takes care of all that. So on the bottom of the file
+    `django_tasklist/settings.py` add the following lines:
 
-Code needs to be added to a git repository before it can be deployed
+    ```python
+    # Configure Django App for Heroku.
+    import django_heroku
+    django_heroku.settings(locals())
+    ```
+
+    For more information about these Heroku specific settings see
+    [Configuring Django Apps for Heroku](django-app-configuration). *Note:
+    `django-heroku` only supports Python 3. For Python 2 please follow the
+    instructions in [Configuring Django Apps for Heroku](django-app-configuration).*
+
+### Deploy on Heroku
+
+Our code needs to be added to a git repository before it can be deployed
 to Heroku. First, edit `.gitignore` and adding the following
 lines to exclude unnecessary files:
 
@@ -97,7 +97,7 @@ venv
 db.sqlite3
 ```
 
-Then initialize a repo and make a commit:
+Then initialize a git repository and make a commit:
 
 ```term
 $ git init
@@ -105,9 +105,7 @@ $ git add .
 $ git commit -m "Empty django app"
 ```
 
-### Deploy to Heroku
-
-Create an app using `heroku create`:
+Now, create a Heroku app using `heroku create`:
 
 ```term
 $ heroku create
@@ -130,155 +128,213 @@ $ heroku open
 You will see the same "hello, world" landing page you saw in local
 development mode except running on the Heroku platform.
 
-## Add functionality
+## Add task list functionality
 
-The Django application we are building will show a list of items, one
-per line on the page. It will have actions to add new items to the end
-and remove older items from the front. Basically, it is a queue. Items
-in the queue are just strings.
+The Django application we are building is a task list. In addition to displaying
+the list, it will have actions to add new tasks and to remove them.
 
-First, make the Django `mc_queue` app:
+First, make the Django `mc_tasklist` app:
 
 ```term
-$ python manage.py startapp mc_queue
+(venv) $ python manage.py startapp mc_tasklist
 ```
 
-Add `mc_queue` to the list of installed apps in
-[`django_queue/settings.py`](https://github.com/memcachier/examples-django2/blob/master/django_queue/settings.py):
+Add `mc_tasklist` to the list of installed apps in `django_tasklist/settings.py`:
 
 ```python
 INSTALLED_APPS = (
-  'django.contrib.auth',
-  # ...
-  'mc_queue',
+    'django.contrib.admin',
+    # ...
+    'mc_tasklist',
 )
 ```
 
-And create a simple model in
-[`mc_queue/models.py`](https://github.com/memcachier/examples-django2/blob/master/queue/models.py):
+Now we can add the task list functionality in four steps:
 
-```python
-from django.db import models
+1. Create a simple `Task` model in `mc_tasklist/models.py`:
 
-class QueueItem(models.Model):
-  text = models.CharField(max_length=200)
-```
+    ```python
+    from django.db import models
 
-Use `makemigrations` and `migrate` to create the `mc_queue_queueitems` table
-locally, along with all other default Django tables:
+    class Task(models.Model):
+        name = models.TextField()
+    ```
 
-```term
-$ python manage.py makemigrations mc_queue
-$ python manage.py migrate
-```
+    Use `makemigrations` and `migrate` to create a migration for the
+    `mc_tasklist` app as well as create the `mc_tasklist_tasks` table
+    locally, along with all other default Django tables:
 
-Next, setup routes in
-[`django_queue/urls.py`](https://github.com/memcachier/examples-django2/blob/master/django_queue/urls.py)
-for add, remove, and index methods:
+    ```term
+    (venv) $ python manage.py makemigrations mc_tasklist
+    (venv) $ python manage.py migrate
+    ```
 
-```python
-# ...
-from mc_queue import views
-urlpatterns = [
+2. Setup the routes for add, remove, and index methods in `django_tasklist/urls.py`:
+
+    ```python
     # ...
-    path('add', views.add),
-    path('remove', views.remove),
-    path('', views.index),
-]
-```
+    from mc_tasklist import views
+    urlpatterns = [
+        # ...
+        path('add', views.add),
+        path('remove', views.remove),
+        path('', views.index),
+    ]
+    ```
 
-Add corresponding views in
-[`mc_queue/views.py`](https://github.com/memcachier/examples-django2/blob/master/queue/views.py):
+3. Add corresponding view controllers in `mc_tasklist/views.py`:
 
-```python
-from django.http import HttpResponse
-from django.template.context_processors import csrf
-from django.shortcuts import render_to_response, redirect
-from mc_queue.models import QueueItem
+    ```python
+    from django.template.context_processors import csrf
+    from django.shortcuts import render_to_response, redirect
+    from mc_tasklist.models import Task
 
-def index(request):
-  queue = QueueItem.objects.order_by("id")
-  c = {'queue': queue}
-  c.update(csrf(request))
-  return render_to_response('index.html', c)
+    def index(request):
+        tasks = Task.objects.order_by("id")
+        c = {'tasks': tasks}
+        c.update(csrf(request))
+        return render_to_response('index.html', c)
 
-def add(request):
-  item = QueueItem(text=request.POST["text"])
-  item.save()
-  return HttpResponse("<li>%s</li>" % item.text)
+    def add(request):
+        item = Task(name=request.POST["name"])
+        item.save()
+        return redirect("/")
 
-def remove(request):
-  items = QueueItem.objects.order_by("id")[:1]
-  if len(items) != 0:
-    items[0].delete()
-  return redirect("/")
-```
+    def remove(request):
+        item = Task.objects.get(id=request.POST["id"])
+        if item:
+            item.delete()
+        return redirect("/")
+    ```
 
-And create a template, `mc_queue/templates/index.html`, that has display code.
-View the source for this file in
-[Github](https://github.com/memcachier/examples-django2/blob/master/mc_queue/templates/index.html). Django will automatically check each apps `templates` folder for templates.
+4. Create a template with display code in `mc_tasklist/templates/index.html`:
 
-```term
-$ mkdir mc_queue/templates
-$ wget -O mc_queue/templates/index.html https://raw.githubusercontent.com/memcachier/examples-django2/master/mc_queue/templates/index.html
-```
+    ```html
+    <!DOCTYPE html>
+    <head>
+      <meta charset="utf-8">
+      <title>MemCachier Django tutorial</title>
+      <!-- Fonts -->
+      <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css"
+            rel='stylesheet' type='text/css' />
+      <!-- Bootstrap CSS -->
+      <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+            rel="stylesheet" />
+    </head>
+
+    <body>
+      <div class="container">
+        <!-- New Task Card -->
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">New Task</h5>
+
+            <form action="add" method="POST">
+              {% csrf_token %}
+              <div class="form-group">
+                <input type="text" class="form-control" placeholder="Task Name"
+                       name="name" required>
+              </div>
+              <button type="submit" class="btn btn-default">
+                <i class="fa fa-plus"></i> Add Task
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Current Tasks -->
+        {% if tasks %}
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Current Tasks</h5>
+
+            <table class="table table-striped">
+              {% for task in tasks %}
+              <tr>
+                <!-- Task Name -->
+                <td class="table-text">{{ task.name }}</td>
+                <!-- Delete Button -->
+                <td>
+                  <form action="remove" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="id" value="{{ task.id }}">
+                    <button type="submit" class="btn btn-danger">
+                      <i class="fa fa-trash"></i> Delete
+                    </button>
+                  </form>
+                </td>
+              </tr>
+              {% endfor %}
+            </table>
+          </div>
+        </div>
+        {% endif %}
+      </div>
+
+      <!-- Bootstrap related JavaScript -->
+      <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    </body>
+    </html>
+    ```
+
+    Django will automatically check each apps `templates` folder for templates.
 
 Execute `python manage.py runserver` and visit `http://localhost:8000` again
-and play with the basic queue app. A screenshot has been included below:
+to play with the basic task list app by adding and removing a few tasks.
 
-![Simple Queue App](https://s3.amazonaws.com/heroku-devcenter-files/article-images/1445331522-queue.png 'App Screenshot')
+Locally we use a SQLite database to store the task list. On Heroku we need to  
+provision a database:
 
-### Commit your changes
+```term
+$ heroku addons:create heroku-postgresql:hobby-dev
+```
 
-When the app is working, commit your changes:
+Now deploy the task list to Heroku:
 
 ```term
 $ git add .
-$ git commit -m "Basic queue app"
-```
-
-### Deploy to Heroku
-
-And deploy these changes to Heroku:
-
-```term
+$ git commit -m "Task list functionality"
 $ git push heroku master
 ```
 
-Finally, migrate your database on Heroku to create the `mc_queue_queueitem`
+Finally, migrate your database on Heroku to create the `mc_tasklist_tasks`
 table, and restart the Heroku app:
 
 ```term
-$ heroku run python manage.py makemigrations mc_queue
 $ heroku run python manage.py migrate
 $ heroku restart
 ```
 
-View the app in your browser:
+View the app with `heroku open` and add a few tasks to make sure the app also
+works on Heroku.
 
-```term
-$ heroku open
-```
 
-## Start using memcache
+## Add caching to Django
 
-As previously mentioned, memcache is most effective at caching
-expensive database queries and HTML renders.  The only potentially
-expensive operation in the queue app is the `SELECT` statement made to
-the database to fetch the queue.  This example will continue by using
-memcache to cache the `SELECT` statement.
+Memcache is an in-memory, distributed cache. Its primary API consists of two
+operations: `SET(key, value)` and `GET(key)`.
+Memcache is like a hashmap (or dictionary) that is spread across
+multiple servers, where operations are still performed in constant
+time.
 
-### Provision on Heroku
+The most common use for Memcache is to cache the results of expensive database
+queries and HTML renders so that these expensive operations don’t
+need to happen over and over again.
 
-Provision the [MemCachier](https://elements.heroku.com/addons/memcachier)
-add-on to use in the application deployed to Heroku:
+### Provision a Memcache
+
+To use Memcache in Django, you first need to provision an actual Memcached
+cache. You can easily get one for free with the
+[MemCachier add-on](https://elements.heroku.com/addons/memcachier):
 
 ```term
 $ heroku addons:create memcachier:dev
 ```
 
-This will provision a new memcache instance for you and expose a set
-of [config vars](config-vars) containing your memcache credentials.
+This will provision a new Memcache instance for you and expose a set
+of [config variables](config-vars) containing your MemCachier credentials.
 
 ### Configure Django with MemCachier
 
@@ -288,8 +344,8 @@ of [config vars](config-vars) containing your memcache credentials.
 > [older version](https://github.com/memcachier/docs/blob/8a9437cc2285d034b8fe2c3e38423489be32ce17/heroku_articles/django-memcache.md#start-using-memcache)
 > of this article for more information.
 
-To have your application operate correctly in both development and
-production mode, add the following to `django_queue/settings.py`:
+Configure your cache by adding the following to the end of
+`django_tasklist/settings.py`:
 
 ```python
 def get_cache():
@@ -340,29 +396,25 @@ def get_cache():
 CACHES = get_cache()
 ```
 
-This change to `settings.py` configures the cache for both development
+This configures the cache for both development
 and production.  If the `MEMCACHIER_*` environment variables exist,
 the cache will be setup with `pylibmc`, connecting to
 MemCachier. Whereas, if the `MEMCACHIER_*` environment variables
 don't exist -- hence development mode -- Django's simple in-memory
 cache is used instead.
 
-### Libraries
+### Install dependencies
 
 To install `pylibmc` the C library `libmemcached` is required. Heroku comes with
 `libmemcached` installed so you wont need to worry about it. However, if you
 want to test `pylibmc` locally you'll need to install it (which is a
-platform-dependant process).
+platform-dependent process).
 
 In Ubuntu:
 
 ```term
 $ sudo apt-get install libmemcached-dev
 ```
-
-We also have a detailed
-[blog post](http://blog.memcachier.com/2014/11/05/ubuntu-libmemcached-and-sasl-support/)
-on installing libmemcached on Ubuntu if you run into any issues.
 
 In OS X:
 
@@ -381,7 +433,7 @@ $ brew install libmemcached
 Then, install the `pylibmc` Python modules:
 
 ```term
-$ pip install pylibmc
+(venv) $ pip install pylibmc
 ```
 
 > callout
@@ -404,11 +456,11 @@ pylibmc==1.5.2
 Finally, commit and deploy these changes:
 
 ```term
-$ git commit -a -m "Connecting to memcache."
+$ git commit -am "Connecting to memcache."
 $ git push heroku master
 ```
 
-### Verify memcache config
+### Verify Memcache configuration
 
 Verify that you've configured memcache correctly before you move
 forward.
@@ -426,132 +478,369 @@ properly:
 'bar'
 ```
 
-Exit with `ctrl-d`. After the second `get` command, `bar` should be printed to
+Exit with `Ctrl-d`. After the second `get` command, `bar` should be printed to
 the screen when `foo` is fetched from the cache. If you don't see `bar` your
 cache is not configured correctly.
 
-### Modify the application
+### Cache expensive database queries
 
-With a proper connection to memcache, the queue database query code can
-be modified to check the cache first.  Below is a new version of the
-`index` view in `mc_queue/views.py`:
+Memcache is often used to cache expensive database queries. This simple
+example doesn't include any expensive queries, but for the sake of learning, let's
+assume that getting all tasks from the database is an expensive operation.
+
+The task list database query code in `mc_tasklist/views.py` can be modified
+to check the cache first like so:
 
 ```python
 # ...
 from django.core.cache import cache
 import time
 
-QUEUE_KEY = "queue"
+TASKS_KEY = "tasks.all"
 
 def index(request):
-  queue = cache.get(QUEUE_KEY)
-  if not queue:
-    time.sleep(2)  # simulate a slow query.
-    queue = QueueItem.objects.order_by("id")
-    cache.set(QUEUE_KEY, queue)
-  c = {'queue': queue}
-  c.update(csrf(request))
-  return render_to_response('index.html', c)
+    tasks = cache.get(TASKS_KEY)
+    if not tasks:
+        time.sleep(2)  # simulate a slow query.
+        tasks = Task.objects.order_by("id")
+        cache.set(TASKS_KEY, tasks)
+    c = {'tasks': tasks}
+    c.update(csrf(request))
+    return render_to_response('index.html', c)
 # ...
 ```
 
-The above code first checks the cache to see if the `queue` key exists
+The above code first checks the cache to see if the `tasks.all` key exists
 in the cache.  If it does not, a database query is executed and the
 cache is updated.  Subsequent pageloads will not need to perform the
 database query.  The `time.sleep(2)` only exists to simulate a slow
 query.
 
-You may notice that there's a bug in this code.  Visit
-`http://localhost:8000`.  Notice that adding a new item to the queue
-properly appends the new item to the `<ul>`.  However, if you refresh
-the page, you'll notice that the queue is out of date.  The queue is out
-of date because the memcache value hasn't been updated yet.
+Deploy and test this new functionality:
 
-### Keep memcache up-to-date
+```term
+$ git commit -am 'Add caching with MemCachier'
+$ git push heroku master
+$ heroku open
+```
+
+To see what's going on in your cache, open the MemCachier dashboard:
+
+```term
+$ heroku addons:open memcachier
+```
+
+The first time you loaded your task list, you should have gotten an increase
+for the `get miss` and `set` commands. Every subsequent reload of the task list
+should increase `get hit`s (refresh the stats in the dashboard).
+
+Our cache is working, but there is still a major problem. Add a new task and see
+what happens. No new task appears on the current tasks list! The new task was
+created in the database, but the app is serving the stale task list from the
+cache.
+
+### Keep Memcache up-to-date
 
 There are many techniques for dealing with an out-of-date cache.
-First and easiest, the `cache.set` method can take an optional third
-argument, which is the time in seconds that the cache key should stay
-in the cache.  If this option is not specified, the default `TIMEOUT`
-value in `settings.py` will be used instead.
 
-You could modify the `cache.set` method to look like this:
+1. **Expiration:**
+    The easiest way to make sure the cache does not get stale is by setting
+    an expiration time. The `cache.set` method can take an optional third
+    argument, which is the time in seconds that the cache key should stay
+    in the cache.  If this option is not specified, the default `TIMEOUT`
+    value in `settings.py` will be used instead.
 
-```python
-cache.set(QUEUE_KEY, queue, 5)
-```
+    You could modify the `cache.set` method to look like this:
 
-But this functionality isn't ideal.  The user experience associated
-with adding and removing will be bad -- the user should not need to
-wait a few seconds for their queue to be updated.  Instead, a better
-strategy is to invalidate the `queue` key when you know the cache is
-out of date -- namely, to modify the `add` and `remove` views to
-delete the `queue` key.  Below are the new methods:
+    ```python
+    cache.set(TASKS_KEY, tasks, 5)
+    ```
 
-```python
-# ...
-def add(request):
-  item = QueueItem(text=request.POST["text"])
-  item.save()
-  cache.delete(QUEUE_KEY)
-  return HttpResponse("<li>%s</li>" % item.text)
+    But this functionality only works when it is known for how long the cached value
+    is valid. In our case however, the cache gets stale upon user interaction (add,
+    remove a task).
 
-def remove(request):
-  items = QueueItem.objects.order_by("id")[:1]
-  if len(items) != 0:
-    items[0].delete()
-    cache.delete(QUEUE_KEY)
-  return redirect("/")
-```
+2. **Delete cached value:**
+    A straight forward strategy is to invalidate the `tasks.all` key when you know
+    the cache is out of date -- namely, to modify the `add` and `remove` views to
+    delete the `tasks.all` key:
 
-Note the calls to `cache.delete`.  This function explicitly deletes
-the `queue` key from the cache.
+    ```python
+    # ...
+    def add(request):
+        item = Task(name=request.POST["name"])
+        item.save()
+        cache.delete(TASKS_KEY)
+        return redirect("/")
 
-Better yet, instead of deleting the `queue` key, the value should be
-updated to reflect the new queue.  Updating the value instead of
-deleting it will allow the first pageload to avoid having to go to the
-database.  Here's a better version of the same code:
+    def remove(request):
+        item = Task.objects.get(id=request.POST["id"])
+        if item:
+            item.delete()
+            cache.delete(TASKS_KEY)
+        return redirect("/")
+    ```
 
-```python
-# ...
-def add(request):
-  item = QueueItem(text=request.POST["text"])
-  item.save()
-  cache.set(QUEUE_KEY, _get_queue())
-  return HttpResponse("<li>%s</li>" % item.text)
+3. **Key based expiration:**
+    Another technique to invalidate stale data is to change the key:
 
-def remove(request):
-  items = QueueItem.objects.order_by("id")[:1]
-  if len(items) != 0:
-    items[0].delete()
-    cache.set(QUEUE_KEY, _get_queue())
-  return redirect("/")
+    ```python
+    # ...
+    import random
+    import string
 
-def _get_queue():
-  return QueueItem.objects.order_by("id")
-```
+    def _hash(size=16, chars=string.ascii_letters + string.digits):
+        return ''.join(random.choice(chars) for _ in range(size))
 
-Now the cache will not ever be out-of-date, and the value associated
-with the `queue` key will be updated immediately when the queue is
-changed.
+    def _new_tasks_key():
+        return 'tasks.all.' + _hash()
 
+    TASKS_KEY = _new_tasks_key()
+
+    # ...
+
+    def add(request):
+        item = Task(name=request.POST["name"])
+        item.save()
+        global TASKS_KEY
+        TASKS_KEY = _new_tasks_key()
+        return redirect("/")
+
+    def remove(request):
+        item = Task.objects.get(id=request.POST["id"])
+        if item:
+            item.delete()
+            global TASKS_KEY
+            TASKS_KEY = _new_tasks_key()
+        return redirect("/")
+    ```
+
+    The upside of key based expiration is that you do not have to interact with
+    the cache to expire the value. The LRU eviction of Memcache will clean out
+    the old keys eventually.
+
+4. **Update cache:**
+    Instead of invalidating the key the value can also be updated to reflect
+    the new task list:
+
+    ```python
+    # ...
+    def add(request):
+        item = Task(name=request.POST["name"])
+        item.save()
+        cache.set(TASKS_KEY, Task.objects.order_by("id"))
+        return redirect("/")
+
+    def remove(request):
+        item = Task.objects.get(id=request.POST["id"])
+        if item:
+            item.delete()
+            cache.set(TASKS_KEY, Task.objects.order_by("id"))
+        return redirect("/")
+    ```
+    Updating the value instead of deleting it will allow the
+    first pageload to avoid having to go to the database
+
+You can use option 2, 3, or 4 to make sure the cache will not ever be
+out-of-date.
 As usual, commit and deploy your changes:
 
 ```term
-$ git commit -a -m "Using memcache in queue views."
+$ git commit -am "Keep Memcache up to date."
 $ git push heroku master
 ```
 
-## Further reading and resources
+Now when you add a new task, all the tasks you've added since implementing
+caching will appear.
 
-This article has barely scratched the surface of what is possible with
-memcache in Django.  For example, Django has built-in support to cache
-[views](https://docs.djangoproject.com/en/dev/topics/cache/#the-per-view-cache)
-and
-[fragments](https://docs.djangoproject.com/en/dev/topics/cache/#template-fragment-caching).
-Furthermore, much of the basic Django setup was glossed over in this
-article.  Please refer to the below resources to learn more about
-Django, memcache, or Heroku:
+## Use Django's integrated caching
+
+Django also has a few built in ways to use your Memcache to improve performance.
+These mainly target the rendering of HTML which is an expensive operation that
+is taxing for the CPU.
+
+### Caching and CSRF
+
+You cannot cache any views or fragments that contain forms with CSRF tokens
+because the token changes with each request. For the sake of learning how to
+use Django's integrated caching we will disable Django's CSRF middleware.
+Since this task list is public, this is not a big deal but **do not do this
+in any serious production application**.
+
+Comment `CsrfViewMiddleware` in `django_tasklist/settings.py`:
+
+```python
+MIDDLEWARE = [
+    # ...
+    # 'django.middleware.csrf.CsrfViewMiddleware',
+    # ...
+]
+```
+
+### Cache template fragments
+
+Django allows you to cache rendered template fragments. This is
+similar to snippet caching in Flask, or caching rendered partials in
+Laravel. To enable fragment caching add `{% load cache %}` to the top of your
+template.
+
+> warning
+> Do not cache fragments that include forms with CSRF tokens.
+
+To cache a rendered set of task entries, we use a `{% cache timeout key %}` statement in
+`mc_tasklist/templates/index.html`:
+
+```html
+{% load cache %}
+<!-- ... -->
+
+<table class="table table-striped">
+  {% for task in tasks %}
+    {% cache None 'task-fragment' task.id %}
+    <tr>
+      <!-- ... -->
+    </tr>
+    {% endcache %}
+  {% endfor %}
+</table>
+
+<!-- ... -->
+```
+
+Here the timeout is `None` and the key is a list of strings that will be
+concatenated. As long as task IDs are never reused, this is all there is to
+caching rendered snippets. The PostgreSQL database we use on Heroku does not
+reuse IDs, so we're all set.
+
+If you use a database that _does_ reuse IDs, you need to delete
+the fragment when its respective task is
+deleted. You can do this by adding the following code to the task deletion
+logic:
+
+```python
+from django.core.cache.utils import make_template_fragment_key
+key = make_template_fragment_key("task-fragment", vary_on=[str(item.id)])
+cache.delete(key)
+```
+
+Let's see the effect of caching the fragments in our application:
+
+```term
+$ git commit -am 'Cache task entry fragment'
+$ git push heroku master
+```
+
+You should now observe an additional `get hit` for each task in your list whenever
+you reload the page (except the first reload).
+
+### Cache entire views
+
+We can go one step further and cache entire views instead of fragments. This
+should be done with care, because it can result in unintended side effects
+if a view frequently changes or contains forms for user input. In our task list
+example, both of these conditions are true because the task list changes each
+time a task is added or deleted, and the view contains forms to add and delete
+a task.
+
+> warning
+> Do not cache views that include forms with CSRF tokens.
+
+You can cache the task list view with the ` @cache_page(timeout)` decorator in
+`mc_tasklist/views.py`:
+
+```python
+# ...
+from django.views.decorators.cache import cache_page
+
+@cache_page(None)
+def index(request):
+    # ...
+
+# ...
+```
+
+Because the view changes whenever we add or remove a task, we need to delete the
+cached view whenever this happens. This is not straight forward. We need to
+learn the key when the view is cached in order to be then able to delete it:
+
+```python
+# ...
+from django.utils.cache import learn_cache_key
+
+VIEW_KEY = ""
+
+@cache_page(None)
+def index(request):
+    # ...
+    response = render_to_response('index.html', c)
+    global VIEW_KEY
+    VIEW_KEY = learn_cache_key(request, response)
+    return response
+
+def add(request):
+    # ...
+    cache.delete(VIEW_KEY)
+    return redirect("/")
+
+def remove(request):
+    item = Task.objects.get(id=request.POST["id"])
+    if item:
+        # ...
+        cache.delete(VIEW_KEY)
+    return redirect("/")
+```
+
+To see the effect of view caching, deploy your application:
+
+```term
+$ git commit -am 'Cache task list view'
+$ git push heroku master
+```
+
+On the first refresh, you should see the `get hit` counter increase according
+to the number of tasks you have, as well as an additional `get miss` and `set`,
+which correspond to the view that is now cached. Any subsequent reload will
+increase the `get hit` counter by just two, because the entire view is retrieved
+with two `get` commands.
+
+Note that view caching does _not_ obsolete the caching of
+expensive operations or template fragments. It is good
+practice to cache smaller operations within cached larger operations, or smaller
+fragments within larger fragments. This technique (called Russian doll caching)
+helps with performance if a larger operation, fragment, or view is removed
+from the cache, because the building blocks do not have to be recreated from
+scratch.
+
+## Using Memcache for session storage
+
+On Heroku, it's not advisable to store session information on disk, because
+dynos have an ephemeral filesystem that doesn't persist across restarts.
+
+Memcache works well for storing information for short-lived sessions that time
+out. However, because Memcache is a cache and therefore not persistent,
+long-lived sessions are better suited to permanent storage options, such as
+your database.
+
+For short-lived sessions configure `SESSION_ENGINE` to use the cache backend in
+`django_tasklist/settings.py`:
+
+```python
+SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+```
+
+For long-lived sessions Django allows you to use a write-through cache, backed
+by a database. This is the best option for performance while guaranteeing
+persistence. To use the write-through cache, configure the `SESSION_ENGINE` in
+`django_tasklist/settings.py` like so:
+
+```python
+SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
+```
+
+For more information on how to use sessions in Django, please see the
+[Django Session Documentation](https://docs.djangoproject.com/en/dev/topics/http/sessions/)
+
+## Further reading and resources
 
 * [MemCachier Add-on Page](https://elements.heroku.com/addons/memcachier)
 * [MemCachier Documentation](https://devcenter.heroku.com/articles/memcachier)
