@@ -187,7 +187,7 @@ diminishes at 1MB and higher.
 ### Template fragment caching
 
 Django allows you to cache rendered template fragments. To enable fragment
-caching add `{% load cache %}` to the top of each template caching is used in.
+caching, add `{% load cache %}` to the top of each template caching is used in.
 The control statement to cache a fragment has the form
 `{% cache timeout key ... %}` where all additional parameters after the key
 are just appended to the key. In practice this may look as follows:
@@ -205,7 +205,7 @@ are just appended to the key. In practice this may look as follows:
   {% endcache %}
 {% endfor %}
 ```
-Here the timeout is `None` but it can also be a variable that contains a time or
+Here the timeout is `None`, but it can also be a variable that contains a time or
 an integer denoting seconds.
 
 The cached snippet from the above example can be invalidated (deleted) as follows:
