@@ -98,7 +98,7 @@ $ git push heroku master
 
 ## Install the MemCachier add-on and configure caching
 
-As noted in the [MemCachier](memcachier#rails-3-4) article, you need to
+As noted in the [MemCachier](memcachier#rails) article, you need to
 install the add-on and the `dalli` gem. The optional `memcachier` gem
 is also recommended.
 
@@ -128,7 +128,7 @@ provided by `dalli` by modifying `config/environments/production.rb`
 to include:
 
 ```ruby
-config.cache_store = :dalli_store
+config.cache_store = :mem_cache_store
 ```
 
 To make it easier to see how this example works, temporarily turn off

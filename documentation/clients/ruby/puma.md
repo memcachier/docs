@@ -29,7 +29,7 @@ Next, you'll need to set the `:pool_size` configuration option when setting up
 Dalli. For example, in Rails your configuration would become:
 
 ```ruby
-config.cache_store = :dalli_store,
+config.cache_store = :mem_cache_store,
                     (ENV["MEMCACHIER_SERVERS"] || "").split(","),
                     {:username => ENV["MEMCACHIER_USERNAME"],
                      :password => ENV["MEMCACHIER_PASSWORD"],
