@@ -13,11 +13,11 @@
 
 # Node.js clients
 
-| Library | Supported / Documented | Binary / SASL | Version | Activity | Stars |
+| Library | Supported / Documented | ASCII / Binary / SASL | Version | Activity | Stars |
 | ---     | ---                    | ---           | ---     | ---      | ---   |
-| [memjs](https://github.com/alevy/memjs) | yes / yes\* | yes / yes |  ![release](https://img.shields.io/npm/v/memjs.svg?maxAge=3600) | ![commit](https://img.shields.io/github/last-commit/alevy/memjs/master.svg?maxAge=3600) | ![stars](https://img.shields.io/github/stars/alevy/memjs.svg?style=social&maxAge=3600) |
-| [memcached](https://github.com/3rd-Eden/memcached) | no / no | no / no |  ![release](https://img.shields.io/npm/v/memcached.svg?maxAge=3600) | ![commit](https://img.shields.io/github/last-commit/3rd-Eden/memcached/master.svg?maxAge=3600) | ![stars](https://img.shields.io/github/stars/3rd-Eden/memcached.svg?style=social&maxAge=3600) |
-| [memcache](https://github.com/elbart/node-memcache) | no / no | no / no |  ![release](https://img.shields.io/npm/v/memcache.svg?maxAge=3600) | ![commit](https://img.shields.io/github/last-commit/elbart/node-memcache/master.svg?maxAge=3600) | ![stars](https://img.shields.io/github/stars/elbart/node-memcache.svg?style=social&maxAge=3600) |
+| [memjs](https://github.com/alevy/memjs) | yes / yes\* | no / yes / yes |  ![release](https://img.shields.io/npm/v/memjs.svg?maxAge=3600) | ![commit](https://img.shields.io/github/last-commit/alevy/memjs/master.svg?maxAge=3600) | ![stars](https://img.shields.io/github/stars/alevy/memjs.svg?style=social&maxAge=3600) |
+| [memcached](https://github.com/3rd-Eden/memcached) | no / no | yes / no / no |  ![release](https://img.shields.io/npm/v/memcached.svg?maxAge=3600) | ![commit](https://img.shields.io/github/last-commit/3rd-Eden/memcached/master.svg?maxAge=3600) | ![stars](https://img.shields.io/github/stars/3rd-Eden/memcached.svg?style=social&maxAge=3600) |
+| [memcache](https://github.com/elbart/node-memcache) | no / no | yes / no / no |  ![release](https://img.shields.io/npm/v/memcache.svg?maxAge=3600) | ![commit](https://img.shields.io/github/last-commit/elbart/node-memcache/master.svg?maxAge=3600) | ![stars](https://img.shields.io/github/stars/elbart/node-memcache.svg?style=social&maxAge=3600) |
 
 \* Recommended.  
 

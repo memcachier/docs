@@ -1,8 +1,8 @@
 # Clojure clients
 
-| Library | Supported / Documented | Binary / SASL | Version | Activity | Stars |
+| Library | Supported / Documented | ASCII / Binary / SASL | Version | Activity | Stars |
 | ---     | ---                    | ---           | ---     | ---      | ---   |
-| [Xmemcached](https://github.com/killme2008/clj-xmemcached) | yes\* / no | yes / yes |   | ![commit](https://img.shields.io/github/last-commit/killme2008/clj-xmemcached/master.svg?maxAge=3600) | ![stars](https://img.shields.io/github/stars/killme2008/clj-xmemcached.svg?style=social&maxAge=3600) |
+| [Xmemcached](https://github.com/killme2008/clj-xmemcached) | yes\* / no | yes / yes / yes |   | ![commit](https://img.shields.io/github/last-commit/killme2008/clj-xmemcached/master.svg?maxAge=3600) | ![stars](https://img.shields.io/github/stars/killme2008/clj-xmemcached.svg?style=social&maxAge=3600) |
 
 \* Recommended.  
 

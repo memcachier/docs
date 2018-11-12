@@ -13,12 +13,12 @@
 
 # PHP clients
 
-| Library | Supported / Documented | Binary / SASL | Version | Activity | Stars |
+| Library | Supported / Documented | ASCII/ Binary / SASL | Version | Activity | Stars |
 | ---     | ---                    | ---           | ---     | ---      | ---   |
-| [php-memcached](https://github.com/php-memcached-dev/php-memcached)<sup>1</sup> | yes / yes\* | yes / yes |  ![release](https://img.shields.io/github/release/php-memcached-dev/php-memcached.svg?maxAge=3600) | ![commit](https://img.shields.io/github/last-commit/php-memcached-dev/php-memcached/master.svg?maxAge=3600) | ![stars](https://img.shields.io/github/stars/php-memcached-dev/php-memcached.svg?style=social&maxAge=3600) |
-| [php-memcache-sasl](https://github.com/memcachier/PHPMemcacheSASL) | yes / yes | yes / yes | ![release](https://img.shields.io/packagist/v/memcachier/php-memcache-sasl.svg?maxAge=3600) | ![commit](https://img.shields.io/github/last-commit/memcachier/PHPMemcacheSASL/master.svg?maxAge=3600) | ![stars](https://img.shields.io/github/stars/memcachier/PHPMemcacheSASL.svg?style=social&maxAge=3600) |
-| [memcached.php](https://github.com/clickalicious/memcached-php) | ? / no | no / no | ![release](https://img.shields.io/packagist/v/clickalicious/memcached.php.svg?maxAge=3600) | ![commit](https://img.shields.io/github/last-commit/clickalicious/memcached-php/master.svg?maxAge=3600) | ![stars](https://img.shields.io/github/stars/clickalicious/memcached-php.svg?style=social&maxAge=3600) |
-| [php-memcache](https://github.com/tricky/php-memcache) | no / no | yes / yes |   ![release](https://img.shields.io/github/release/tricky/php-memcache.svg?maxAge=3600) | ![commit](https://img.shields.io/github/last-commit/tricky/php-memcache/master.svg?maxAge=3600) | ![stars](https://img.shields.io/github/stars/tricky/php-memcache.svg?style=social&maxAge=3600) |
+| [php-memcached](https://github.com/php-memcached-dev/php-memcached)<sup>1</sup> | yes / yes / yes\* | yes / yes |  ![release](https://img.shields.io/github/release/php-memcached-dev/php-memcached.svg?maxAge=3600) | ![commit](https://img.shields.io/github/last-commit/php-memcached-dev/php-memcached/master.svg?maxAge=3600) | ![stars](https://img.shields.io/github/stars/php-memcached-dev/php-memcached.svg?style=social&maxAge=3600) |
+| [php-memcache-sasl](https://github.com/memcachier/PHPMemcacheSASL) | yes / yes | no / yes / yes | ![release](https://img.shields.io/packagist/v/memcachier/php-memcache-sasl.svg?maxAge=3600) | ![commit](https://img.shields.io/github/last-commit/memcachier/PHPMemcacheSASL/master.svg?maxAge=3600) | ![stars](https://img.shields.io/github/stars/memcachier/PHPMemcacheSASL.svg?style=social&maxAge=3600) |
+| [memcached.php](https://github.com/clickalicious/memcached-php) | ? / no | yes / no / no | ![release](https://img.shields.io/packagist/v/clickalicious/memcached.php.svg?maxAge=3600) | ![commit](https://img.shields.io/github/last-commit/clickalicious/memcached-php/master.svg?maxAge=3600) | ![stars](https://img.shields.io/github/stars/clickalicious/memcached-php.svg?style=social&maxAge=3600) |
+| [php-memcache](https://github.com/tricky/php-memcache) | no / no | ? / yes / yes |   ![release](https://img.shields.io/github/release/tricky/php-memcache.svg?maxAge=3600) | ![commit](https://img.shields.io/github/last-commit/tricky/php-memcache/master.svg?maxAge=3600) | ![stars](https://img.shields.io/github/stars/tricky/php-memcache.svg?style=social&maxAge=3600) |
 
 \* Recommended.  
 <sup>1</sup> Requires `libmemcached`.  

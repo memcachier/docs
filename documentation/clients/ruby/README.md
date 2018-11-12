@@ -12,10 +12,10 @@
 
 # Ruby clients
 
-| Library | Supported / Documented | Binary / SASL | Version | Activity | Stars |
+| Library | Supported / Documented | ASCII / Binary / SASL | Version | Activity | Stars |
 | ---     | ---                    | ---           | ---     | ---      | ---   |
-| [dalli](https://github.com/petergoldstein/dalli) | yes / yes\* | yes / yes | ![release](https://img.shields.io/gem/v/dalli.svg?maxAge=3600) | ![commit](https://img.shields.io/github/last-commit/petergoldstein/dalli/master.svg?maxAge=3600) | ![stars](https://img.shields.io/github/stars/petergoldstein/dalli.svg?style=social&maxAge=3600) |
-| [memcached](https://github.com/arthurnn/memcached)<sup>1</sup> | ? / no<sup>2</sup> | ? / ? |  ![release](https://img.shields.io/gem/v/memcached.svg?maxAge=3600) | ![commit](https://img.shields.io/github/last-commit/arthurnn/memcached/master.svg?maxAge=3600) | ![stars](https://img.shields.io/github/stars/arthurnn/memcached.svg?style=social&maxAge=3600) |
+| [dalli](https://github.com/petergoldstein/dalli) | yes / yes\* | no / yes / yes | ![release](https://img.shields.io/gem/v/dalli.svg?maxAge=3600) | ![commit](https://img.shields.io/github/last-commit/petergoldstein/dalli/master.svg?maxAge=3600) | ![stars](https://img.shields.io/github/stars/petergoldstein/dalli.svg?style=social&maxAge=3600) |
+| [memcached](https://github.com/arthurnn/memcached)<sup>1</sup> | ? / no<sup>2</sup> | ? / ? / ? |  ![release](https://img.shields.io/gem/v/memcached.svg?maxAge=3600) | ![commit](https://img.shields.io/github/last-commit/arthurnn/memcached/master.svg?maxAge=3600) | ![stars](https://img.shields.io/github/stars/arthurnn/memcached.svg?style=social&maxAge=3600) |
 
 \* Recommended.  
 <sup>1</sup> Requires `libmemcached`.  
