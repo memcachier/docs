@@ -9,6 +9,7 @@ We’ve built a small Flask example here:
 Related tutorials:
 <ul>
   <li><a href="https://devcenter.heroku.com/articles/flask-memcache">Scaling a Flask Application with Memcache on Heroku</a></li>
+  <li><a href="https://blog.memcachier.com/2018/10/01/flask-on-pythonanywhere-tutorial/">How to scale a Flask Application on PythonAnywhere with Memcache</a></li>
 </ul>
 </div>
 **ENDIF**

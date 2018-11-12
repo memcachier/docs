@@ -10,6 +10,7 @@ Related tutorials:
 <ul>
   <li><a href="https://devcenter.heroku.com/articles/django-memcache">Scaling a Django Application with Memcache on Heroku</a></li>
   <li><a href="https://blog.memcachier.com/2018/06/27/django-docker-ecs-tutorial/">MemCachier with Django, Docker and AWS Elastic Container Service</a></li>
+  <li><a href="https://blog.memcachier.com/2018/10/15/django-on-pythonanywhere-tutorial/">How to scale a Django Application on PythonAnywhere with Memcache</a></li>
 </ul>
 </div>
 
