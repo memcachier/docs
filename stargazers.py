@@ -29,7 +29,8 @@ repos_python = ["django/django",
                 "channelcat/sanic",
                 "bottlepy/bottle",
                 "plotly/dash",
-                "Pylons/pyramid"]
+                "Pylons/pyramid",
+                "web2py/web2py"]
 repos_php = ["laravel/laravel",
              "symfony/symfony",
              "bcit-ci/CodeIgniter",
@@ -65,15 +66,16 @@ repos_java = ["spring-projects/spring-boot",
               "spring-projects/spring-framework"]
 repos_scala = ["playframework/playframework"]
 repos_clojure = ["duct-framework/duct"]
-repos_kotlin = ["ktorio/ktor"]
+repos_kotlin = ["ktorio/ktor",
+                "perwendel/spark-kotlin"]
 repos_rust = ["SergioBenitez/Rocket",
               "iron/iron",
+              "actix/actix-web",
               "nickel-org/nickel.rs",
               "gotham-rs/gotham",
               "tomaka/rouille",
               "fengsp/pencil",
               "Ogeon/rustful",
-              "actix/actix-web",
               "rustless/rustless",
               "conduit-rust/conduit",
               "matt2xu/edge-rs"]
