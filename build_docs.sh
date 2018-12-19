@@ -20,6 +20,7 @@ cat documentation/clients/java/java.md >> doc.md
 cat documentation/clients/java/spring-boot.md >> doc.md
 cat documentation/clients/go/go.md >> doc.md
 cat documentation/clients/go/gin.md >> doc.md
+cat documentation/clients/rust/rust.md >> doc.md
 cat documentation/clients/supported_clients.md >> doc.md
 cat documentation/clients/sample_apps.md >> doc.md
 cat documentation/misc/local_usage.md >> doc.md
@@ -79,6 +80,7 @@ rm out_direct/*
 ./flavor.py documentation/clients/ruby/rails.md out_direct/rails.md direct
 ./flavor.py documentation/clients/ruby/puma.md out_direct/ruby-puma-webserver.md direct
 ./flavor.py documentation/clients/ruby/rack.md out_direct/rails-rack-cache.md direct
+./flavor.py documentation/clients/rust/rust.md out_direct/rust.md direct
 # Getting Started / Example Apllications
 ./flavor.py documentation/clients/sample_apps.md out_direct/sample-applications.md direct
 
