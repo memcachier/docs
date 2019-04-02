@@ -58,6 +58,7 @@ repos_go = ["gin-gonic/gin",
             "revel/revel",
             "labstack/echo",
             "kataras/iris",
+            "go-chi/chi",
             "gobuffalo/buffalo"]
 repos_java = ["spring-projects/spring-boot",
               "perwendel/spark",
