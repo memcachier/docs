@@ -113,7 +113,6 @@ Modify your Gemfile to include `dalli`, a memcache client library, and
 
 ```ruby
 gem 'dalli'
-gem 'memcachier'
 ```
 Next run
 
@@ -128,7 +127,15 @@ provided by `dalli` by modifying `config/environments/production.rb`
 to include:
 
 ```ruby
-config.cache_store = :mem_cache_store
+config.cache_store = :mem_cache_store,
+                    (ENV["MEMCACHIER_SERVERS"] || "").split(","),
+                    {:username => ENV["MEMCACHIER_USERNAME"],
+                     :password => ENV["MEMCACHIER_PASSWORD"],
+                     :failover => true,
+                     :socket_timeout => 1.5,
+                     :socket_failure_delay => 0.2,
+                     :down_retry_delay => 60
+                    }
 ```
 
 To make it easier to see how this example works, temporarily turn off
