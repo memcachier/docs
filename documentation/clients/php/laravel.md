@@ -24,7 +24,7 @@ Related tutorials:
 **ENDIF**
 
 As of Laravel 5.3, memcached is supported out of the box with the `php-memcached`
-PECL extention. Instructions on how to install `php-memcached` can be found
+PECL extension. Instructions on how to install `php-memcached` can be found
 **IF(direct)**
 [here](/documentation/php).
 **ENDIF**
