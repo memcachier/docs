@@ -406,10 +406,12 @@ If a page expires, fragment caching makes sure the whole page does not have to
 be rebuilt from scratch but can use already cached fragments. This technique is
 similar to russian doll caching.*
 
-### Other caching techniques
+### Session caching
 
-There is more ways to use caching in a Rails application such as for session
-storage and asset caching.
+Memcache is a good and fast storage for your non-permanent sessions
+(for permanent sessions you should use a database). This is true especially on
+Heroku where dynos each have their own ephemeral filesystem. Using the filesystem
+to store sessions (default) on Heroku can thus lead to inconsistencies.
 
 To use your cache for session storage create (Rails 5) or edit (Rails 3 and 4)
 the file `config/initializers/session_store.rb` to contain:
@@ -418,10 +420,6 @@ the file `config/initializers/session_store.rb` to contain:
 # Be sure to restart your server when you modify this file.
 Rails.application.config.session_store :cache_store, key: '_memcache-example_session'
 ```
-
-Asset caching can be done with Rack::Cache. A guide on how to use Rack::Cache
-can be found [here](https://devcenter.heroku.com/articles/rack-cache-memcached-rails31).
-Note that Rack:Cache can be used to enable Rails page caching on Heroku.
 
 ## Further reading and resources
 
