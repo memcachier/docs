@@ -281,7 +281,7 @@ Now we can add the task list functionality in four steps:
 
     Django will automatically check each apps `templates` folder for templates.
 
-Execute `python manage.py runserver` and visit `http://localhost:8000` again
+Execute `(venv) $ python manage.py runserver` and visit `http://localhost:8000` again
 to play with the basic task list app by adding and removing a few tasks.
 
 Locally we use a SQLite database to store the task list. On Heroku we need to  
@@ -338,12 +338,6 @@ of [config variables](config-vars) containing your MemCachier credentials.
 
 ### Configure Django with MemCachier
 
-> callout
-> As of Django 1.11 we can use its native `pylibmc` backend. For older versions
-> of Django you will need to install `django-pylibmc`. See an
-> [older version](https://github.com/memcachier/docs/blob/8a9437cc2285d034b8fe2c3e38423489be32ce17/heroku_articles/django-memcache.md#start-using-memcache)
-> of this article for more information.
-
 Configure your cache by adding the following to the end of
 `django_tasklist/settings.py`:
 
@@ -356,7 +350,7 @@ def get_cache():
     password = os.environ['MEMCACHIER_PASSWORD']
     return {
       'default': {
-        'BACKEND': 'django.core.cache.backends.memcached.PyLibMCCache',
+        'BACKEND': 'django_bmemcached.memcached.BMemcached',
         # TIMEOUT is not the connection timeout! It's the default expiration
         # timeout that should be applied to keys! Setting it to `None`
         # disables expiration.
@@ -398,59 +392,26 @@ CACHES = get_cache()
 
 This configures the cache for both development
 and production.  If the `MEMCACHIER_*` environment variables exist,
-the cache will be setup with `pylibmc`, connecting to
+the cache will be setup with [`django-bmemcached`](https://github.com/jaysonsantos/django-bmemcached), connecting to
 MemCachier. Whereas, if the `MEMCACHIER_*` environment variables
 don't exist -- hence development mode -- Django's simple in-memory
 cache is used instead.
 
 ### Install dependencies
 
-To install `pylibmc` the C library `libmemcached` is required. Heroku comes with
-`libmemcached` installed so you wont need to worry about it. However, if you
-want to test `pylibmc` locally you'll need to install it (which is a
-platform-dependent process).
-
-In Ubuntu:
+Install the `django-bmemcached` Python modules:
 
 ```term
-$ sudo apt-get install libmemcached-dev
+(venv) $ pip install django-bmemcached
 ```
 
-In OS X:
+Update your `requirements.txt` file with the new dependencies:
 
 ```term
-$ brew install libmemcached
-```
-
-> callout
-> Libmemcached can be built with, or without, support for SASL
-> authentication. SASL authentication is the mechanism your client
-> uses to authenticate with MemCachier servers using a username and
-> password we provide. You should confirm that your build of
-> libmemcached supports SASL. To do this, please follow our
-> [guide](http://blog.memcachier.com/2014/11/05/ubuntu-libmemcached-and-sasl-support/).
-
-Then, install the `pylibmc` Python modules:
-
-```term
-(venv) $ pip install pylibmc
-```
-
-> callout
-> If pylibmc installation is unable to find `libmemcached` you may need to
-> specify it: `LIBMEMCACHED=/opt/local pip install pylibmc` if `libmemcached`
-> was installed in `/opt/local`. Replace `/opt/local` with the correct
-> directory if needed.
-
-Update your `requirements.txt` file with the new dependencies (if you did not
-install `pylibmc` locally, just add `pylibmc==1.5.2` to your
-`requirements.txt`):
-
-```term
-$ pip freeze > requirements.txt
-$ cat requirements.txt
+(venv) $ pip freeze > requirements.txt
+(venv) $ cat requirements.txt
 ...
-pylibmc==1.5.2
+django-bmemcached==0.2.4
 ```
 
 Finally, commit and deploy these changes:
@@ -465,7 +426,7 @@ $ git push heroku master
 Verify that you've configured memcache correctly before you move
 forward.
 
-To do this, run the Django shell. On your local machine run `python
+To do this, run the Django shell. On your local machine run `(venv) $ python
 manage.py shell` and in Heroku run `heroku run python manage.py
 shell`.  Run a quick test to make sure your cache is configured
 properly:
@@ -531,8 +492,8 @@ $ heroku addons:open memcachier
 ```
 
 The first time you loaded your task list, you should have gotten an increase
-for the `get miss` and `set` commands. Every subsequent reload of the task list
-should increase `get hit`s (refresh the stats in the dashboard).
+for the `get misses` and `set` commands. Every subsequent reload of the task list
+should increase `get hits` (refresh the stats in the dashboard).
 
 Our cache is working, but there is still a major problem. Add a new task and see
 what happens. No new task appears on the current tasks list! The new task was
@@ -797,10 +758,10 @@ $ git commit -am 'Cache task list view'
 $ git push heroku master
 ```
 
-On the first refresh, you should see the `get hit` counter increase according
-to the number of tasks you have, as well as an additional `get miss` and `set`,
+On the first refresh, you should see the `get hits` counter increase according
+to the number of tasks you have, as well as an additional `get misses` and `set cmds`,
 which correspond to the view that is now cached. Any subsequent reload will
-increase the `get hit` counter by just two, because the entire view is retrieved
+increase the `get hits` counter by just two, because the entire view is retrieved
 with two `get` commands.
 
 Note that view caching does _not_ obsolete the caching of

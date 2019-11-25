@@ -228,7 +228,7 @@ Now that we have an empty database, we can add a table to represent the task lis
 $ php artisan make:migration create_tasks_table --create=tasks
 ```
 
-Tasks should have names, so let's add `name` to the `tasks` table in the newly created `database/migrations/<date>_crate_tasks_table.php` file:
+Tasks should have names, so let's add `name` to the `tasks` table in the newly created `database/migrations/<date>_create_tasks_table.php` file:
 
 ```php
 Schema::create('tasks', function (Blueprint $table) {
@@ -539,7 +539,7 @@ $ heroku addons:create memcachier:dev
 To use use Memcache on your local machine, you also need to complete the
 following steps:
 
-1. Install the `php-memcached` PECL extention via your OS package manager.
+1. Install the `php-memcached` PECL extension via your OS package manager.
 2. Uncomment `;extension=memcached.so` in `/etc/php/conf.d/memcached.ini`.
 3. Run `php -m` to make sure the `memcached` module is loaded.
 

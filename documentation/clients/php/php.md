@@ -30,12 +30,12 @@ We also recommend that you use the [composer dependency
 manager](https://getcomposer.org/) for PHP, although that is up to you.
 **ENDIF**
 
-The `php-memcached` client is not a pure PHP client but a PECL extention that
+The `php-memcached` client is not a pure PHP client but a PECL extension that
 makes use of `libmemcached`. You thus need to install `php-memcached` via your
 OS package manager. In older operating systems you have to make sure libmemcached
 has SASL authentication support enabled but for newer operating systems such as
 Ubuntu 16.04 this is the default. After the installation you need to uncomment
-`;extension=memcached.so` in `/etc/php/conf.d/memcached.ini` for the extention
+`;extension=memcached.so` in `/etc/php/conf.d/memcached.ini` for the extension
 to work.
 **IF(heroku)**
 On Heroku this dependency is already installed and configured.
