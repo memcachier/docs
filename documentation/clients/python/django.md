@@ -4,7 +4,7 @@
 **IF(direct)**
 <div class="alert alert-info">
 We’ve built a small Django example here:
-<a href="https://github.com/memcachier/examples-django2">MemCachier Django sample app</a>.
+<a href="https://github.com/memcachier/examples-django-tasklist">MemCachier Django sample app</a>.
 <br>
 Related tutorials:
 <ul>
@@ -15,34 +15,31 @@ Related tutorials:
 </div>
 
 <p class="alert alert-info">
-We support the <code>pylibmc</code> memcache client as it has great performance
-and Python 3 support. However, it can sometimes be difficult to install locally
-as it relies on the C <code>libmemcached</code> library. If you prefer, you can
-try a pure python client, <a
-href="https://github.com/jaysonsantos/python-binary-memcached">python-binary-memcached</a>.
-You'll also need the <a
-href="https://github.com/jaysonsantos/django-bmemcached">django-bmemcached</a>
-package.
+We recommend the <a
+href="https://github.com/jaysonsantos/django-bmemcached">django-bmemcached</a> 
+Django backend, as it uses the <a href="https://github.com/jaysonsantos/python-binary-memcached">python-binary-memcached</a>
+memcache client which is a pure Python library. However, if you prefer, you can
+try the <code>pylibmc</code> memcache client which has a larger ecosystem. 
+However, it can sometimes be difficult to install locally as it relies on the 
+C <code>libmemcached</code> library. 
 </p>
 **ENDIF**
 
 **IF(heroku)**
 >callout
 >We’ve built a small Django example.
-><a class="github-source-code" href="http://github.com/memcachier/examples-django2">Source code</a> or
->[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=http://github.com/memcachier/examples-django2).
+><a class="github-source-code" href="https://github.com/memcachier/examples-django-tasklist">Source code</a> or
+>[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=https://github.com/memcachier/examples-django-tasklist).
 ><br>
 >We also have a tutorial on using Django and MemCachier together
 >[here](https://devcenter.heroku.com/articles/django-memcache).
 
 >callout
->We support the `pylibmc` memcache client as it has great performance and
->Python 3 support. However, it can sometimes be difficult to install locally as
->it relies on the C `libmemcached` library. If you prefer, you can try a pure
->python client,
->[python-binary-memcached](https://github.com/jaysonsantos/python-binary-memcached)
->which also works well. You'll also need the
->[django-bmemcached](ttps://github.com/jaysonsantos/django-bmemcached) package.
+>We recommend the [django-bmemcached](ttps://github.com/jaysonsantos/django-bmemcached) 
+>Django backend, as it uses the [python-binary-memcached](https://github.com/jaysonsantos/python-binary-memcached)
+>memcache client which is a pure Python library. However, if you prefer, you can
+>try the <code>pylibmc</code> memcache client which has a larger ecosystem. However, it can sometimes be difficult to install locally
+>as it relies on the C <code>libmemcached</code> library. 
 **ENDIF**
 
 Here we explain how you setup and install MemCachier with Django. Please
@@ -51,43 +48,30 @@ guide](https://docs.djangoproject.com/en/dev/topics/cache/#the-per-site-cache)
 for how you effectively use MemCachier. Django supports
 whole site caching, per-view caching and fragement caching.
 
-MemCachier has been tested with the `pylibmc` memcache client. This is a great
-client, fully-featured, high-performance and Python 2 & 3 support. As of Version
-1.11 Django has out-of-the-box support for `pylibmc`. Older Django versions
+MemCachier has been tested with the `python-binary-memcached` memcache client. This is a great
+client, fully-featured, high-performance and Python 2 & 3 support. Older Django versions
 require `django-pylibmc` to work with MemCachier. Please follow the instructions
 in this [example](http://github.com/memcachier/examples-django) if you wish to
 use an older version.
 
-The `pylibmc` client relies on the C `libmemcached` library. This should be
-fairly straight-forward to install with your package manager on Linux or
-Windows. For Mac OSX users, homebrew provides and easy solution. We also have a
-[blog post](http://blog.memcachier.com/2014/11/05/ubuntu-libmemcached-and-sasl-support/)
-for Ubuntu users on how to do this.
-**IF(heroku)**
-You only need to be concerned about this for local development, the Heroku
-platform includes `libmemcached`.
-**ENDIF**
-
-Once `libmemcached` is installed, then install `pylibmc`:
+Install `django-bmemcached`:
 
 ```term
-$ pip install pylibmc
+$ pip install django-bmemcached
 ```
 
 Be sure to update your `requirements.txt` file with these new requirements
 (note that your versions may differ than what’s below):
 
 ```text
-pylibmc==1.5.1
+django-bmemcached==0.2.4
 ```
 
 **IF(heroku)**
 >callout
->Note: The above `pylibmc` requirements must be added directly to your
+>Note: The above `django-bmemcached` requirements must be added directly to your
 >`requirements.txt` file. They shouldn't be placed in an included pip
->requirement file. The Heroku Python buildpack checks the `requirements.txt`
->file and only that file for the presence of `pylibmc` to trigger bootstrapping
->`libmemcached`, which is prerequisite for installing `pylibmc`.
+>requirement file.
 **ENDIF**
 
 Next, configure your settings.py file the following way:
@@ -99,8 +83,8 @@ password = os.environ['MEMCACHIER_PASSWORD']
 
 CACHES = {
     'default': {
-        # Use pylibmc
-        'BACKEND': 'django.core.cache.backends.memcached.PyLibMCCache',
+        # Use django-bmemcached
+        'BACKEND': 'django_bmemcached.memcached.BMemcached',
 
         # TIMEOUT is not the connection timeout! It's the default expiration
         # timeout that should be applied to keys! Setting it to `None`
@@ -110,30 +94,8 @@ CACHES = {
         'LOCATION': servers,
 
         'OPTIONS': {
-            # Use binary memcache protocol (needed for authentication)
-            'binary': True,
             'username': username,
             'password': password,
-            'behaviors': {
-                # Enable faster IO
-                'no_block': True,
-                'tcp_nodelay': True,
-
-                # Keep connection alive
-                'tcp_keepalive': True,
-
-                # Timeout settings
-                'connect_timeout': 2000, # ms
-                'send_timeout': 750 * 1000, # us
-                'receive_timeout': 750 * 1000, # us
-                '_poll_timeout': 2000, # ms
-
-                # Better failover
-                'ketama': True,
-                'remove_failed': 1,
-                'retry_timeout': 2,
-                'dead_timeout': 30,
-            }
         }
     }
 }
@@ -163,7 +125,7 @@ the pip supports.
 
 **IF(direct)**
 <p class="alert alert-info">
-A confusing error message you may get from <code>pylibmc</code> is
+If using <code>pylibmc</code> instead of <code>django-bmemcached</code>, a confusing error message you may get from <code>pylibmc</code> is
 <b>MemcachedError: error 37 from memcached_set: SYSTEM ERROR (Resource
 temporarily unavailable)</b>. This indicates that you are trying to store a
 value larger than 1MB. MemCachier has a hard limit of 1MB for the size of
@@ -175,7 +137,7 @@ diminishes at 1MB and higher.
 
 **IF(heroku)**
 >note
->A confusing error message you may get from `pylibmc` is
+>If using `pylibmc` instead of `django-bmemcached`, a confusing error message you may get from `pylibmc` is
 >**MemcachedError: error 37 from memcached_set: SYSTEM ERROR (Resource
 >temporarily unavailable)**. This indicates that you are trying to
 >store a value larger than 1MB. MemCachier has a hard limit of 1MB for
