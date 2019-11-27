@@ -120,11 +120,6 @@ cache.set("foo", "bar")
 print cache.get("foo")
 ```
 
-You may also be interested in the
-[django-heroku-memcacheify](http://github.com/rdegges/django-heroku-memcacheify)
-pip, which fully configures MemCachier with one line of code for any Django app
-the pip supports.
-
 ### Alternative client: pylibmc
 
 MemCachier has been tested with the `pylibmc` memcache client. This is a great
