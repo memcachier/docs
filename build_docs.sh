@@ -26,7 +26,6 @@ cat documentation/clients/sample_apps.md >> doc.md
 cat documentation/misc/local_usage.md >> doc.md
 cat documentation/analytics/analytics.md >> doc.md
 cat documentation/analytics/api.md >> doc.md
-cat documentation/analytics/new_relic.md >> doc.md
 cat documentation/analytics/credentials.md >> doc.md
 cat documentation/analytics/disabled_caches.md >> doc.md
 cat documentation/misc/encrypted_connections.md >> doc.md
@@ -86,7 +85,6 @@ rm out_direct/*
 
 # User Dashboard / Analytics
 ./flavor.py documentation/analytics/analytics.md out_direct/memcachier-analytics.md direct
-./flavor.py documentation/analytics/new_relic.md out_direct/new-relic-integration.md direct
 
 # User Dashboard / Features
 ./flavor.py documentation/misc/changing_plans.md out_direct/upgrading-downgrading.md direct
