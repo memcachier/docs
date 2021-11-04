@@ -146,7 +146,7 @@ gem 'kgio'
 
 After running `bundle install` to establish Dalli as an application
 dependency tell Rails to use the Dalli client for its cache-store in
-`config/application.rb`.
+`config/environments/production.rb`.
 
 ```ruby
 config.cache_store = :dalli_store
@@ -189,7 +189,9 @@ config.action_dispatch.rack_cache = {
   :metastore    => client,
   :entitystore  => client
 }
-config.static_cache_control = "public, max-age=2592000"
+config.public_file_server.headers = {
+  'Cache-Control' => 'public, max-age=2592000'
+}
 ```
 
 You can find a full list of configuration options
@@ -232,14 +234,18 @@ store used for the MetaStore and a `file` store for the EntityStore.
 >callout
 >See the `production.rb` config of the [reference application](https://github.com/memcachier/examples-rack-cache/blob/master/config/environments/production.rb) on GitHub.
 
-To allow your application to properly serve, invalidate and refresh
-static assets, several configuration settings must be updated in
-`config/environments/production.rb`. To have Rails to serve assets
-(and so be managed by Rack::Cache), use the `serve_static_assets`
-setting.
+To allow Rails to properly serve, invalidate and refresh static assets, it has
+to be enabled in `config/environments/production.rb`. This is necessary for
+Rack::Cache to manage your assets. Depending on the Rails version, set the
+folloing:
 
 ```ruby
-config.serve_static_assets = true
+# For Rails 3
+# config.serve_static_assets = true
+# For Rails 4
+# config.serve_static_files = true
+# For Rails 5
+config.public_file_server.enabled = true
 ```
 
 Additionally, specify how long an item should stay cached by setting
@@ -247,7 +253,12 @@ the Cache-Control headers. Without a Cache-Control header static files
 will not be stored by Rack::Cache.
 
 ```ruby
-config.static_cache_control = "public, max-age=2592000"
+# For Rails 3 and 4
+# config.static_cache_control = "public, max-age=2592000"
+# For Rails 5
+config.public_file_server.headers = {
+  'Cache-Control' => 'public, max-age=2592000'
+}
 ```
 
 These settings tell Rack::Cache to store static elements for a very
@@ -288,7 +299,7 @@ rather than `MEMCACHE`. The `memcachier` gem, however, fixes this for
 you. Include it in your gemfile.
 
 ```ruby
-gem "memcachier"
+gem 'memcachier'
 ```
 
 ## Caching in production
