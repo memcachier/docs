@@ -172,7 +172,7 @@ $ heroku open
 
 ## Learn to write Express.js middleware
 
-Our prime-calculating app works, but it has one mayor flaw: a user can submit
+Our prime-calculating app works, but it has one major flaw: a user can submit
 invalid input, such as a string of letters. To validate the input, we'll create **middleware** in Express.
 
 > note

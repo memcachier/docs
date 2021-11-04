@@ -24,3 +24,12 @@ ASCII auth and an outstanding PR in the main repository.
 We don't document any, but we should definitely document Gin, probably also
 Beego and myabe even Revel. See popularity
 [here](http://www.timqian.com/star-history/#gin-gonic/gin&astaxie/beego&revel/revel).
+
+
+# Related libraries
+https://github.com/victorspringer/http-cache
+
+https://github.com/gin-contrib/cache  
+https://github.com/gin-contrib/sessions
+
+https://github.com/bradleypeabody/gorilla-sessions-memcache

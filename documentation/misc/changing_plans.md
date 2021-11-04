@@ -18,7 +18,7 @@ Heroku.
 **IF(direct)**
 <p class="alert alert-info">
 <strong>*</strong> When moving between the development plan to a
-production plan, you <strong>will</strong> loose your cache. This is
+production plan, you <strong>will</strong> lose your cache. This is
 unavoidable due to the strong separation between the development and
 production clusters.
 </p>
@@ -27,7 +27,7 @@ production clusters.
 **IF(heroku)**
 >note
 ><strong>*</strong> When moving between the development plan to a
->production plan, you __will__ loose your cache. This is unavoidable
+>production plan, you __will__ lose your cache. This is unavoidable
 >due to the strong separation between the development and production
 >clusters.
 **ENDIF**

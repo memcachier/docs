@@ -42,3 +42,20 @@ We document Express and should add documentation for Meteor and maybe Koa.js. Se
 | native/none | memjs | yes / yes* | - | - | - |
 
 \* Recommended.
+
+
+
+### Meteor.js
+
+https://github.com/Q42/meteor-memcached
+https://atmospherejs.com/aheissenberger/memjs
+
+### Koa.js
+
+https://github.com/chylvina/koa-memcached
+
+### Hapi.js (Catbox)
+
+https://github.com/darkoverlordofdata/catbox-memjs
+https://github.com/hapijs/catbox
+https://hapijs.com/tutorials/caching

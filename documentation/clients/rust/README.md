@@ -16,6 +16,9 @@
 \* Recommended.  
 <sup>1</sup> Same author as `python-binary-memcached`.  
 
+## Helpers
+https://github.com/megumish/r2d2-memcache (for rust-memcache)
+
 # Web frameworks
 
 We don't document any, but we should document Rocket, Iron and maybe Nickel.

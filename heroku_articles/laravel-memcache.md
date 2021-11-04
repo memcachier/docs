@@ -190,6 +190,9 @@ return [
     ],
 
     // ...
+  ],
+  // ...
+];
 ```
 
 To make sure this `pgsql` connection is used when the app is running on Heroku, set the `DB_CONNECTION` config var:
@@ -486,7 +489,7 @@ To complete our task list, we also need to be able to remove completed tasks. To
 <!-- ... -->
 ```
 
-Then we wire this functionaility to the appropriate route in `routes/web.php`:
+Then we wire this functionality to the appropriate route in `routes/web.php`:
 
 ```php
 // ...
@@ -798,7 +801,7 @@ $ heroku open
 
 You should now see an additional `Get hit` for each task in your list.
 
-### Caching entire reponses
+### Caching entire responses
 
 In Laravel, it's also easy to cache the entire rendered HTML response by using
 [laravel-responsecache](https://github.com/spatie/laravel-responsecache). This
