@@ -9,7 +9,6 @@
 
 import json
 import csv
-from urllib.request import Request, urlopen
 import datetime
 import time
 from matplotlib import pyplot as plt
@@ -17,8 +16,9 @@ from datetime import date, timedelta
 import pickle
 import numpy as np
 from cycler import cycler
-from urllib.error import HTTPError
+import requests
 
+github_user = "<YOUR_GITHUB_USER>"
 access_token = "<YOUR_PERSONAL_ACCESS_TOKEN>"
 
 repos_ruby = ["rails/rails",
@@ -43,21 +43,22 @@ repos_php = ["laravel/laravel",
              "fuel/fuel",
              "WordPress/WordPress"]
 repos_node = ["expressjs/express",
+              "nestjs/nest",
+              "fastify/fastify",
               "meteor/meteor",
+              # "zeit/next.js", // not really a framework?
               "koajs/koa",
               "balderdashy/sails",
               "keystonejs/keystone",
               "linnovate/mean",
               "strongloop/loopback",
               "hapijs/hapi",
-              "fastify/fastify",
-              "nestjs/nest",
               "prerender/prerender"]
 repos_go = ["gin-gonic/gin",
-            "astaxie/beego",
-            "revel/revel",
             "labstack/echo",
             "kataras/iris",
+            "astaxie/beego",
+            "revel/revel",
             "go-chi/chi",
             "gobuffalo/buffalo"]
 repos_java = ["spring-projects/spring-boot",
@@ -70,20 +71,44 @@ repos_clojure = ["duct-framework/duct"]
 repos_kotlin = ["ktorio/ktor",
                 "perwendel/spark-kotlin"]
 repos_rust = ["SergioBenitez/Rocket",
-              "iron/iron",
               "actix/actix-web",
+              "iron/iron",
+              "seanmonstar/warp",
+              "http-rs/tide",
+              "carllerche/tower-web",
               "nickel-org/nickel.rs",
               "gotham-rs/gotham",
               "tomaka/rouille",
               "fengsp/pencil",
-              "Ogeon/rustful",
-              "rustless/rustless",
-              "conduit-rust/conduit",
-              "matt2xu/edge-rs"]
+              "rustless/rustless"]
+
+repos_wasm = [
+  "perlin-network/life", # Go
+  "bytecodealliance/lucet", # Rust
+  "wasm3/wasm3", # C
+  "wasmerio/wasmer", # Rust?
+  "paritytech/wasmi", # Rust
+  "bytecodealliance/wasmtime",
+  "WAVM/WAVM", # C++
+  "bytecodealliance/wasm-micro-runtime", # C
+]
+
+repos_baas = [
+  "rethinkdb/rethinkdb",
+  "mongodb/mongo",
+  "supabase/supabase",
+  "supabase/realtime",
+  "ionic-team/ionic",
+  "parse-community/parse-server",
+  "rethinkdb/horizon",
+  "hoodiehq/hoodie",
+  "kuzzleio/kuzzle",
+  "appwrite/appwrite",
+]
 
 repos_top = (repos_ruby[0:1] + repos_python[0:2] + repos_php[0:1] +
-             repos_node[0:2] + repos_go[0:1] + repos_java[0:1] +
-             repos_rust[0:1])
+             repos_node[0:3] + repos_go[0:3] + repos_java[0:1] +
+             repos_rust[0:2])
 
 repos_all = (repos_ruby + repos_python + repos_php + repos_node + repos_go +
              repos_java + repos_scala + repos_clojure + repos_kotlin +
@@ -92,7 +117,7 @@ repos_all = (repos_ruby + repos_python + repos_php + repos_node + repos_go +
 all_stars = {}
 growth = []
 
-for repo in repos_all:
+for repo in repos_top:
     page_number = 1
     stars_remaining = True
     stargazers = {}
@@ -110,23 +135,21 @@ for repo in repos_all:
       pass
 
     while stars_remaining:
-      query_url = "https://api.github.com/repos/%s/stargazers?page=%s&per_page=100&access_token=%s" % (repo, page_number, access_token)
-
-      req = Request(query_url)
-      req.add_header('Accept', 'application/vnd.github.v3.star+json')
-      try:
-          response = urlopen(req)
-      except HTTPError as e:
+      query_url = "https://api.github.com/repos/%s/stargazers?page=%s&per_page=100" % (repo, page_number)
+      headers = {'Accept': 'application/vnd.github.v3.star+json', 'User-Agent': github_user}
+      response = requests.get(query_url, auth=(github_user, access_token), headers=headers)
+      if response.status_code == 422:
           # We get a 422 when repos have more than 40k stars
-          query_url = "https://api.github.com/repos/%s?access_token=%s" % (repo, access_token)
-          req = Request(query_url)
-          req.add_header('Accept', 'application/vnd.github.v3.star+json')
-          response = urlopen(req)
-          data = json.loads(response.read())
+          query_url = "https://api.github.com/repos/%s" % (repo)
+          response = requests.get(query_url, auth=(github_user, access_token), headers=headers)
+          data = response.json()
           num_stargazers = data['stargazers_count']
           break
+      elif response.status_code != 200:
+          print(response.status_code)
+          print(response.text)
 
-      data = json.loads(response.read())
+      data = response.json()
 
       page_stargazers = []
       for user in data:

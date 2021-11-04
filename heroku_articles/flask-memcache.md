@@ -637,7 +637,7 @@ Our caching strategy above (try to obtain a cached value and add a new value to 
 `Flask-Caching` has a decorator for it called `memoize`. Let's change the
 caching code for our database query to use the `memoize` decorator.
 
-Fist, we put the task query into its own function called
+First, we put the task query into its own function called
 `get_all_tasks` and decorate it with the `memoize` decorator. We always call this
 function to get all tasks.
 
