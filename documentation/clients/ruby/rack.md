@@ -1,3 +1,7 @@
+---
+title: "Documentation: Rails Rack::Cache"
+description: "Rails can use a middle-ware component of the Rack web server architecture called Rack::Cache."
+---
 
 ## Rails Rack::Cache
 

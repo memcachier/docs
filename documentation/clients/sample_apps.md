@@ -1,3 +1,7 @@
+---
+title: "Documentation: Sample applications"
+description: "A list of sample apps using MemCachier."
+---
 
 ## Sample applications
 

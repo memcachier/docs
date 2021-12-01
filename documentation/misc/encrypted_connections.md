@@ -1,3 +1,7 @@
+---
+title: "Documentation: Encrypted Connections (TLS)"
+description: "Documentation for using MemCachier and encrypted connections with TLS"
+---
 
 ## Encrypted Connections (TLS)
 

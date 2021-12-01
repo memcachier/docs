@@ -1,3 +1,7 @@
+---
+title: "Documentation: Java"
+description: "Documentation for using MemCachier with Java"
+---
 
 ## Java
 
@@ -259,7 +263,7 @@ The reported issue also contains a suggested work around.
 **ENDIF**
 
 You may wish to look the `spymemcached`
-[JavaDocs](https://dustin.github.com/java-memcached-client/apidocs/) or some
+[JavaDocs](https://dustin.github.io/java-memcached-client/apidocs/) or some
 more [example code](https://code.google.com/p/spymemcached/wiki/Examples) to
 help in using MemCachier effectively.
 **IF(heroku)**

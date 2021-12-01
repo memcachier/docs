@@ -1,3 +1,7 @@
+---
+title: "Documentation: CakePHP"
+description: "Documentation for using MemCachier with CakePHP"
+---
 
 ## CakePHP
 

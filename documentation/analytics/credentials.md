@@ -1,3 +1,7 @@
+---
+title: "Documentation: Credentials"
+description: "Documentation for MemCachier credentials"
+---
 
 ## Credentials
 

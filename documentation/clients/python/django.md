@@ -1,3 +1,7 @@
+---
+title: "Documentation: Django"
+description: "Documentation for using MemCachier with Django"
+---
 
 ## Django
 

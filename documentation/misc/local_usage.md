@@ -1,3 +1,7 @@
+---
+title: "Documentation: Local usage"
+description: "To test against your application locally, you will need to run a local memcached process."
+---
 
 ## Local usage
 

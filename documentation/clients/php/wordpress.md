@@ -1,3 +1,7 @@
+---
+title: "Documentation: WordPress"
+description: "Documentation for using MemCachier with WordPress"
+---
 
 ## WordPress
 

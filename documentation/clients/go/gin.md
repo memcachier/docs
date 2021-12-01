@@ -1,3 +1,7 @@
+---
+title: "Documentation: Gin"
+description: "Documentation for using MemCachier with Gin"
+---
 
 ## Gin
 
