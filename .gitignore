@@ -1,2 +1,3 @@
 out_direct/*
 out_heroku/*
+.DS_Store
