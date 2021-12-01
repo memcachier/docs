@@ -135,8 +135,8 @@ use an older version.
 
 The `pylibmc` client relies on the C `libmemcached` library. This should be
 fairly straight-forward to install with your package manager on Linux or
-Windows. For Mac OSX users, homebrew provides and easy solution. We also have a
-[blog post](http://blog.memcachier.com/2014/11/05/ubuntu-libmemcached-and-sasl-support/)
+Windows. For macOS users, Homebrew provides and easy solution. We also have a
+[blog post](https://blog.memcachier.com/2014/11/05/ubuntu-libmemcached-and-sasl-support/)
 for Ubuntu users on how to do this.
 **IF(heroku)**
 You only need to be concerned about this for local development, the Heroku

@@ -14,7 +14,7 @@ trouble coping with connection timeouts or resets. For this reason we now
 recommend XMemcached.
 
 We also recommend using [Apache Maven](https://maven.apache.org/) or
-[Gradle](https://gradle.org/) as a build tool. Here we show the dependancy
+[Gradle](https://gradle.org/) as a build tool. Here we show the dependency
 configuration for Maven but they are similar for Gradle.
 If you aren't using Maven or Gradle and are instead using
 [Apache Ant](https://ant.apache.org/) or your own build system, then

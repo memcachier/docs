@@ -28,4 +28,4 @@ Framework and Client Documentation:
   - [Pylibmc (Pytnon Client) API](http://sendapatch.se/projects/pylibmc/)
   - [Django Caching Guide](https://docs.djangoproject.com/en/dev/topics/cache/)
   - [MemJS (node.js client) API](https://memjs.netlify.com/)
-  - [Spymemcached JavaDocs](http://dustin.github.com/java-memcached-client/apidocs/)
+  - [Spymemcached JavaDocs](https://dustin.github.io/java-memcached-client/apidocs/)

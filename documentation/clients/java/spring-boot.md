@@ -8,7 +8,7 @@ description: "Documentation for using MemCachier with Spring Boot"
 **IF(direct)**
 <div class="alert alert-info">
 We’ve built a small Spring Boot example here:
-<a href="https://github.com/memcachier/examples-spring-boot-heroku">MemCachier Spring Boot sample app</a>.
+<a href="https://github.com/memcachier/examples-spring-boot">MemCachier Spring Boot sample app</a>.
 <br>
 Related tutorials:
 <ul>
@@ -21,8 +21,8 @@ Related tutorials:
 **IF(heroku)**
 >callout
 >We’ve built a small Spring Boot example.
-><a class="github-source-code" href="http://github.com/memcachier/examples-spring-boot-heroku">Source code</a> or
->[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=http://github.com/memcachier/examples-spring-boot-heroku).
+><a class="github-source-code" href="https://github.com/memcachier/examples-spring-boot">Source code</a> or
+>[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=https://github.com/memcachier/examples-spring-boot).
 ><br>
 >We also have a tutorial on using Spring Boot with MemCachier
 >[here](https://devcenter.heroku.com/articles/spring-boot-memcache).

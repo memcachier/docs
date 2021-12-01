@@ -94,14 +94,14 @@ Heroku.
 >Local installation instructions for other OSs can be found in the [MemCachier add-on article](https://devcenter.heroku.com/articles/memcachier#local-usage).
 
 To run your application locally and test the Rack::Cache setup you
-will need to have memcached installed. You can install it on Mac OSX
-using a tool such as homebrew.
+will need to have memcached installed. You can install it on macOS
+using a tool such as Homebrew.
 
 ```term
 $ brew install memcached
 ```
 
-At the end of installation homebrew will give you instructions on how
+At the end of installation Homebrew will give you instructions on how
 to start memcached manually and automatically on system start.
 
 ## Rails cache-store and Rack::Cache

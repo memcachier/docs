@@ -1,4 +1,4 @@
----
+git ad---
 title: "Documentation: Rust"
 description: "Documentation for using MemCachier with Rust"
 ---

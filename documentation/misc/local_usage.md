@@ -43,7 +43,7 @@ On Ubuntu:
 $ sudo apt-get install memcached
 ```
 
-On OS X (with Homebrew):
+On macOS (with Homebrew):
 
 ```term
 $ brew install memcached
@@ -53,7 +53,7 @@ For Windows you will need to build memcached from
 [source](https://github.com/memcached/memcached).
 
 For further information and resources (such as the memcached source code)
-please refer to the [Memcache.org homepage](http://memcached.org)
+please refer to the [Memcached.org homepage](https://memcached.org)
 
 To run memcached simply execute the following command:
 

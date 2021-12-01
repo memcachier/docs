@@ -13,10 +13,10 @@ Memcache to alleviate a performance bottleneck.
 >note
 >The sample app in this guide can be seen running
 >[here](https://memcachier-examples-spring.herokuapp.com/). You can
->[view the source code](http://github.com/memcachier/examples-spring-boot)
+>[view the source code](https://github.com/memcachier/examples-spring-boot)
 >or deploy it with this Heroku Button:
 >
->[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=http://github.com/memcachier/examples-spring-boot)
+>[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=https://github.com/memcachier/examples-spring-boot)
 
 ## Prerequisites
 Before you complete the steps in this guide, make sure you have all of the
