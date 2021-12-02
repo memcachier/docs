@@ -1,7 +1,9 @@
+**IF(direct)**
 ---
 title: "Documentation: Upgrading and downgrading"
 description: "Changing your plan by upgrading or downgrading can be done through your account."
 ---
+**ENDIF**
 
 ## Upgrading and downgrading
 

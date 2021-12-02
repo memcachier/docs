@@ -1,7 +1,9 @@
+**IF(direct)**
 ---
 title: "Documentation: Supported Protocols: ASCII & Binary"
 description: "MemCachier supports both the memcache binary and ASCII protocols."
 ---
+**ENDIF**
 
 ## Supported Protocols: ASCII & Binary
 

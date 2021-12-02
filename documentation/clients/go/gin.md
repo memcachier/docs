@@ -1,7 +1,9 @@
+**IF(direct)**
 ---
 title: "Documentation: Gin"
 description: "Documentation for using MemCachier with Gin"
 ---
+**ENDIF**
 
 ## Gin
 

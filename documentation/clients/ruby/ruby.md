@@ -1,7 +1,9 @@
+**IF(direct)**
 ---
 title: "Documentation: Ruby"
 description: "Documentation for using MemCachier with Ruby"
 ---
+**ENDIF**
 
 ## Ruby
 

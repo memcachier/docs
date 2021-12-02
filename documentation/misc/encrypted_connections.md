@@ -1,7 +1,9 @@
+**IF(direct)**
 ---
 title: "Documentation: Encrypted Connections (TLS)"
 description: "Documentation for using MemCachier and encrypted connections with TLS"
 ---
+**ENDIF**
 
 ## Encrypted Connections (TLS)
 

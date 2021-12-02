@@ -1,7 +1,9 @@
+**IF(direct)**
 ---
 title: "Documentation: Laravel"
 description: "Documentation for using MemCachier with Laravel"
 ---
+**ENDIF**
 
 ## Laravel
 

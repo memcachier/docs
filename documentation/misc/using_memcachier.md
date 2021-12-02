@@ -1,7 +1,9 @@
+**IF(direct)**
 ---
 title: "Documentation: Using MemCachier"
 description: "A collection of resources on using MemCachier."
 ---
+**ENDIF**
 
 ## Using MemCachier
 

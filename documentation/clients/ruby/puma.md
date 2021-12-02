@@ -1,7 +1,9 @@
+**IF(direct)**
 ---
 title: "Documentation: Ruby Puma Webserver"
 description: "Documentation for using MemCachier with Ruby Puma Webserver"
 ---
+**ENDIF**
 
 ## Ruby Puma Webserver
 

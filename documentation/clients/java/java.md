@@ -1,7 +1,9 @@
+**IF(direct)**
 ---
 title: "Documentation: Java"
 description: "Documentation for using MemCachier with Java"
 ---
+**ENDIF**
 
 ## Java
 

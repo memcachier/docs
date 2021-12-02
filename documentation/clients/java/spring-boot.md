@@ -1,7 +1,9 @@
+**IF(direct)**
 ---
 title: "Documentation: Spring Boot"
 description: "Documentation for using MemCachier with Spring Boot"
 ---
+**ENDIF**
 
 ## Spring Boot
 

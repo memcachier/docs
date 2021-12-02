@@ -1,7 +1,9 @@
+**IF(direct)**
 ---
 title: "Documentation: Sample applications"
 description: "A list of sample apps using MemCachier."
 ---
+**ENDIF**
 
 ## Sample applications
 

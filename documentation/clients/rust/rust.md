@@ -1,7 +1,9 @@
-git ad---
+git ad**IF(direct)**
+---
 title: "Documentation: Rust"
 description: "Documentation for using MemCachier with Rust"
 ---
+**ENDIF**
 
 ## Rust
 

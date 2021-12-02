@@ -1,7 +1,9 @@
+**IF(direct)**
 ---
 title: "Documentation: Analytics API"
 description: "Documentation for using the MemCachier Analytics API"
 ---
+**ENDIF**
 
 ## Analytics API
 

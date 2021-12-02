@@ -1,7 +1,9 @@
+**IF(direct)**
 ---
 title: "Documentation: Symfony2"
 description: "Documentation for using MemCachier with Symfony2"
 ---
+**ENDIF**
 
 ## Symfony2
 

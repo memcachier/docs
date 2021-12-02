@@ -1,3 +1,4 @@
+**IF(direct)**
 ---
 title: "Documentation: Getting Started with MemCachier"
 description: "MemCachier is an implementation of the Memcached in-memory key/value store used for caching data."

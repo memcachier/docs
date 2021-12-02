@@ -1,7 +1,9 @@
+**IF(direct)**
 ---
 title: "Documentation: Flask"
 description: "Documentation for using MemCachier with Flask"
 ---
+**ENDIF**
 
 ## Flask
 

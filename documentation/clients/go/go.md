@@ -1,7 +1,9 @@
+**IF(direct)**
 ---
 title: "Documentation: Go"
 description: "Documentation for using MemCachier with Go"
 ---
+**ENDIF**
 
 ## Go
 

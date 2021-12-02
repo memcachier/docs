@@ -1,7 +1,9 @@
+**IF(direct)**
 ---
 title: "Documentation: Key-Value size limit (1MB)"
 description: "MemCachier has a maximum size that a key-value object can be of 1MB."
 ---
+**ENDIF**
 
 ## Key-Value size limit (1MB)
 

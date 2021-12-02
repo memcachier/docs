@@ -1,8 +1,10 @@
+**IF(direct)**
 ---
 title: "Documentation: MemCachier analytics"
 description: "Our analytics dashboard is a simple tool that gives you more insight into how
 you’re using memcache."
 ---
+**ENDIF**
 
 ## MemCachier analytics
 

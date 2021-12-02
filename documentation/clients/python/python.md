@@ -1,7 +1,9 @@
+**IF(direct)**
 ---
 title: "Documentation: Python"
 description: "Documentation for using MemCachier with Python"
 ---
+**ENDIF**
 
 ## Python
 

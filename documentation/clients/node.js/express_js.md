@@ -1,7 +1,9 @@
+**IF(direct)**
 ---
 title: "Documentation: Express.js"
 description: "Documentation for using MemCachier with Express.js"
 ---
+**ENDIF**
 
 ## Express.js
 
