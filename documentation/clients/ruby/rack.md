@@ -1,3 +1,9 @@
+**IF(direct)**
+---
+title: "Documentation: Rails Rack::Cache"
+description: "Rails can use a middle-ware component of the Rack web server architecture called Rack::Cache."
+---
+**ENDIF**
 
 ## Rails Rack::Cache
 

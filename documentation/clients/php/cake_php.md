@@ -1,3 +1,9 @@
+**IF(direct)**
+---
+title: "Documentation: CakePHP"
+description: "Documentation for using MemCachier with CakePHP"
+---
+**ENDIF**
 
 ## CakePHP
 

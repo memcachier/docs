@@ -1,3 +1,9 @@
+**IF(direct)**
+---
+title: "Documentation: Disabled Caches"
+description: "Development caches are disabled after 30 days of inactivity."
+---
+**ENDIF**
 
 ## Disabled Caches
 

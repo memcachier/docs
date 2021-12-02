@@ -1,3 +1,9 @@
+**IF(direct)**
+---
+title: "Documentation: Credentials"
+description: "Documentation for MemCachier credentials"
+---
+**ENDIF**
 
 ## Credentials
 

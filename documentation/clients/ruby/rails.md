@@ -1,3 +1,9 @@
+**IF(direct)**
+---
+title: "Documentation: Rails"
+description: "Documentation for using MemCachier with Rails"
+---
+**ENDIF**
 
 ## Rails
 

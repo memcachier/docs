@@ -1,3 +1,9 @@
+**IF(direct)**
+---
+title: "Documentation: Client library support"
+description: "Documentation for Memcached client libraries supported by MemCachier"
+---
+**ENDIF**
 
 ## Client library support
 

@@ -1,3 +1,9 @@
+**IF(direct)**
+---
+title: "Documentation: Analytics API"
+description: "Documentation for using the MemCachier Analytics API"
+---
+**ENDIF**
 
 ## Analytics API
 
@@ -5,7 +11,7 @@ You can also access features available on the [analytics dashboard](#memcachier-
 via the API.
 
   - [Authenticate](#authentication)
-  - [Memcachier API ID](#memcachier-api-id)
+  - [MemCachier API ID](#memcachier-api-id)
   - [Stats](#stats)
   - [History](#history)
   - [Flush](#flush)
@@ -17,12 +23,12 @@ via the API.
 
 ### Authentication
 
-Memcachier uses credentials to allow access to the API. After you've created a
+MemCachier uses credentials to allow access to the API. After you've created a
 cache, you can find your credentials on the
 [analytics dashboard](#memcachier-analytics). Only credentials that
 have the API capability will be allowed to use this API.
 
-Memcachier expects for your credentials to be included in the header of all API requests.
+MemCachier expects for your credentials to be included in the header of all API requests.
 
 ```term
 curl "https://analytics.memcachier.com/api/v1/:memcachier_id/:action"
@@ -32,12 +38,12 @@ curl "https://analytics.memcachier.com/api/v1/:memcachier_id/:action"
 *Make sure to replace `CRED_USERNAME:CRED_PASSWORD` with your credential
 username and password found on the analytics dashboard.*
 
-### Memcachier API ID
+### MemCachier API ID
 
 All of the API paths include a `<memcachier_id>` variable. In order to find
 this ID, you'll need to use the `/login` path.
 
-*This is not the same thing as the "Memcachier ID" listed on your analytics dashboard.*
+*This is not the same thing as the "MemCachier ID" listed on your analytics dashboard.*
 
 **HTTP Request**
 

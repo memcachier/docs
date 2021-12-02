@@ -1,3 +1,9 @@
+**IF(direct)**
+---
+title: "Documentation: Flask"
+description: "Documentation for using MemCachier with Flask"
+---
+**ENDIF**
 
 ## Flask
 
@@ -35,8 +41,8 @@ refer to its [documentation](https://flask-caching.readthedocs.io/en/latest/)
 `Flask-Caching` requires the `pylibmc` client which relies on the C
 `libmemcached` library. This should be
 fairly straight-forward to install with your package manager on Linux or
-Windows. For Mac OSX users, homebrew provides and easy solution. We also have a
-[blog post](http://blog.memcachier.com/2014/11/05/ubuntu-libmemcached-and-sasl-support/)
+Windows. For macOS users, Homebrew provides and easy solution. We also have a
+[blog post](https://blog.memcachier.com/2014/11/05/ubuntu-libmemcached-and-sasl-support/)
 for Ubuntu users on how to do this.
 **IF(heroku)**
 You only need to be concerned about this for local development, the Heroku
@@ -207,7 +213,7 @@ long-lived sessions are better suited to permanent storage options, such as
 your database.
 
 To store sessions in Memcache, you need
-[Flask-Session](https://pythonhosted.org/Flask-Session/).
+[Flask-Session](https://pypi.org/project/Flask-Session/).
 
 ```term
 $ pip install Flask-Session pylibmc
