@@ -1,4 +1,4 @@
-git ad**IF(direct)**
+**IF(direct)**
 ---
 title: "Documentation: Rust"
 description: "Documentation for using MemCachier with Rust"
