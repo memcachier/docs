@@ -13,7 +13,7 @@ We recommend the [`mc`](https://github.com/memcachier/mc) memcache client. It
 supports the binary protocol and SASL authentication and was specifically
 designed to work well with MemCachier.
 However, if you prefer to use [`gomemcache`](https://github.com/bradfitz/gomemcache)
-we have a [fork](https://github.com/memcachier/mc) of `gomemcache` that works
+we have a [fork](https://github.com/memcachier/gomemcache) of `gomemcache` that works
 with MemCachier.
 
 ### Recommended client: `mc`
