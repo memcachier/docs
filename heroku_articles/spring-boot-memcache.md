@@ -1,31 +1,27 @@
-
-
 Memcache is a technology that improves the performance and scalability of web
 apps and mobile app backends. You should consider using Memcache when your pages
 are loading too slowly or your app is having scalability issues. Even for small
 sites, Memcache can make page loads snappy and help future-proof your app.
 
 This guide shows how to create a simple
-[Spring Boot 2](https://projects.spring.io/spring-boot/) application (based on
+[Spring Boot 2](https://spring.io/projects/spring-boot) application (based on
 the [Spring Framework 5](https://spring.io/)), deploy it to Heroku, then add
 Memcache to alleviate a performance bottleneck.
 
->note
->The sample app in this guide can be seen running
->[here](https://memcachier-examples-spring.herokuapp.com/). You can
->[view the source code](https://github.com/memcachier/examples-spring-boot)
->or deploy it with this Heroku Button:
+> note
+> You can view the [source code](https://github.com/memcachier/examples-spring-boot) or deploy it with this Heroku Button:
 >
->[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=https://github.com/memcachier/examples-spring-boot)
+> [![Deploy to Heroku](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=http://github.com/memcachier/examples-spring-boot)
 
 ## Prerequisites
+
 Before you complete the steps in this guide, make sure you have all of the
 following:
 
-* Familiarity with Java (and ideally Spring Boot)
-* A Heroku user account
-([signup is free and instant](https://signup.heroku.com/signup/dc))
-* Maven, and the [Heroku CLI](heroku-cli) installed on your computer
+- Familiarity with Java (and ideally Spring Boot)
+- A Heroku user account
+  ([signup is free and instant](https://signup.heroku.com/signup/dc))
+- Maven, and the [Heroku CLI](heroku-cli) installed on your computer
 
 ## Deploying a Spring Boot application to Heroku
 
@@ -57,28 +53,28 @@ Turning the Spring Boot skeleton into a Heroku app is easily done with 3 simple
 steps:
 
 1. In order to let Heroku know how to start up your app, you need to add a
-  [`Procfile`](procfile):
+   [`Procfile`](procfile):
 
-  ```term
-  $ echo 'web: java -Dserver.port=$PORT $JAVA_OPTS -jar target/*.jar' > Procfile
-  ```
+   ```term
+   $ echo 'web: java -Dserver.port=$PORT $JAVA_OPTS -jar target/*.jar' > Procfile
+   ```
 
 2. Initialize a Git repository and commit the skeleton:
 
-  ```term
-  $ git init
-  $ git add .
-  $ git commit -m 'Spring Boot skeleton for Heroku'
-  ```
+   ```term
+   $ git init
+   $ git add .
+   $ git commit -m 'Spring Boot skeleton for Heroku'
+   ```
 
 3. Create a Heroku app:
 
-  ```term
-  $ heroku create
-  ```
+   ```term
+   $ heroku create
+   ```
 
-  In addition to creating the actuall Heroku application this command also adds
-  the corresponding remote to your local Git repository.
+   In addition to creating the actual Heroku application this command also adds
+   the corresponding remote to your local Git repository.
 
 ## Add task list functionality
 
@@ -96,17 +92,17 @@ database. On Heroku, you can add a free development database to your app like
 so:
 
 ```term
-$ heroku addons:create heroku-postgresql:hobby-dev
+$ heroku addons:create heroku-postgresql:mini
 ```
 
 This creates a PostgreSQL database for your app and adds a `DATABASE_URL` config
 var that contains its URL.
 
->note
->Spring Boot requires the variable `SPRING_DATASOURCE_URL` to be set. This
->variable contains the same URL as `DATABASE_URL` except that it starts with
->`jdbc:postgresql` instead of `postgres`. Heroku will automatically populate
->this variable at runtime so you don't have to worry about it.
+> note
+> Spring Boot requires the variable `SPRING_DATASOURCE_URL` to be set. This
+> variable contains the same URL as `DATABASE_URL` except that it starts with
+> `jdbc:postgresql` instead of `postgres`. Heroku will automatically populate
+> this variable at runtime so you don't have to worry about it.
 
 To use this database we need to install a few packages. Add the following
 dependencies in `pom.xml`:
@@ -128,29 +124,29 @@ dependencies in `pom.xml`:
 </dependency>
 ```
 
-* The first dependency simply is the PostgreSQL driver.
+- The first dependency simply is the PostgreSQL driver.
 
-* The second dependency just adds the JAXB APIs, as they are no longer
+- The second dependency just adds the JAXB APIs, as they are no longer
   available out of the box for newer Java SE versions. For more information see
-  [this Stack Overflow thread](https://stackoverflow.com/questions/43574426/how-to-resolve-java-lang-noclassdeffounderror-javax-xml-bind-jaxbexception-in-j).
+  [this StackOverflow thread](https://stackoverflow.com/questions/43574426/how-to-resolve-java-lang-noclassdeffounderror-javax-xml-bind-jaxbexception-in-j).
 
-* The third dependency allows you to create and run liquibase database migrations.
+- The third dependency allows you to create and run liquibase database migrations.
 
 Now we can configure the database in `src/main/resources/application.properties`:
 
-  ```properties
-  spring.datasource.driverClassName=org.postgresql.Driver
-  spring.datasource.maxActive=10
-  spring.datasource.maxIdle=5
-  spring.datasource.minIdle=2
-  spring.datasource.initialSize=5
-  spring.datasource.removeAbandoned=true
+```properties
+spring.datasource.driverClassName=org.postgresql.Driver
+spring.datasource.maxActive=10
+spring.datasource.maxIdle=5
+spring.datasource.minIdle=2
+spring.datasource.initialSize=5
+spring.datasource.removeAbandoned=true
 
-  # Supress exception regarding missing PostgreSQL CLOB feature at Spring startup.
-  # See http://vkuzel.blogspot.ch/2016/03/spring-boot-jpa-hibernate-atomikos.html
-  spring.jpa.properties.hibernate.temp.use_jdbc_metadata_defaults = false
-  spring.jpa.database-platform=org.hibernate.dialect.PostgreSQL9Dialect
-  ```
+# Supress exception regarding missing PostgreSQL CLOB feature at Spring startup.
+# See http://vkuzel.blogspot.ch/2016/03/spring-boot-jpa-hibernate-atomikos.html
+spring.jpa.properties.hibernate.temp.use_jdbc_metadata_defaults = false
+spring.jpa.database-platform=org.hibernate.dialect.PostgreSQL9Dialect
+```
 
 Your PostgreSQL database is now ready to be used. Save the changes with
 
@@ -161,7 +157,6 @@ $ git commit -am 'Database setup'
 For more info on connecting to relational databases from Java on Heroku, see
 [this guide](connecting-to-relational-databases-on-heroku-with-java).
 
-
 ### Create the Task entity and database table
 
 In order to create and store tasks we need to create three things: a `Task`
@@ -170,95 +165,95 @@ a migration that creates the actual table in the database.
 
 1. Add the `Task` entity to `src/main/java/com/memcachier/tutorial/Task.java`:
 
-  ```java
-  package com.memcachier.tutorial;
+   ```java
+   package com.memcachier.tutorial;
 
-  import javax.persistence.Entity;
-  import javax.persistence.GeneratedValue;
-  import javax.persistence.GenerationType;
-  import javax.persistence.Id;
+   import javax.persistence.Entity;
+   import javax.persistence.GeneratedValue;
+   import javax.persistence.GenerationType;
+   import javax.persistence.Id;
 
-  import org.hibernate.validator.constraints.NotEmpty;
+   import org.hibernate.validator.constraints.NotEmpty;
 
-  @Entity
-  public class Task {
+   @Entity
+   public class Task {
 
-    @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private Long id;
-    @NotEmpty
-    private String name;
+     @Id
+     @GeneratedValue(strategy=GenerationType.IDENTITY)
+     private Long id;
+     @NotEmpty
+     private String name;
 
-    protected Task() {}
+     protected Task() {}
 
-    public Task(String name) {
-      this.name = name;
-    }
+     public Task(String name) {
+       this.name = name;
+     }
 
-    public Long getId() {
-      return this.id;
-    }
+     public Long getId() {
+       return this.id;
+     }
 
-    public String getName() {
-      return this.name;
-    }
+     public String getName() {
+       return this.name;
+     }
 
-    public void setName(String name) {
-      this.name = name;
-    }
+     public void setName(String name) {
+       this.name = name;
+     }
 
-    @Override
-    public String toString() {
-      return String.format("Task[id=%d, name='%s']", this.id, this.name);
-    }
+     @Override
+     public String toString() {
+       return String.format("Task[id=%d, name='%s']", this.id, this.name);
+     }
 
-  }
-  ```
+   }
+   ```
 
 2. Create a repository in `src/main/java/com/memcachier/tutorial/TaskRepository.java`:
 
-  ```java
-  package com.memcachier.tutorial;
+   ```java
+   package com.memcachier.tutorial;
 
-  import java.util.List;
-  import org.springframework.data.repository.CrudRepository;
+   import java.util.List;
+   import org.springframework.data.repository.CrudRepository;
 
-  public interface TaskRepository extends CrudRepository<Task, Long> {}
-  ```
+   public interface TaskRepository extends CrudRepository<Task, Long> {}
+   ```
 
-  If you need more than basic CRUD functions to access your data you can
-  also extend a `PagingAndSortingRepository` or a `JpaRepository` instead. See
-  [this StackOverflow thread](https://stackoverflow.com/questions/14014086/what-is-difference-between-crudrepository-and-jparepository-interfaces-in-spring)
-  for more information.
+   If you need more than basic CRUD functions to access your data you can
+   also extend a `PagingAndSortingRepository` or a `JpaRepository` instead. See
+   [this StackOverflow thread](https://stackoverflow.com/questions/14014086/what-is-difference-between-crudrepository-and-jparepository-interfaces-in-spring)
+   for more information.
 
 3. Create a liquibase migration in
-  `src/main/resources/db/changelog/db.changelog-master.yaml`:
+   `src/main/resources/db/changelog/db.changelog-master.yaml`:
 
-  ```yaml
-  databaseChangeLog:
-    - changeSet:
-        id: 1
-        author: memcachier
-        changes:
-          - createTable:
-              tableName: task
-              columns:
-                - column:
-                    name: id
-                    type: int
-                    autoIncrement: true
-                    constraints:
-                      primaryKey: true
-                      nullable: false
-                - column:
-                    name: name
-                    type: varchar(255)
-                    constraints:
-                      nullable: false
-  ```
+   ```yaml
+   databaseChangeLog:
+     - changeSet:
+         id: 1
+         author: memcachier
+         changes:
+           - createTable:
+               tableName: task
+               columns:
+                 - column:
+                     name: id
+                     type: int
+                     autoIncrement: true
+                     constraints:
+                       primaryKey: true
+                       nullable: false
+                 - column:
+                     name: name
+                     type: varchar(255)
+                     constraints:
+                       nullable: false
+   ```
 
-  Note, you will need to create the `db` and `changelog` folders.
-  The migration will run automatically when the application starts.
+   Note, you will need to create the `db` and `changelog` folders.
+   The migration will run automatically when the application starts.
 
 Let's save the changes so far:
 
@@ -272,7 +267,7 @@ $ git commit -m 'Task table setup'
 The actual application consists of a view that is displayed in the frontend and
 a controller that implements the functionality in the backend.
 
-* Create a controller in `src/main/java/com/memcachier/tutorial/TaskController.java`:
+- Create a controller in `src/main/java/com/memcachier/tutorial/TaskController.java`:
 
   ```java
   package com.memcachier.tutorial;
@@ -330,27 +325,31 @@ a controller that implements the functionality in the backend.
   `task` view, to `POST` a new task that will then be saved to the database,
   and to `DELETE` existing tasks.
 
-* Create a view in `src/main/resources/templates/task.html`:
+- Create a view in `src/main/resources/templates/task.html`:
 
   ```html
-  <!DOCTYPE HTML>
+  <!DOCTYPE html>
   <html xmlns:th="http://www.thymeleaf.org">
     <head>
       <title>MemCachier Spring Boot Tutorial</title>
       <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
       <!-- Fonts -->
-      <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css"
-            rel='stylesheet' type='text/css' />
+      <link
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css"
+        rel="stylesheet"
+        type="text/css"
+      />
 
       <!-- Bootstrap CSS -->
-      <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-            rel="stylesheet" />
+      <link
+        href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        rel="stylesheet"
+      />
     </head>
 
     <body>
       <div class="container">
-
         <!-- New Task Card -->
         <div class="card">
           <div class="card-body">
@@ -358,8 +357,12 @@ a controller that implements the functionality in the backend.
 
             <form th:object="${newTask}" method="POST">
               <div class="form-group">
-                <input type="text" class="form-control"
-                       placeholder="Task Name" th:field="*{name}" />
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Task Name"
+                  th:field="*{name}"
+                />
               </div>
               <button type="submit" class="btn btn-default">
                 <i class="fa fa-plus"></i> Add Task
@@ -381,7 +384,11 @@ a controller that implements the functionality in the backend.
                   <!-- Delete Button -->
                   <td>
                     <form th:object="${deleteTask}" th:method="DELETE">
-                      <input type="hidden" name="taskId" th:value="${task.id}">
+                      <input
+                        type="hidden"
+                        name="taskId"
+                        th:value="${task.id}"
+                      />
                       <button type="submit" class="btn btn-danger">
                         <i class="fa fa-trash"></i> Delete
                       </button>
@@ -534,79 +541,79 @@ To cache the Task queries we will extend the `TaskRepository` with methods that
 implement caching. Extending a repository in Spring Boot involves three steps:
 
 1. Build an interface with the methods that should be added to the `TaskRepository`
-  in `src/main/java/com/memcachier/tutorial/CachedTaskRepository.java`:
+   in `src/main/java/com/memcachier/tutorial/CachedTaskRepository.java`:
 
-  ```java
-  package com.memcachier.tutorial;
+   ```java
+   package com.memcachier.tutorial;
 
-  import java.lang.Iterable;
+   import java.lang.Iterable;
 
-  public interface CachedTaskRepository {
+   public interface CachedTaskRepository {
 
-    public Iterable<Task> findAllCached();
+     public Iterable<Task> findAllCached();
 
-  }
-  ```
+   }
+   ```
 
 2. Create a an implementation for this interface in
-  `src/main/java/com/memcachier/tutorial/TaskRepositoryImpl.java`:
+   `src/main/java/com/memcachier/tutorial/TaskRepositoryImpl.java`:
 
-  ```java
-  package com.memcachier.tutorial;
+   ```java
+   package com.memcachier.tutorial;
 
-  import java.lang.Iterable;
+   import java.lang.Iterable;
 
-  import org.springframework.beans.factory.annotation.Autowired;
-  import com.google.code.ssm.api.ReadThroughAssignCache;
+   import org.springframework.beans.factory.annotation.Autowired;
+   import com.google.code.ssm.api.ReadThroughAssignCache;
 
-  public class TaskRepositoryImpl implements CachedTaskRepository {
+   public class TaskRepositoryImpl implements CachedTaskRepository {
 
-    @Autowired
-    TaskRepository taskRepository;
+     @Autowired
+     TaskRepository taskRepository;
 
-    @ReadThroughAssignCache(namespace="Taskrepo", assignedKey="all")
-    public Iterable<Task> findAllCached() {
-      return this.taskRepository.findAll();
-    }
-  }
-  ```
+     @ReadThroughAssignCache(namespace="Taskrepo", assignedKey="all")
+     public Iterable<Task> findAllCached() {
+       return this.taskRepository.findAll();
+     }
+   }
+   ```
 
-  >note
-  >The filename of the implementation must follow the naming convention
-  >`<REPOSITORY-NAME>Impl.java`.
+   > note
+   > The filename of the implementation must follow the naming convention
+   > `<REPOSITORY-NAME>Impl.java`.
 
-  You can access the rest of the CRUD interface of the `TaskRepository` by just
-  adding an `@Autowired` reference to it.
+   You can access the rest of the CRUD interface of the `TaskRepository` by just
+   adding an `@Autowired` reference to it.
 
-  The caching occurs here via the `@ReadThroughAssignCache` annotation. All
-  `@ReadThrough*Cache` annotations do the following:
+   The caching occurs here via the `@ReadThroughAssignCache` annotation. All
+   `@ReadThrough*Cache` annotations do the following:
 
-  * Check if value is in cache and if true return said value.
-  * If not in cache, execute function, return its value and store said value in
-    the cache.
+   - Check if value is in cache and if true return said value.
+   - If not in cache, execute function, return its value and store said value in
+     the cache.
 
-  The `Assign` version of this annotation will use an assigned key that is
-  declared in the annotation. For more information about the annotations,
-  refer to the
-  [Simple Spring Memcached documentation](https://github.com/ragnor/simple-spring-memcached/wiki/Getting-Started#usage).
+   The `Assign` version of this annotation will use an assigned key that is
+   declared in the annotation. For more information about the annotations,
+   refer to the
+   [Simple Spring Memcached documentation](https://github.com/ragnor/simple-spring-memcached/wiki/Getting-Started#usage).
 
 3. Make sure this implementation is integrated into the `TaskRepository`.
-  This is simply done by making the `TaskRepository` interface also extend the
-  `CachedTaskRepository` interface:
+   This is simply done by making the `TaskRepository` interface also extend the
+   `CachedTaskRepository` interface:
 
-  ```java
-  // ...
-  public interface TaskRepository extends CrudRepository<Task, Long>, CachedTaskRepository {}
-  ```
+   ```java
+   // ...
+   public interface TaskRepository extends CrudRepository<Task, Long>, CachedTaskRepository {}
+   ```
 
->note
->A note on caching annotations: Spring uses proxies to handle caching
->annotations. For this reason you cannot create a private method inside your
->controller, add a caching annotation and expect the method to be cached. In
->simple terms, the cached method must be part of a component that is accessed
->via it's interface. For more information see
->[this Stackoverflow thread](https://stackoverflow.com/questions/12115996/spring-cache-cacheable-method-ignored-when-called-from-within-the-same-class)
->and the therein mentioned references.
+> note
+> A note on caching annotations: Spring uses proxies to handle caching
+> annotations. For this reason you cannot create a private method inside your
+> controller, add a caching annotation and expect the method to be cached. In
+> simple terms, the cached method must be part of a component that is accessed
+> via it's interface. For more information see
+> [this StackOverflow thread](https://stackoverflow.com/questions/12115996/spring-cache-cacheable-method-ignored-when-called-from-within-the-same-class)
+> and the therein mentioned references.
 
 Now we have the methods to cache all tasks but in order for them to work the
 Task data type in `src/main/java/com/memcachier/tutorial/Task.java` needs to be
@@ -622,7 +629,7 @@ public class Task implements Serializable {
 ```
 
 Finally, we can now get the cached tasks in the controller in
-  `src/main/java/com/memcachier/tutorial/TaskController.java`:
+`src/main/java/com/memcachier/tutorial/TaskController.java`:
 
 ```java
 // ...
@@ -668,43 +675,42 @@ We can add wrappers to the save and delete methods in the `TaskRepository`
 that clear the cache with the following two steps:
 
 1. Declare the wrapper methods in the `CachedTaskRepository` interface in
-  `src/main/java/com/memcachier/tutorial/CachedTaskRepository.java`:
+   `src/main/java/com/memcachier/tutorial/CachedTaskRepository.java`:
 
-  ```java
-  // ...
-  public interface CachedTaskRepository {
-    public Iterable<Task> findAllCached();
-    public Task saveAndClearCache(Task t);
-    public void deleteByIdAndClearCache(Long id);
-  }
-  ```
+   ```java
+   // ...
+   public interface CachedTaskRepository {
+     public Iterable<Task> findAllCached();
+     public Task saveAndClearCache(Task t);
+     public void deleteByIdAndClearCache(Long id);
+   }
+   ```
 
 2. Implement the wrapper methods in
-  `src/main/java/com/memcachier/tutorial/TaskRepositoryImpl.java`:
+   `src/main/java/com/memcachier/tutorial/TaskRepositoryImpl.java`:
 
-  ```java
-  // ...
-  import com.google.code.ssm.api.InvalidateAssignCache;
+   ```java
+   // ...
+   import com.google.code.ssm.api.InvalidateAssignCache;
 
-  public class TaskRepositoryImpl implements CachedTaskRepository {
-    // ...
+   public class TaskRepositoryImpl implements CachedTaskRepository {
+     // ...
 
-    @InvalidateAssignCache(namespace="Taskrepo", assignedKey="all")
-    public Task saveAndClearCache(Task t){
-      return this.taskRepository.save(t);
-    }
+     @InvalidateAssignCache(namespace="Taskrepo", assignedKey="all")
+     public Task saveAndClearCache(Task t){
+       return this.taskRepository.save(t);
+     }
 
-    @InvalidateAssignCache(namespace="Taskrepo", assignedKey="all")
-    public void deleteByIdAndClearCache(Long id){
-      this.taskRepository.deleteById(id);
-    }
-  }
-  ```
+     @InvalidateAssignCache(namespace="Taskrepo", assignedKey="all")
+     public void deleteByIdAndClearCache(Long id){
+       this.taskRepository.deleteById(id);
+     }
+   }
+   ```
 
-  The stale data is invalidated here via `@InvalidateAssignCache` annotation.
-  Just as `@ReadThroughAssignCache` it acts on the assigned key that is
-  declared in the annotation.
-
+   The stale data is invalidated here via `@InvalidateAssignCache` annotation.
+   Just as `@ReadThroughAssignCache` it acts on the assigned key that is
+   declared in the annotation.
 
 Now we can use these wrapper functions in our controller to clear the cache
 whenever a request comes in to add or delete a task. To do so replace `save`
@@ -743,10 +749,10 @@ implemented caching for the task list.
 
 ## Further reading & resources
 
-* [MemCachier Add-on Page](https://elements.heroku.com/addons/memcachier)
-* [MemCachier Documentation](memcachier)
-* [Advance Memcache Usage](advanced-memcache)
-* [Heroku Spring Boot Guide](https://devcenter.heroku.com/articles/deploying-spring-boot-apps-to-heroku)
-* [Simple Spring Memcached Documentation](https://github.com/ragnor/simple-spring-memcached/wiki/Getting-Started)
-* [Spring Caching Guide](https://spring.io/guides/gs/caching/)
-* [Spring Caching Documentation](https://docs.spring.io/spring/docs/5.0.5.RELEASE/spring-framework-reference/integration.html#cache)
+- [MemCachier Add-on Page](https://elements.heroku.com/addons/memcachier)
+- [MemCachier Documentation](memcachier)
+- [Advance Memcache Usage](advanced-memcache)
+- [Heroku Spring Boot Guide](https://devcenter.heroku.com/articles/deploying-spring-boot-apps-to-heroku)
+- [Simple Spring Memcached Documentation](https://github.com/ragnor/simple-spring-memcached/wiki/Getting-Started)
+- [Spring Caching Guide](https://spring.io/guides/gs/caching/)
+- [Spring Caching Documentation](https://docs.spring.io/spring/docs/5.0.5.RELEASE/spring-framework-reference/integration.html#cache)

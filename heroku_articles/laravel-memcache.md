@@ -1,4 +1,3 @@
-
 Memcache is a technology that improves the performance and scalability of web
 apps and mobile app backends. You should consider
 using Memcache when your pages are loading too slowly or your app is
@@ -9,20 +8,21 @@ This guide shows how to create a simple [Laravel 5.6](http://laravel.com/)
 application, deploy it to Heroku, then add Memcache to alleviate a performance
 bottleneck.
 
->note
->The sample app in this guide can be seen running
->[here](https://memcachier-examples-laravel.herokuapp.com/). You can [view the source code](http://github.com/memcachier/examples-laravel-heroku) or deploy it with this Heroku Button:
+> note
+> The sample app in this guide can be seen running
+> [here](https://memcachier-examples-laravel.herokuapp.com/). You can [view the source code](http://github.com/memcachier/examples-laravel-heroku) or deploy it with this Heroku Button:
 >
->[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=http://github.com/memcachier/examples-laravel-heroku)
+> [![Deploy to Heroku](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=http://github.com/memcachier/examples-laravel-heroku)
 
 ## Prerequisites
+
 Before you complete the steps in this guide, make sure you have all of the following:
 
-* Familiarity with PHP (and ideally some Laravel)
-* A Heroku user account ([signup is free and instant](https://signup.heroku.com/signup/dc))
-* Familiarity with the steps in [Getting Started with PHP on Heroku](getting-started-with-php)
-* PHP, Composer, and the [Heroku CLI](heroku-cli) installed
-on your computer
+- Familiarity with PHP (and ideally some Laravel)
+- A Heroku user account ([signup is free and instant](https://signup.heroku.com/signup/dc))
+- Familiarity with the steps in [Getting Started with PHP on Heroku](getting-started-with-php)
+- PHP, Composer, and the [Heroku CLI](heroku-cli) installed
+  on your computer
 
 > callout
 > This tutorial is based on the
@@ -49,44 +49,44 @@ $ cd laravel_memcache
 
 Before we can create a working Heroku application, we need to add a few Heroku-specific changes to the skeleton:
 
-1. Create a simple [Procfile](procfile) to let Heroku know how to run your application:
+1.  Create a simple [Procfile](procfile) to let Heroku know how to run your application:
 
     ```term
     $ echo web: vendor/bin/heroku-php-apache2 public/ > Procfile
     ```
 
-2. Your application needs to trust Heroku proxies. Change
-`$proxies` and `$headers` in `app/Http/Middleware/TrustProxies.php` as follows:
+2.  Your application needs to trust Heroku proxies. Change
+    `$proxies` and `$headers` in `app/Http/Middleware/TrustProxies.php` as follows:
 
-    ```php
-    // ...
+        ```php
+        // ...
 
-    protected $proxies = '**';
+        protected $proxies = '**';
 
-    // ...
+        // ...
 
-    protected $headers = Request::HEADER_X_FORWARDED_AWS_ELB;
+        protected $headers = Request::HEADER_X_FORWARDED_AWS_ELB;
 
-    // ...
-    ```
+        // ...
+        ```
 
-    > callout
-    > This configuration does not work for Laravel <5.6. See
-    > [this Stack Overflow answer](https://stackoverflow.com/questions/48681417/laravel-5-6-trustedproxies-error/48684748#48684748)
-    >  for older versions.
+        > callout
+        > This configuration does not work for Laravel <5.6. See
+        > [this Stack Overflow answer](https://stackoverflow.com/questions/48681417/laravel-5-6-trustedproxies-error/48684748#48684748)
+        >  for older versions.
 
-3. Before we can create a Heroku application, we need to initialize a Git repository
-and commit the work we have done so far:
+3.  Before we can create a Heroku application, we need to initialize a Git repository
+    and commit the work we have done so far:
 
-    ```term
-    $ git init
-    Initialized empty Git repository in ~/laravel_memcache/.git/
-    $ git add .
-    $ git commit -m "Laravel skeleton for Heroku"
-    [master (root-commit) 3099e3b] Laravel skeleton for Heroku
-     84 files changed, 7077 insertions(+)
-    ...
-    ```
+        ```term
+        $ git init
+        Initialized empty Git repository in ~/laravel_memcache/.git/
+        $ git add .
+        $ git commit -m "Laravel skeleton for Heroku"
+        [master (root-commit) 3099e3b] Laravel skeleton for Heroku
+         84 files changed, 7077 insertions(+)
+        ...
+        ```
 
 ### Create and configure the Heroku app
 
@@ -102,23 +102,23 @@ Before we can deploy the Laravel skeleton, we need to add some configuration in 
 
 1. Set a Laravel encryption key:
 
-    ```term
-    $ heroku config:set APP_KEY=$(php artisan key:generate --show)
-    Setting APP_KEY and restarting ⬢ serene-castle-14546... done, v3
-    APP_KEY: base64:E8Ay5w611tCLkqLnGSualCypRR+s8PGSfK20M+0HNIU=
-    ```
+   ```term
+   $ heroku config:set APP_KEY=$(php artisan key:generate --show)
+   Setting APP_KEY and restarting ⬢ serene-castle-14546... done, v3
+   APP_KEY: base64:E8Ay5w611tCLkqLnGSualCypRR+s8PGSfK20M+0HNIU=
+   ```
 
 2. Configure the logger to write to `errorlog`:
 
-    ```term
-    $ heroku config:set LOG_CHANNEL=errorlog
-    ```
+   ```term
+   $ heroku config:set LOG_CHANNEL=errorlog
+   ```
 
-    You can optionally configure `errorlog` to be your default log channel in `config/loging.php`:
+   You can optionally configure `errorlog` to be your default log channel in `config/loging.php`:
 
-    ```php
-    'driver' => env('LOG_CHANNEL', 'errorlog'),
-    ```
+   ```php
+   'driver' => env('LOG_CHANNEL', 'errorlog'),
+   ```
 
 Now, deploy the Laravel skeleton to Heroku:
 
@@ -157,7 +157,7 @@ Before we can configure the database in Laravel, we need to create the database.
 can add a free development database to your app like so:
 
 ```term
-$ heroku addons:create heroku-postgresql:hobby-dev
+$ heroku addons:create heroku-postgresql:mini
 ```
 
 This creates a PostgreSQL database for your app and adds a `DATABASE_URL` config var that contains its URL. To use this database,
@@ -607,8 +607,8 @@ Memcache is often used to cache the results of expensive database queries. Of co
 
 The `rememberForever` function makes it easy to add caching to Laravel. You provide two arguments to it:
 
-* A cache key
-* A function that queries your database and returns results
+- A cache key
+- A function that queries your database and returns results
 
 The `rememberForever` function looks up the key in your cache. If the key is present, its corresponding value is returned. Otherwise, the database function you provided is called. Whatever that function returns is then stored in the cache with the corresponding key for future lookups.
 
@@ -720,9 +720,9 @@ but the `Get hits` increase because the task list is served from the cache.
 When you add a new task or delete a task, your misses will
 increase again because the cache was invalidated.
 
->note
->If you want to see stats in your local setup, you need to set
-`CACHE_DRIVER=memcached` in your `.env` file and either run a `memcached` server locally or configure your `MEMCACHIER_*` environment variables accordingly.
+> note
+> If you want to see stats in your local setup, you need to set
+> `CACHE_DRIVER=memcached` in your `.env` file and either run a `memcached` server locally or configure your `MEMCACHIER_*` environment variables accordingly.
 
 ### Using Memcache for session storage
 
@@ -813,8 +813,8 @@ this package with Memcache, you have to set the config var
 
 ## Further reading & resources
 
-* [MemCachier Add-on Page](https://elements.heroku.com/addons/memcachier)
-* [MemCachier Documentation](memcachier)
-* [Advance Memcache Usage](advanced-memcache)
-* [Heroku Laravel guide](getting-started-with-laravel)
-* [Laravel Caching Documentation](https://laravel.com/docs/5.6/cache)
+- [MemCachier Add-on Page](https://elements.heroku.com/addons/memcachier)
+- [MemCachier Documentation](memcachier)
+- [Advance Memcache Usage](advanced-memcache)
+- [Heroku Laravel guide](getting-started-with-laravel)
+- [Laravel Caching Documentation](https://laravel.com/docs/5.6/cache)

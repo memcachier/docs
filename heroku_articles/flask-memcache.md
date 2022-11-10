@@ -1,4 +1,3 @@
-
 Memcache is a technology that improves the performance and scalability of web
 apps and mobile app backends. You should consider
 using Memcache when your pages are loading too slowly or your app is
@@ -9,22 +8,22 @@ This guide shows how to create a simple [Flask 1.0](http://flask.pocoo.org/)
 application, deploy it to Heroku, then add Memcache to alleviate a performance
 bottleneck.
 
->note
->The sample app in this guide can be seen running
->[here](https://memcachier-examples-flask.herokuapp.com/). You can
->[view the source code](http://github.com/memcachier/examples-flask) or deploy
->it with this Heroku Button:
+> note
+> The sample app in this guide can be seen running
+> [here](https://memcachier-examples-flask.herokuapp.com/). You can
+> [view the source code](http://github.com/memcachier/examples-flask) or deploy
+> it with this Heroku Button:
 >
->[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=http://github.com/memcachier/examples-flask)
+> [![Deploy to Heroku](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=https://github.com/memcachier/examples-rack-cache)
 
 ## Prerequisites
+
 Before you complete the steps in this guide, make sure you have all of the following:
 
-* Familiarity with Python (and ideally some Flask)
-* A Heroku user account ([signup is free and instant](https://signup.heroku.com/signup/dc))
-* Familiarity with the steps in [Getting Started with Python on Heroku](getting-started-with-python)
-* Python and the [Heroku CLI](heroku-cli) installed on your computer
-
+- Familiarity with Python (and ideally some Flask)
+- A Heroku user account ([signup is free and instant](https://signup.heroku.com/signup/dc))
+- Familiarity with the steps in [Getting Started with Python on Heroku](getting-started-with-python)
+- Python and the [Heroku CLI](heroku-cli) installed on your computer
 
 ## Create a Flask application for Heroku
 
@@ -58,10 +57,10 @@ def create_app():
     return app
 ```
 
->note
->This small sample app will not use the `SECRET_KEY`, but it's
+> note
+> This small sample app will not use the `SECRET_KEY`, but it's
 > always a good idea to configure it. Larger projects almost always use it,
->and it is used by many Flask addons.
+> and it is used by many Flask addons.
 
 We also need set the `FLASK_APP` environment variable to let Flask know where
 to find the application. For local development, set all required environment variables in
@@ -88,34 +87,34 @@ Associate your Flask skeleton with a new Heroku app with the following
 steps:
 
 1. Initialize a Git repository and commit the skeleton. Start by adding a
-    `.gitignore` file to make sure you don't commit files you don't want to. Paste the following into it:
+   `.gitignore` file to make sure you don't commit files you don't want to. Paste the following into it:
 
-    ```
-    venv/
-    .env
+   ```
+   venv/
+   .env
 
-    *.pyc
-    __pycache__/
+   *.pyc
+   __pycache__/
 
-    instance/
-    ```
+   instance/
+   ```
 
-    Now commit all files to the Git repository:
+   Now commit all files to the Git repository:
 
-    ```term
-    $ git init
-    $ git add .
-    $ git commit -m 'Flask skeleton'
-    ```
+   ```term
+   $ git init
+   $ git add .
+   $ git commit -m 'Flask skeleton'
+   ```
 
 2. Create a Heroku app:
 
-    ```term
-    $ heroku create
-    ```
+   ```term
+   $ heroku create
+   ```
 
-    In addition to creating the actual Heroku application, this command adds
-    the corresponding remote to your local Git repository.
+   In addition to creating the actual Heroku application, this command adds
+   the corresponding remote to your local Git repository.
 
 We now have a Heroku app, but our Flask app is not yet ready to be deployed to Heroku. We
 will make a few necessary changes later, but first let's implement some
@@ -137,7 +136,7 @@ database. On Heroku, you can add a free development database to your app like
 so:
 
 ```term
-$ heroku addons:create heroku-postgresql:hobby-dev
+$ heroku addons:create heroku-postgresql:mini
 ```
 
 This creates a PostgreSQL database for your app and adds a `DATABASE_URL`
@@ -201,37 +200,37 @@ To create and store tasks, we need to do two things:
 
 1. Create the `Task` model in `task_list/models.py`:
 
-    ```python
-    from task_list import db
+   ```python
+   from task_list import db
 
-    class Task(db.Model):
-        id = db.Column(db.Integer, primary_key=True)
-        name = db.Column(db.Text(), nullable=False)
+   class Task(db.Model):
+       id = db.Column(db.Integer, primary_key=True)
+       name = db.Column(db.Text(), nullable=False)
 
-        def __repr__(self):
-            return '<Task: {}>'.format(self.name)
-    ```
+       def __repr__(self):
+           return '<Task: {}>'.format(self.name)
+   ```
 
-    This gives us a task table with two columns: `id` and `name`.
+   This gives us a task table with two columns: `id` and `name`.
 
 2. Initialize the database and create migrations:
 
-    ```term
-    (venv) $ flask db init
-      Creating directory .../flask_memcache/migrations ... done
-      Creating directory .../flask_memcache/migrations/versions ... done
-      Generating .../flask_memcache/migrations/env.py ... done
-      Generating .../flask_memcache/migrations/README ... done
-      Generating .../flask_memcache/migrations/alembic.ini ... done
-      Generating .../flask_memcache/migrations/script.py.mako ... done
-    (venv) $ flask db migrate -m "task table"
-    INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
-    INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
-    INFO  [alembic.autogenerate.compare] Detected added table 'task'
-      Generating .../flask_memcache/migrations/versions/c90b05ec9bd6_task_table.py ... done
-    ```
+   ```term
+   (venv) $ flask db init
+     Creating directory .../flask_memcache/migrations ... done
+     Creating directory .../flask_memcache/migrations/versions ... done
+     Generating .../flask_memcache/migrations/env.py ... done
+     Generating .../flask_memcache/migrations/README ... done
+     Generating .../flask_memcache/migrations/alembic.ini ... done
+     Generating .../flask_memcache/migrations/script.py.mako ... done
+   (venv) $ flask db migrate -m "task table"
+   INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+   INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+   INFO  [alembic.autogenerate.compare] Detected added table 'task'
+     Generating .../flask_memcache/migrations/versions/c90b05ec9bd6_task_table.py ... done
+   ```
 
-    The new migration can be found in `migrations/versions/c90b05ec9bd6_task_table.py` (your filename's prefix will differ).
+   The new migration can be found in `migrations/versions/c90b05ec9bd6_task_table.py` (your filename's prefix will differ).
 
 Save your changes so far:
 
@@ -249,156 +248,161 @@ the main application.
 
 1. Create a controller blueprint in `task_list/task_list.py`:
 
-    ```python
-    from flask import (
-        Blueprint, flash, redirect, render_template, request, url_for
-    )
+   ```python
+   from flask import (
+       Blueprint, flash, redirect, render_template, request, url_for
+   )
 
-    from task_list import db
-    from task_list.models import Task
+   from task_list import db
+   from task_list.models import Task
 
-    bp = Blueprint('task_list', __name__)
+   bp = Blueprint('task_list', __name__)
 
-    @bp.route('/', methods=('GET', 'POST'))
-    def index():
-        if request.method == 'POST':
-            name = request.form['name']
-            if not name:
-                flash('Task name is required.')
-            else:
-                db.session.add(Task(name=name))
-                db.session.commit()
+   @bp.route('/', methods=('GET', 'POST'))
+   def index():
+       if request.method == 'POST':
+           name = request.form['name']
+           if not name:
+               flash('Task name is required.')
+           else:
+               db.session.add(Task(name=name))
+               db.session.commit()
 
-        tasks = Task.query.all()
-        return render_template('task_list/index.html', tasks=tasks)
+       tasks = Task.query.all()
+       return render_template('task_list/index.html', tasks=tasks)
 
-    @bp.route('/<int:id>/delete', methods=('POST',))
-    def delete(id):
-        task = Task.query.get(id)
-        if task != None:
-            db.session.delete(task)
-            db.session.commit()
-        return redirect(url_for('task_list.index'))
-    ```
+   @bp.route('/<int:id>/delete', methods=('POST',))
+   def delete(id):
+       task = Task.query.get(id)
+       if task != None:
+           db.session.delete(task)
+           db.session.commit()
+       return redirect(url_for('task_list.index'))
+   ```
 
-    This controller contains all functionality to:
-    * `GET` all tasks and render the
-    `task_list` view
-    * `POST` a new task that will then be saved to the database
-    * Delete existing tasks
+   This controller contains all functionality to:
+
+   - `GET` all tasks and render the
+     `task_list` view
+   - `POST` a new task that will then be saved to the database
+   - Delete existing tasks
 
 2. Register the blueprint in `task_list/__init__.py`:
 
-    ```python
-    # ...
-    def create_app():
-        app = Flask(__name__)
+   ```python
+   # ...
+   def create_app():
+       app = Flask(__name__)
 
-        # ...
+       # ...
 
-        from . import task_list
-        app.register_blueprint(task_list.bp)
+       from . import task_list
+       app.register_blueprint(task_list.bp)
 
-        return app
-    ```
+       return app
+   ```
 
 With the controller set up, we can now add the front end. Flask uses the Jinja
 templating language, which allows you to add Python-like control flow statements
-inside `{%  %}` delimiters. For our task list view, we first create a
-base layout that includes boilerplate code for all views. We then create a  template specific to the task list.
+inside `{% %}` delimiters. For our task list view, we first create a
+base layout that includes boilerplate code for all views. We then create a template specific to the task list.
 
 1. Create a base layout in `task_list/templates/base.html`:
 
-    ```html
-    <!DOCTYPE HTML>
-    <title>{% block title %}{% endblock %} - MemCachier Flask Tutorial</title>
-    <!-- Fonts -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css"
-          rel='stylesheet' type='text/css' />
-    <!-- Bootstrap CSS -->
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-          rel="stylesheet" />
+   ```html
+   <!DOCTYPE html>
+   <title>{% block title %}{% endblock %} - MemCachier Flask Tutorial</title>
+   <!-- Fonts -->
+   <link
+     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css"
+     rel="stylesheet"
+     type="text/css"
+   />
+   <!-- Bootstrap CSS -->
+   <link
+     href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+     rel="stylesheet"
+   />
 
-    <section class="content">
-      <div class="container">
-        <header>
-          {% block header %}{% endblock %}
-        </header>
-        {% for message in get_flashed_messages() %}
-          <div class="alert alert-danger">
-            <p class="lead">{{ message }}</p>
-          </div>
-        {% endfor %}
-        {% block content %}{% endblock %}
-      </div>
-    </section>
+   <section class="content">
+     <div class="container">
+       <header>{% block header %}{% endblock %}</header>
+       {% for message in get_flashed_messages() %}
+       <div class="alert alert-danger">
+         <p class="lead">{{ message }}</p>
+       </div>
+       {% endfor %} {% block content %}{% endblock %}
+     </div>
+   </section>
 
-    <!-- Bootstrap related JavaScript -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-    ```
+   <!-- Bootstrap related JavaScript -->
+   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+   ```
 
 2. Create a view that extends the base layout in
-    `task_list/templates/task_list/index.html`:
+   `task_list/templates/task_list/index.html`:
 
-    ```html
-    {% extends 'base.html' %}
+   ```html
+   {% extends 'base.html' %} {% block header %}
+   <h1 style="text-align:center">{% block title %}Task List{% endblock %}</h1>
+   {% endblock %} {% block content %}
+   <!-- New Task Card -->
+   <div class="card">
+     <div class="card-body">
+       <h5 class="card-title">New Task</h5>
 
-    {% block header %}
-      <h1 style="text-align:center">{% block title %}Task List{% endblock %}</h1>
-    {% endblock %}
+       <form method="POST">
+         <div class="form-group">
+           <input
+             type="text"
+             class="form-control"
+             placeholder="Task Name"
+             name="name"
+             required
+           />
+         </div>
+         <button type="submit" class="btn btn-default">
+           <i class="fa fa-plus"></i> Add Task
+         </button>
+       </form>
+     </div>
+   </div>
 
-    {% block content %}
-      <!-- New Task Card -->
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">New Task</h5>
+   <!-- Current Tasks -->
+   {% if tasks %}
+   <div class="card">
+     <div class="card-body">
+       <h5 class="card-title">Current Tasks</h5>
 
-          <form method="POST">
-            <div class="form-group">
-              <input type="text" class="form-control" placeholder="Task Name"
-                     name="name" required>
-            </div>
-            <button type="submit" class="btn btn-default">
-              <i class="fa fa-plus"></i> Add Task
-            </button>
-          </form>
-        </div>
-      </div>
+       <table class="table table-striped">
+         {% for task in tasks %}
+         <tr>
+           <!-- Task Name -->
+           <td class="table-text">{{ task['name'] }}</td>
+           <!-- Delete Button -->
+           <td>
+             <form
+               action="{{ url_for('task_list.delete', id=task['id']) }}"
+               method="POST"
+             >
+               <button type="submit" class="btn btn-danger">
+                 <i class="fa fa-trash"></i> Delete
+               </button>
+             </form>
+           </td>
+         </tr>
+         {% endfor %}
+       </table>
+     </div>
+   </div>
+   {% endif %} {% endblock %}
+   ```
 
-      <!-- Current Tasks -->
-      {% if tasks %}
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">Current Tasks</h5>
-
-            <table class="table table-striped">
-              {% for task in tasks %}
-                <tr>
-                  <!-- Task Name -->
-                  <td class="table-text">{{ task['name'] }}</td>
-                  <!-- Delete Button -->
-                  <td>
-                    <form action="{{ url_for('task_list.delete', id=task['id']) }}"
-                          method="POST">
-                      <button type="submit" class="btn btn-danger">
-                        <i class="fa fa-trash"></i> Delete
-                      </button>
-                    </form>
-                  </td>
-                </tr>
-              {% endfor %}
-            </table>
-          </div>
-        </div>
-      {% endif %}
-    {% endblock %}
-    ```
-
-    The view consists of two cards: one that contains a form to create
-    new tasks, and another that contains a table with existing tasks and a delete
-    button associated with each task.
+   The view consists of two cards: one that contains a form to create
+   new tasks, and another that contains a table with existing tasks and a delete
+   button associated with each task.
 
 Our task list is now functional. Save the changes so far with:
 
@@ -406,6 +410,7 @@ Our task list is now functional. Save the changes so far with:
 $ git add .
 $ git commit -m 'Add task list controller and views'
 ```
+
 We are now ready to configure the app to deploy on Heroku.
 
 ## Deploy the task list app on Heroku
@@ -415,40 +420,39 @@ steps:
 
 1. Install the `gunicorn` server and freeze dependencies into `requirements.txt`:
 
-    ```term
-    (venv) $ pip install gunicorn
-    (venv) $ pip freeze > requirements.txt
-    ```
+   ```term
+   (venv) $ pip install gunicorn
+   (venv) $ pip freeze > requirements.txt
+   ```
 
 2. To let Heroku know how to start up your app, you need to add a
-    [`Procfile`](procfile) to its root directory:
+   [`Procfile`](procfile) to its root directory:
 
-    ```term
-    $ echo "web: flask db upgrade; gunicorn task_list:'create_app()'" > Procfile
-    ```
+   ```term
+   $ echo "web: flask db upgrade; gunicorn task_list:'create_app()'" > Procfile
+   ```
 
-    The above command always runs any outstanding database migrations before starting up the application.
+   The above command always runs any outstanding database migrations before starting up the application.
 
 3. Set your Heroku app's required config vars:
 
-    ```term
-    $ heroku config:set FLASK_APP=task_list
-    $ heroku config:set SECRET_KEY="`< /dev/urandom tr -dc 'a-zA-Z0-9' | head -c16`"
-    ```
+   ```term
+   $ heroku config:set FLASK_APP=task_list
+   $ heroku config:set SECRET_KEY="`< /dev/urandom tr -dc 'a-zA-Z0-9' | head -c16`"
+   ```
 
 4. Deploy the app to Heroku:
 
-    ```term
-    $ git add .
-    $ git commit -m 'Add Heroku related config'
-    $ git push heroku master
-    $ heroku open
-    ```
+   ```term
+   $ git add .
+   $ git commit -m 'Add Heroku related config'
+   $ git push heroku master
+   $ heroku open
+   ```
 
 Test the application by adding a few tasks. We now have a functioning task
 list running on Heroku. With this complete, we can learn how to improve
 its performance with Memcache.
-
 
 ## Add caching to Flask
 
@@ -530,10 +534,10 @@ def create_app():
 This configures `Flask-Caching` with MemCachier, which allows you to use your
 Memcache in a few different ways:
 
-* Directly access the cache via `get`, `set`, `delete`, and so on
-* Cache results of functions with the `memoize` decorator
-* Cache entire views with the `cached` decorator
-* Cache Jinja2 snippets
+- Directly access the cache via `get`, `set`, `delete`, and so on
+- Cache results of functions with the `memoize` decorator
+- Cache entire views with the `cached` decorator
+- Cache Jinja2 snippets
 
 ### Cache expensive database queries
 
@@ -684,10 +688,10 @@ $ git commit -am 'Cache data using memoize decorator'
 $ git push heroku master
 ```
 
->note
->Because the `get_all_tasks` function doesn't take any arguments, you can also
->decorate it with ` @cache.cached(key_prefix='get_all_tasks')` instead of
->` @cache.memoize()`. This is slightly more efficient.
+> note
+> Because the `get_all_tasks` function doesn't take any arguments, you can also
+> decorate it with ` @cache.cached(key_prefix='get_all_tasks')` instead of
+> ` @cache.memoize()`. This is slightly more efficient.
 
 ### Cache Jinja2 snippets
 
@@ -706,13 +710,11 @@ To cache a rendered set of task entries, we use a `{% cache timeout key %}` stat
 <!-- ... -->
 
 <table class="table table-striped">
-  {% for task in tasks %}
-    {% cache None, 'task-fragment', task['id']|string %}
-    <tr>
-      <!-- ... -->
-    </tr>
-    {% endcache %}
-  {% endfor %}
+  {% for task in tasks %} {% cache None, 'task-fragment', task['id']|string %}
+  <tr>
+    <!-- ... -->
+  </tr>
+  {% endcache %} {% endfor %}
 </table>
 
 <!-- ... -->
@@ -768,10 +770,10 @@ def index():
 # ...
 ```
 
->note
->The `@cache.cached()` decorator must be directly above
->the definition of the `index()` function (i.e., below the `@bp.route()`
->decorator).
+> note
+> The `@cache.cached()` decorator must be directly above
+> the definition of the `index()` function (i.e., below the `@bp.route()`
+> decorator).
 
 Since we only want to cache the result of the `index()` function when we `GET`
 the view, we exclude the `POST` request with the `unless` parameter. We could also
@@ -817,7 +819,7 @@ long-lived sessions are better suited to permanent storage options, such as
 your database.
 
 To store sessions in Memcache, you need
-[Flask-Session](https://pythonhosted.org/Flask-Session/):
+[Flask-Session](https://flask-session.readthedocs.io):
 
 ```term
 (env) $ pip install Flask-Session
@@ -877,13 +879,12 @@ session['key'] = 'value'
 session.get('key', 'not set')
 ```
 
-
 ## Further reading & resources
 
-* [MemCachier Add-on Page](https://elements.heroku.com/addons/memcachier)
-* [MemCachier Documentation](memcachier)
-* [Advance Memcache Usage](advanced-memcache)
-* [Flask Caching Documentation](https://flask-caching.readthedocs.io/en/latest/)
-* [Heroku Python Guide](getting-started-with-python)
-* [Flask Documentation](http://flask.pocoo.org/docs/1.0/)
-* [Flask Mega-Tutorial](https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-i-hello-world)
+- [MemCachier Add-on Page](https://elements.heroku.com/addons/memcachier)
+- [MemCachier Documentation](memcachier)
+- [Advance Memcache Usage](advanced-memcache)
+- [Flask Caching Documentation](https://flask-caching.readthedocs.io/en/latest/)
+- [Heroku Python Guide](getting-started-with-python)
+- [Flask Documentation](http://flask.pocoo.org/docs/1.0/)
+- [Flask Mega-Tutorial](https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-i-hello-world)

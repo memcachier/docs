@@ -1,4 +1,4 @@
-#! /bin/bash
+#!/usr/bin/env bash
 
 # create Heroku docs
 cat documentation/intro.md > doc.md

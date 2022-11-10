@@ -1,10 +1,9 @@
-
->callout
->Heroku recommends using a [CDN to speed up delivery of assets](https://devcenter.heroku.com/articles/using-amazon-cloudfront-cdn) over `Rack::Cache` for the best visitor experience. If you are already using a CDN, then adding `Rack::Cache` will not speed up delivery of assets.
+> callout
+> Heroku recommends using a [CDN to speed up delivery of assets](https://devcenter.heroku.com/articles/using-amazon-cloudfront-cdn) over `Rack::Cache` for the best visitor experience. If you are already using a CDN, then adding `Rack::Cache` will not speed up delivery of assets.
 
 Ruby on Rails applications should use
-[Rack::Cache](http://rtomayko.github.com/rack-cache/) to efficiently
-serve assets on the [Cedar stack](stack). Proper Rack::Cache usage
+[Rack::Cache](https://rtomayko.github.com/rack-cache/) to efficiently
+serve assets on Heroku. Proper Rack::Cache usage
 improves response time, decreases load and is important when serving
 static assets through your application.
 
@@ -13,16 +12,14 @@ Rack::Cache and walk you through the appropriate configuration of a
 Rails 3.1+ application and the asset pipeline. This guide also works
 perfectly with Rails 4 applications.
 
-
->callout
->We’ve built a small example app that can be seen running
->[here](http://memcachier-examples-rack.herokuapp.com/). <br>
-><a class="github-source-code" href="https://github.com/memcachier/examples-rack-cache">Source code</a> or
->[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=https://github.com/memcachier/examples-rack-cache)
+> callout
+> We’ve built a small example app that can be seen running
+> [here](http://memcachier-examples-rack.herokuapp.com/). <br> ><a class="github-source-code" href="https://github.com/memcachier/examples-rack-cache">Source code</a> or
+> [![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=https://github.com/memcachier/examples-rack-cache)
 
 ## Understanding Rack
 
-[Rack](http://rack.github.io/) is a minimal interface between
+[Rack](https://rack.github.io/) is a minimal interface between
 webservers that support Ruby, and Ruby frameworks. Its purpose is to
 act as a common interface, so that a webserver simply implements Rack
 and can now support any ruby web framework that also supports Rack,
@@ -50,7 +47,7 @@ top of Rack.
 
 ## Rack::Cache
 
-[Rack::Cache](http://rtomayko.github.io/rack-cache) is a Rack
+[Rack::Cache](https://rtomayko.github.io/rack-cache) is a Rack
 middleware that enables HTTP caching on your application and allows an
 application to serve assets from a storage backend without requiring
 work from the main Rails application.
@@ -79,8 +76,8 @@ used which is quicker but can have an impact on performance if it
 grows unbounded. Using `memcache` is the fastest option though it
 isn't well suited to store large objects.
 
->callout
->For more information on the entity and meta stores read about [Rack Cache Storage](http://rtomayko.github.com/rack-cache/storage).
+> callout
+> For more information on the entity and meta stores read about [Rack Cache Storage](https://rtomayko.github.io/rack-cache/storage).
 
 Using the MetaStore with the `memcache` storage engine, which allows
 very quick access to shared meta-data, while using the `file` engine
@@ -90,8 +87,8 @@ Heroku.
 
 ## Install Memcached locally
 
->callout
->Local installation instructions for other OSs can be found in the [MemCachier add-on article](https://devcenter.heroku.com/articles/memcachier#local-usage).
+> callout
+> Local installation instructions for other OSs can be found in the [MemCachier add-on article](https://devcenter.heroku.com/articles/memcachier#local-usage).
 
 To run your application locally and test the Rack::Cache setup you
 will need to have memcached installed. You can install it on macOS
@@ -110,7 +107,7 @@ Rails has it's own built-in caching system separate from Rack::Cache.
 In general it serves a different purpose than Rack::Cache.
 
 The rails caching system is for caching controller actions and page
-fragments, it still invokes your rails code.  Rack::Cache on the other
+fragments, it still invokes your rails code. Rack::Cache on the other
 hand manages caching of complete static assets such as stylesheets,
 javascript and images. A cache hit never invokes your Rails code.
 Rack::Cache is a replacement for a CDN or HTTP cache such as Varnish,
@@ -149,7 +146,7 @@ dependency tell Rails to use the Dalli client for its cache-store in
 `config/application.rb`.
 
 ```ruby
-config.cache_store = :dalli_store
+config.cache_store = :mem_cache_store
 ```
 
 Confirm your configuration by starting a local Rails console session
@@ -172,9 +169,9 @@ Modify your `config/environments/production.rb` environment file to
 specify the appropriate storage backends for Rails' built-in
 Rack::Cache integration.
 
->callout
->If not specified, `Dalli::Client.new` automatically retrieves the memcache server location from the
->`MEMCACHE_SERVERS` environment variable. If it doesn't exist it will
+> callout
+> If not specified, `Dalli::Client.new` automatically retrieves the memcache server location from the
+> `MEMCACHE_SERVERS` environment variable. If it doesn't exist it will
 > default to localhost and default port (11211).
 
 ```ruby
@@ -193,7 +190,7 @@ config.static_cache_control = "public, max-age=2592000"
 ```
 
 You can find a full list of configuration options
-[here](http://rtomayko.github.io/rack-cache/configuration), but the
+[here](https://rtomayko.github.io/rack-cache/configuration), but the
 above should be enough.
 
 We set the `:value_max_bytes` option to 10MB as without this,
@@ -229,8 +226,8 @@ store used for the MetaStore and a `file` store for the EntityStore.
 
 ## Serve static assets
 
->callout
->See the `production.rb` config of the [reference application](https://github.com/memcachier/examples-rack-cache/blob/master/config/environments/production.rb) on GitHub.
+> callout
+> See the `production.rb` config of the [reference application](https://github.com/memcachier/examples-rack-cache/blob/master/config/environments/production.rb) on GitHub.
 
 To allow your application to properly serve, invalidate and refresh
 static assets, several configuration settings must be updated in
@@ -253,8 +250,8 @@ config.static_cache_control = "public, max-age=2592000"
 These settings tell Rack::Cache to store static elements for a very
 long time.
 
->note
->The `Cache-Control` header and, in general, [HTTP Caching](http-caching-ruby-rails), can be applied to dynamic content as well.
+> note
+> The `Cache-Control` header and, in general, [HTTP Caching](http-caching-ruby-rails), can be applied to dynamic content as well.
 
 To properly invalidate modified files, Rails keeps a hash digest of
 each file, storing it as part of the computed filename. This acts as a
@@ -301,9 +298,9 @@ $ git push heroku master
 $ heroku logs --ps web -t
 ```
 
->callout
->Using a hard refresh clears your browser cache and is useful for
->forcing asset requests. Most browsers will perform a hard refresh with the `Shift-R` shortcut.
+> callout
+> Using a hard refresh clears your browser cache and is useful for
+> forcing asset requests. Most browsers will perform a hard refresh with the `Shift-R` shortcut.
 
 You should see `cache` entries in your production log-stream. Seeing
 `miss, store` tokens indicate that the item was not found in the cache
@@ -354,8 +351,7 @@ X-Rack-Cache: fresh
 ```
 
 The response headers should contain `Cache-Control` with the value
-specific in the `config.static_cache_control` setting i.e.: `public,
-max-age=2592000`. Also confirm that you are seeing the `X-Rack-Cache`
+specific in the `config.static_cache_control` setting i.e.: `public, max-age=2592000`. Also confirm that you are seeing the `X-Rack-Cache`
 header indicating the status of your asset (fresh/store/miss). If you
 see unexpected results please check your production configuration
 settings.
@@ -387,6 +383,5 @@ application.js: application-95fca227f3857c8ac9e7ba4ffed80386.js
 application.css: application-95bd4fe1de99c1cd91ec8e6f348a44bd.css
 ```
 
-If the file you're looking for does not show up try running `bundle
-exec rake assets:precompile RAILS_ENV=production` locally and ensure
+If the file you're looking for does not show up try running `bundle exec rake assets:precompile RAILS_ENV=production` locally and ensure
 that it is in your own `public/assets` directory.

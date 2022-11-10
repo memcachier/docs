@@ -1,4 +1,4 @@
-#! /bin/bash
+#!/usr/bin/env bash
 
 # check article for dangling links
 ./check_links.py heroku_articles/$1.md
