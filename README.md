@@ -7,7 +7,8 @@ MemCachier documentation.
 To compile individual \*.md files into the final documentation execute:
 
 ```shell
-$ ./build_docs.sh
+$ ./build_direct_docs.sh
+$ ./build_heroku_docs.sh
 ```
 
 This will create the folder `out_direct` with the documentation for our webpage
@@ -28,7 +29,7 @@ tracker](http://github.com/memcachier/docs/issues).
 
 Master [git repository](http://github.com/memcachier/docs):
 
-* `git clone git://github.com/memcachier/docs.git`
+- `git clone git://github.com/memcachier/docs.git`
 
 ## Licensing
 

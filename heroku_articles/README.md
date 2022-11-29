@@ -4,7 +4,7 @@ Editing Heroku articles:
 
 ```term
 $ vim heroku_articles/[NAME].md
-$ ./build_heroku.sh [NAME]
+$ ./build_heroku_article.sh [NAME]
 $ devcenter push out_heroku/[NAME].md
 ```
 
