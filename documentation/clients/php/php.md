@@ -36,8 +36,8 @@ We also recommend that you use the [composer dependency
 manager](https://getcomposer.org/) for PHP, although that is up to you.
 **ENDIF**
 
-The `php-memcached` client is not a pure PHP client but a PECL extension that
-makes use of `libmemcached`. You thus need to install `php-memcached` via your
+The [`memcached`](https://pecl.php.net/package/memcached) client is not a pure PHP client but a PECL extension that
+makes use of `libmemcached`. You thus need to install the `memcached` PECL extension via your
 OS package manager. In older operating systems you have to make sure libmemcached
 has SASL authentication support enabled but for newer operating systems such as
 Ubuntu 16.04 this is the default. After the installation you need to uncomment
@@ -150,7 +150,7 @@ session.save_handler=memcached
 memcached.sess_sasl_username=${MEMCACHIER_USERNAME}
 memcached.sess_sasl_password=${MEMCACHIER_PASSWORD}
 
-; PHP 7
+; PHP >=7
 memcached.sess_binary_protocol=1
 session.save_path="${MEMCACHIER_SERVERS}"
 memcached.sess_persistent=On
