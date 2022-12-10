@@ -41,7 +41,7 @@ refer to its [documentation](https://flask-caching.readthedocs.io/en/latest/)
 `Flask-Caching` requires the `pylibmc` client which relies on the C
 `libmemcached` library. This should be
 fairly straight-forward to install with your package manager on Linux or
-Windows. For macOS users, Homebrew provides and easy solution. We also have a
+Windows. For macOS users, Homebrew provides an easy solution. We also have a
 [blog post](https://blog.memcachier.com/2014/11/05/ubuntu-libmemcached-and-sasl-support/)
 for Ubuntu users on how to do this.
 **IF(heroku)**
