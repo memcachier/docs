@@ -168,6 +168,10 @@ session_start();
 $_SESSION['test'] = 42;
 ```
 
+<p class="alert alert-info">
+Do you get an error <code>Warning: session_start(): Failed to write session lock: FAILED TO SEND AUTHENTICATION TO SERVER</code> or <code>SERVER HAS FAILED AND IS DISABLED UNTIL TIMED RETRY</code>? If so, try installing <code>libsasl2-modules</code> with your OS package manager. <code>libmemcached</code> requires it for session caching support with SASL.
+</p>
+
 ### Alternative PHP Client -- MemcacheSASL
 
 **IF(direct)**
