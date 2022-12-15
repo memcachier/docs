@@ -77,6 +77,10 @@ You only need to be concerned about this for local development, the Heroku
 platform includes `libmemcached`.
 **ENDIF**
 
+<p class="alert alert-info">
+If you are caching sessions, also install <code>libsasl2-modules</code> with your OS package manager. <code>libmemcached</code> requires it for session caching support with SASL. Otherwise, you will likely see an error <code>FAILED TO SEND AUTHENTICATION TO SERVER</code> and potentially an associated message <code>no mechanism available</code>.
+</p>
+
 Once it's installed, then install `pylibmc`:
 
 ```term

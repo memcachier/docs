@@ -81,7 +81,7 @@ ASCII auth and an outstanding PR in the main repository.
 | [pymemcache](https://github.com/pinterest/pymemcache) | no | no | no | no |
 | [ultramemcache](https://github.com/esnme/ultramemcache)<sup>2</sup> | no | no | no | ? |
 
-<sup>1</sup> Requires `libmemcached`.  
+<sup>1</sup> Requires `libmemcached` which in turn requires `libsasl2-modules` for session caching support with SASL.  
 <sup>2</sup> C++ bindings.
 
 ### Ruby
