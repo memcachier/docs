@@ -168,9 +168,19 @@ session_start();
 $_SESSION['test'] = 42;
 ```
 
+**IF(direct)**
 <p class="alert alert-info">
 Do you get an error <code>FAILED TO SEND AUTHENTICATION TO SERVER</code> and potentially an associated message <code>no mechanism available</code>? If so, try installing <code>libsasl2-modules</code> with your OS package manager. <code>libmemcached</code> requires it for session caching support with SASL.
 </p>
+**ENDIF**
+
+**IF(heroku)**
+>callout
+>Do you get an error `FAILED TO SEND AUTHENTICATION TO SERVER` and potentially 
+>an associated message `no mechanism available`? If so, try installing 
+>`libsasl2-modules` with your OS package manager. `libmemcached` requires it 
+>for session caching support with SASL.
+**ENDIF**
 
 ### Alternative PHP Client -- MemcacheSASL
 
