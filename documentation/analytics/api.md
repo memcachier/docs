@@ -10,11 +10,12 @@ description: "Documentation for using the MemCachier Analytics API version 2."
 Note, you can also access features available on the
 **IF(direct)**
  [analytics dashboard](/documentation/memcachier-analytics)
- **ENDIF**
+**ENDIF**
 **IF(heroku)**
  [analytics dashboard](#memcachier-analytics)
  **ENDIF**
 via the API.
+**ENDIF**
 
 - [Authentication](#authentication)
 - [Info](#info)
