@@ -14,8 +14,8 @@ We’ve built a small Express.js example here:
 <br>
 Related tutorials:
 <ul>
+  <li><a href="https://blog.memcachier.com/2023/01/06/deploy-an-express-application-on-aws-elastic-beanstalk-and-scale-with-memcached/">Deploy an Express.js application on AWS Elastic Beanstalk and scale it with Memcached</a></li>
   <li><a href="https://devcenter.heroku.com/articles/expressjs-memcache">Scaling an Express.js Application with Memcache on Heroku</a></li>
-  <li><a href="https://blog.memcachier.com/2018/07/09/scaling-an-express-application-with-memcache-on-amazon-elastic-beanstalk/">Scaling an Express.js Application with Memcache on Amazon Elastic Beanstalk</a></li>
 </ul>
 </div>
 **ENDIF**

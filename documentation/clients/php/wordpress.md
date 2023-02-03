@@ -7,6 +7,15 @@ description: "Documentation for using MemCachier with WordPress"
 
 ## WordPress
 
+**IF(direct)**
+<div class="alert alert-info">
+Related tutorials:
+<ul>
+  <li><a href="https://blog.memcachier.com/2019/10/14/wordpress-on-digital-ocean/">Build a WordPress One-Click application on DigitalOcean and scale it with Memcache</a></li>
+</ul>
+</div>
+**ENDIF**
+
 We support WordPress through two different options. The first you can find
 [here](https://github.com/memcachier/wordpress-cache), and uses the binary
 memcache protocol and is supported by us. It should be easy to install, simply
