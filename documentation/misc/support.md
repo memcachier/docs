@@ -30,6 +30,6 @@ email at: [support@memcachier.com](mailto:support@memcachier.com).
 Any issues related to MemCachier service are reported at [MemCachier
 Status](http://status.memcachier.com/).
 
-Please also follow us on twitter,
+Please also follow us on Twitter,
 [@memcachier](https://twitter.com/MemCachier), for status and product
 announcements.

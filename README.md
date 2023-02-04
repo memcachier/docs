@@ -4,6 +4,12 @@ MemCachier documentation.
 
 ## Build docs
 
+Building docs for Heroku requires the `devcenter` gem. That gem seems to require a version of Ruby 2. It does not work with 3. Install with:
+
+```shell
+gem install devcenter
+```
+
 To compile individual \*.md files into the final documentation execute:
 
 ```shell

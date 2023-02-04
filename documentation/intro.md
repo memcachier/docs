@@ -8,7 +8,7 @@ description: "MemCachier is an implementation of the Memcached in-memory key/val
 # Getting Started with MemCachier
 
 MemCachier is an implementation of the
-[Memcache](https://memcached.org) in-memory key/value store used for
+[Memcached](https://memcached.org) in-memory key/value store used for
 caching data. Memcache a key technology in modern web applications for
 scaling and reducing server loads. MemCachier manages and
 scales clusters of memcache servers so you can focus on your app. Tell
@@ -22,14 +22,14 @@ MemCachier. If you find you still have unanswered questions,
 
 **IF(heroku)**
 [MemCachier](https://www.memcachier.com) is an implementation of the
-[Memcache](https://memcached.org) in-memory key/value store used for
+[Memcached](https://memcached.org) in-memory key/value store used for
 caching data. It is a key technology in modern web applications for
 scaling and reducing server loads. The MemCachier add-on manages and
 scales clusters of memcache servers so you can focus on your app. Tell
 us how much memory you need and get started for free instantly. Add
 capacity later as you need it.
 
-Follow our [blog](https://blog.memcachier.com) or twitter
+Follow our [blog](https://blog.memcachier.com) or Twitter
 ([@memcachier](https://twitter.com/MemCachier)), for status and product
 announcements.
 

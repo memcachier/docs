@@ -14,6 +14,7 @@ We’ve built a small Laravel example here:
 <br>
 Related tutorials:
 <ul>
+  <li><a href="https://blog.memcachier.com/2019/01/28/laravel-elastic-beanstalk-and-memcache/">Deploy a Laravel application on AWS Elastic Beanstalk and scale it with Memcached</a></li>
   <li><a href="https://devcenter.heroku.com/articles/laravel-memcache">Scaling a Laravel Application with Memcache on Heroku</a></li>
 </ul>
 </div>
