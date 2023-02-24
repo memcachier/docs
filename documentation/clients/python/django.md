@@ -14,6 +14,7 @@ We’ve built a small Django example here:
 <br>
 Related tutorials:
 <ul>
+  <li><a href="https://blog.memcachier.com/2023/02/23/deploy-a-django-application-on-aws-elastic-beanstalk-and-scale-it-with-memcache/">Deploy a Django Application on AWS Elastic Beanstalk and scale it with Memcache</a></li>
   <li><a href="https://devcenter.heroku.com/articles/django-memcache">Scaling a Django Application with Memcache on Heroku</a></li>
   <li><a href="https://blog.memcachier.com/2018/06/27/django-docker-ecs-tutorial/">MemCachier with Django, Docker and AWS Elastic Container Service</a></li>
   <li><a href="https://blog.memcachier.com/2018/10/15/django-on-pythonanywhere-tutorial/">How to scale a Django Application on PythonAnywhere with Memcache</a></li>
