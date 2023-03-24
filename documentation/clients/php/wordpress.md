@@ -102,7 +102,9 @@ Next, to configure your cache, click **Performance**, then **Object Cache**.
 
 Under **Advanced**, enter your MemCachier cache's server(s) in **Memcached hostname:port / IP:port**.
 
-Then enter your MemCachier cache's username and password in **Memcached username** and **Memcached password** respectively.
+Then, enter your MemCachier cache's username and password in **Memcached username** and **Memcached password** respectively.
+
+Make sure **Binary protocol** is checked.
 
 Finally, save the settings.
 
@@ -121,7 +123,7 @@ The W3 Total Cache Object Cache is now configured to use MemCachier.
 > Object Cache: your_server.memcachier.com:11211.
 > This message will automatically disappear once the issue is resolved.
 
-Also, if you click the **Test** button beside **Memcached hostname:port / IP:port**, you'll get an error notification **Test Failed**.
+Also, due to the same bug, if you click the **Test** button beside **Memcached hostname:port / IP:port**, you'll get an error notification **Test Failed**.
 
 In spite of these, your cache should be working. To verify it is, check your
 **IF(direct)**
@@ -142,4 +144,4 @@ Another way to use MemCachier with WordPress is with [our WordPress Object Cache
 
 **Note**, the W3 Total Cache plugin features object caching, so there is no need to use this technique if you are using that plugin. In fact, it would likely be problematic to do so.
 
-Even if you're not hosting your WordPress site on DigitalOcean, our tutorial [Build a WordPress One-Click application on DigitalOcean and scale it with Memcache](https://blog.memcachier.com/2019/10/14/wordpress-on-digital-ocean/) should be a useful reference for how to install and use our WordPress Object Cache backend.
+If you still want to use WP Object Cache instead of W3 Total Cache, see our tutorial [Build a WordPress One-Click application on DigitalOcean and scale it with Memcache](https://blog.memcachier.com/2019/10/14/wordpress-on-digital-ocean/). The tutorial uses DigitalOcean as hosting but the WP Object Cache installation part is generally applicable.
