@@ -131,7 +131,7 @@ In spite of these, your cache should be working. To verify it is, check your
 **ENDIF**
 **IF(heroku)**
  [MemCachier Analytics dashboard](#memcachier-analytics)
- **ENDIF**
+**ENDIF**
  and notice the stats change as requests are made to your WordPress website.
 
 The bug was reported here: <https://wordpress.org/support/topic/memcached-tests-when-use-sasl/>
