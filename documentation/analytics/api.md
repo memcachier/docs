@@ -13,9 +13,8 @@ Note, you can also access features available on the
 **ENDIF**
 **IF(heroku)**
  [analytics dashboard](#memcachier-analytics)
- **ENDIF**
-via the API.
 **ENDIF**
+via the API.
 
 - [Authentication](#authentication)
 - [Info](#info)

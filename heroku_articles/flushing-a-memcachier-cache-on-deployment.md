@@ -52,4 +52,4 @@ And that’s it! Pretty simple. Now, any time you deploy a new commit to Heroku,
 
 See [Deploy Hooks](https://devcenter.heroku.com/articles/deploy-hooks#http-post-hook) for more information on setting up Heroku deploy hooks.
 
-To learn more about the features of the MemCachier API, see the [full documentation](memcachier#analytics-api).
+To learn more about the features of the MemCachier API, see the [full documentation](memcachier#analytics-api-v2).
