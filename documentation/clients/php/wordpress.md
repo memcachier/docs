@@ -7,16 +7,17 @@ description: "Documentation for using MemCachier with WordPress"
 
 ## WordPress
 
+### Using MemCachier with the W3 Total Cache WordPress plugin
+
 **IF(direct)**
 <div class="alert alert-info">
-Related tutorials:
-<ul>
-  <li><a href="https://blog.memcachier.com/2019/10/14/wordpress-on-digital-ocean/">Build a WordPress One-Click application on DigitalOcean and scale it with Memcache</a></li>
-</ul>
+  <p>W3 Total Cache tutorials:</p>
+  <ul>
+    <li><a href="https://blog.memcachier.com/2023/04/03/configure-w3-total-cache-to-use-memcached-with-sasl-authentication-on-aws-lightsail/">Configure W3 Total Cache to use Memcached with SASL Authentication on AWS Lightsail</a></li>
+    <li><a href="https://blog.memcachier.com/2023/04/06/configure-w3-total-cache-with-memcached-and-sasl-authentication-on-digitalocean/">Configure W3 Total Cache with Memcached and SASL Authentication on DigitalOcean</a></li>
+  </ul>
 </div>
 **ENDIF**
-
-### Using MemCachier with the W3 Total Cache WordPress plugin
 
 The [W3 Total Cache](https://wordpress.org/plugins/w3-total-cache/) WordPress plugin supports Memcached as a caching method. MemCachier is protocol-compliant with Memcached (and has several [advantages over Memcached](https://www.memcachier.com/why-memcachier#memcachier-vs-memcached)) so W3 Total Cache can be configured to use MemCachier to speed up your WordPress site.
 
@@ -49,11 +50,13 @@ This will run a compatibility check for the various server modules and resources
 
 Notice, the Memcached PHP extension is shown as **Not available**, meaning it is not installed.
 
-Next, install the Memcached PHP extension (not the Memcache extension). Make sure to install a version compatible with your installed version of PHP. Refer to the Compatibility Check results to see your PHP version. In the screenshot `8.0.28` is shown.
+Next, install the Memcached PHP extension (not the Memcache extension). Make sure to install a version compatible with your installed version of PHP. Refer to the Compatibility Check results to see your PHP version. In the screenshot `8.0.28` is shown. If the PHP version you see is different, find a compatible extension version and install the appropriate extension version:
 
-**Note**, the Memcached PHP extension is used because it supports SASL authentication, which is required to connect to your MemCachier cache using its username and password. The Memcache PHP extension, on the other hand, does not support SASL authentication.
+<div class="alert alert-info">
+Note, the Memcached PHP extension is used because it supports SASL authentication, which is required to connect to your MemCachier cache using its username and password. The Memcache PHP extension, on the other hand, does not support SASL authentication.
+</div>
 
-To install the Memcached PHP extension on Ubuntu, run the following command:
+Install the Memcached PHP extension with your OS package manager. For example, to install the extension on Ubuntu, run the following command:
 
 ```bash
 sudo apt-get install -y php8.0-memcached
@@ -65,7 +68,9 @@ Once that is complete, refresh your WordPress Admin browser window and click **C
 
 W3 Total Cache can now use Memcached as a caching method.
 
-#### Update the W3 Total Settings to use Memcached
+#### Update W3 Total Cache Settings to use Memcached
+
+To view the W3 Total Cache settings, click **Performance** on the WordPress Admin left sidebar menu. When you do this for the first time, you’ll be redirected to the W3 Total Cache **Setup Guide**. For now, click **Skip** at the bottom of that page. You can rerun it anytime by clicking **Setup Guide** from the **Performance** sub-menu.
 
 Next, update the appropriate W3 Total Cache settings from WordPress Admin to use your MemCachier cache as its Memcached caching method.
 
@@ -75,7 +80,7 @@ Memcached can be used as a caching method for the following W3 Total Cache featu
 - Minify
 - Database Cache
 - Object Cache
-- Fragment Cache
+- Fragment Cache (available with W3 Total Cache Pro paid plugin)
 
 Configuring each one involves the same two steps:
 
@@ -92,8 +97,8 @@ Check the **Enable** checkbox to enable the object cache. Then, select **Memcach
 
 Provided you con't have a local Memcached server running, you'll see the following warning:
 
-> The following memcached servers are not responding or not running:
-> Object Cache: 127.0.0.1:11211.
+> The following memcached servers are not responding or not running:<br>
+> Object Cache: 127.0.0.1:11211.<br>
 > This message will automatically disappear once the issue is resolved.
 
 This is because W3 Total Cache is configured by default to look for a Memcached server running on host `127.0.0.1` and port `11211`.
@@ -115,30 +120,62 @@ Finally, save the settings.
 ![W3 Total Cache screenshot showing object cache settings](https://www.memcachier.com/images/w3-total-cache-object-cache-settings.jpg)
 **ENDIF**
 
-The W3 Total Cache Object Cache is now configured to use MemCachier.
+The W3 Total Cache Object Cache is now configured to use MemCachier. You’ll see the following notices at the top of the page:
 
-**Note**, because of a known bug with testing Memcached with using SASL authentication, you'll see the following notice after saving settings:
+> Plugin configuration successfully updated.<br>
+> Object caching via memcached is currently enabled
 
-> The following memcached servers are not responding or not running:
-> Object Cache: your_server.memcachier.com:11211.
+**Note** that a memcached testing bug was fixed in [W3 Total Cache version 2.3.2](https://wordpress.org/plugins/w3-total-cache/#developers), released on May 9, 2023.
+
+The bug was related to testing Memcached using SASL authentication and would incorrectly show correctly configured and working caches as not working. When using older versions of the plugin, you will see the following notice after saving settings:
+
+> The following memcached servers are not responding or not running:<br>
+> Object Cache: your_server.memcachier.com:11211.<br>
 > This message will automatically disappear once the issue is resolved.
 
-Also, due to the same bug, if you click the **Test** button beside **Memcached hostname:port / IP:port**, you'll get an error notification **Test Failed**.
+Also, due to the same bug, if you clicked the **Test** button beside **Memcached hostname:port / IP:port**, you would get an error notification, **Test Failed**.
 
-In spite of these, your cache should be working. To verify it is, check your
+Update the W3 Total Cache plugin to the latest version, and those errors will disappear.
+
+### Check Memcached is working
+
+To verify you cache is working, check your
 **IF(direct)**
- [MemCachier Analytics dashboard](/documentation/memcachier-analytics)
+ [MemCachier Analytics dashboard](/documentation/memcachier-analytics).
 **ENDIF**
 **IF(heroku)**
- [MemCachier Analytics dashboard](#memcachier-analytics)
+ [MemCachier Analytics dashboard](#memcachier-analytics).
 **ENDIF**
- and notice the stats change as requests are made to your WordPress website.
 
-The bug was reported here: <https://wordpress.org/support/topic/memcached-tests-when-use-sasl/>
+**IF(direct)**
+<img class="dashboard-img" src="/images/memcached-analytics-dashboard-1440x658.png" alt="Memcached analytics dashboard" loading="lazy" width="1440" height="658">
 
-And has a corresponding open GitHub issue: <https://github.com/BoldGrid/w3-total-cache/issues/448>
+To access your cache's analytics dashboard login to your
+[account](https://www.memcachier.com/caches) and view one of your caches.
+**ENDIF**
+
+**IF(heroku)**
+![Analytics Dashboard](https://www.memcachier.com/images/memcached-analytics-dashboard-1440x658.png)
+
+To access your application's analytics dashboard run:
+
+```term
+$ heroku addons:open memcachier
+```
+**ENDIF**
+
+Notice the stats change when you refresh your WordPress website. On the **All Time Stats** card, you'll see `misses` increase initially as items are missed, then stored in your cache. Then, you'll see `hits` increase as those items are served from the cache.
 
 ### WP Object Cache
+
+**IF(direct)**
+<div class="alert alert-info">
+  <p>WP Object Cache tutorials:</p>
+  <ul>
+    <li><a href="https://blog.memcachier.com/2019/10/14/wordpress-on-digital-ocean/">Build a WordPress One-Click application on DigitalOcean and scale it with Memcache</a></li>
+  </ul>
+</div>
+**ENDIF**
 
 Another way to use MemCachier with WordPress is with [our WordPress Object Cache backend](https://github.com/memcachier/wordpress-cache). It integrates the MemCachier caching service with [WP Object Cache](https://developer.wordpress.org/reference/classes/wp_object_cache/).
 
