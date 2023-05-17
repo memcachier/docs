@@ -64,7 +64,7 @@ sudo apt-get install -y php8.0-memcached
 
 Restart your web server.
 
-Once that is complete, refresh your WordPress Admin browser window and click **Compability Check** again. The Memcached extension should now show as **Installed**.
+Once that is complete, refresh your WordPress Admin browser window and click **Compatibility Check** again. The Memcached extension should now show as **Installed**.
 
 W3 Total Cache can now use Memcached as a caching method.
 
