@@ -23,7 +23,7 @@ The [W3 Total Cache](https://wordpress.org/plugins/w3-total-cache/) WordPress pl
 
 Configuring W3 Total Cache to use MemCachier involves two steps:
 
-1. Install the [Memcached PHP extension](https://www.php.net/manual/en/book.memcached.php)
+1. Install the [Memcached PHP extension](https://www.php.net/manual/en/book.memcached.php).
 2. Update the appropriate W3 Total Cache settings from WordPress Admin.
 
 #### Install the Memcached PHP extension
@@ -64,7 +64,7 @@ sudo apt-get install -y php8.0-memcached
 
 Restart your web server.
 
-Once that is complete, refresh your WordPress Admin browser window and click **Compability Check** again. The Memcached extension should now show as **Installed**.
+Once that is complete, refresh your WordPress Admin browser window and click **Compatibility Check** again. The Memcached extension should now show as **Installed**.
 
 W3 Total Cache can now use Memcached as a caching method.
 
