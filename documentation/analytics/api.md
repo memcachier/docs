@@ -59,7 +59,13 @@ via the API.
 
 MemCachier uses credentials to allow access to the API. After you've created a
 cache, you can find your cache ID and credentials on the **Settings** page of your
-[analytics dashboard](/documentation/memcachier-analytics). Only credentials that
+**IF(direct)**
+ [analytics dashboard](/documentation/memcachier-analytics)
+**ENDIF**
+**IF(heroku)**
+ [analytics dashboard](#memcachier-analytics)
+**ENDIF**
+. Only credentials that
 have the API capability will be allowed to use this API.
 
 MemCachier expects for your credentials to be included in the header of all API requests.
