@@ -79,7 +79,7 @@ Returns all information relating to a cache. This includes cache, credential, an
 ##### HTTP Request
 
 ```term
-GET https://insight.memcachier.com/api/v2/caches/<cache_id>/info
+GET https://analytics.memcachier.com/api/v2/caches/<cache_id>/info
 ```
 
 ##### Responses
@@ -98,7 +98,7 @@ GET https://insight.memcachier.com/api/v2/caches/<cache_id>/info
 ##### Example
 
 ```term
-curl https://insight.memcachier.com/api/v2/caches/<cache_id>/info \
+curl https://analytics.memcachier.com/api/v2/caches/<cache_id>/info \
   --user <username>:<password>
 ```
 
@@ -144,7 +144,7 @@ The endpoint returns a list of all the credentials connected to the cache.
 ##### HTTP Request
 
 ```term
-GET https://insight.memcachier.com/api/v2/caches/<cache_id>/credentials
+GET https://analytics.memcachier.com/api/v2/caches/<cache_id>/credentials
 ```
 
 ##### Responses
@@ -163,7 +163,7 @@ GET https://insight.memcachier.com/api/v2/caches/<cache_id>/credentials
 ##### Example
 
 ```term
-curl https://insight.memcachier.com/api/v2/caches/<cache_id>/credentials \
+curl https://analytics.memcachier.com/api/v2/caches/<cache_id>/credentials \
   --user <username>:<password>
 ```
 
@@ -194,7 +194,7 @@ Note, development caches cannot manage credentials.
 ##### HTTP Request
 
 ```term
-POST https://insight.memcachier.com/api/v2/caches/<cache_id>/credentials
+POST https://analytics.memcachier.com/api/v2/caches/<cache_id>/credentials
 ```
 
 ##### Responses
@@ -213,7 +213,7 @@ POST https://insight.memcachier.com/api/v2/caches/<cache_id>/credentials
 ##### Example
 
 ```term
-curl -X POST https://insight.memcachier.com/api/v2/caches/<cache_id>/credentials \
+curl -X POST https://analytics.memcachier.com/api/v2/caches/<cache_id>/credentials \
   --user <username>:<password>
 ```
 
@@ -241,7 +241,7 @@ Note, `sasl_username` is your `credential_username`.
 ##### HTTP Request
 
 ```term
-PATCH https://insight.memcachier.com/api/v2/caches/<cache_id>/credentials/<credential_username>
+PATCH https://analytics.memcachier.com/api/v2/caches/<cache_id>/credentials/<credential_username>
 ```
 
 ##### Request Body
@@ -272,7 +272,7 @@ Note, if you omit a capability from the request body its value will be set to `f
 ##### Example
 
 ```term
-curl -X PATCH https://insight.memcachier.com/api/v2/caches/<cache_id>/credentials/<credential_username> \
+curl -X PATCH https://analytics.memcachier.com/api/v2/caches/<cache_id>/credentials/<credential_username> \
   --user <username>:<password> \
   -H 'Content-Type: application/json' \
   -d '{"write_capability":true,"flush_capability":false,"api_capability":true}'
@@ -295,7 +295,7 @@ This endpoint deletes a set of credentials.
 ##### HTTP Request
 
 ```term
-DELETE https://insight.memcachier.com/api/v2/caches/<cache_id>/credentials/<credential_username>
+DELETE https://analytics.memcachier.com/api/v2/caches/<cache_id>/credentials/<credential_username>
 ```
 
 ##### Responses
@@ -314,7 +314,7 @@ DELETE https://insight.memcachier.com/api/v2/caches/<cache_id>/credentials/<cred
 ##### Example
 
 ```term
-curl -X DELETE https://insight.memcachier.com/api/v2/caches/<cache_id>/credentials/<credential_username> \
+curl -X DELETE https://analytics.memcachier.com/api/v2/caches/<cache_id>/credentials/<credential_username> \
   --user <username>:<password>
 ```
 
@@ -325,7 +325,7 @@ This endpoint promotes a set of credentials to be your primary credentials.
 ##### HTTP Request
 
 ```term
-POST https://insight.memcachier.com/api/v2/caches/<cache_id>/credentials/primary/<credential_username>
+POST https://analytics.memcachier.com/api/v2/caches/<cache_id>/credentials/primary/<credential_username>
 ```
 
 ##### Responses
@@ -344,7 +344,7 @@ POST https://insight.memcachier.com/api/v2/caches/<cache_id>/credentials/primary
 ##### Example
 
 ```term
-curl -X POST https://insight.memcachier.com/api/v2/caches/<cache_id>/credentials/primary/<credential_username> \
+curl -X POST https://analytics.memcachier.com/api/v2/caches/<cache_id>/credentials/primary/<credential_username> \
   --user <username>:<password>
 ```
 
@@ -372,7 +372,7 @@ Rotate SSO secret for analytics dashboard, invalidating dashboard URLs.
 ##### HTTP Request
 
 ```term
-POST https://insight.memcachier.com/api/v2/caches/<cache_id>/rotate_sso
+POST https://analytics.memcachier.com/api/v2/caches/<cache_id>/rotate_sso
 ```
 
 ##### Responses
@@ -391,7 +391,7 @@ POST https://insight.memcachier.com/api/v2/caches/<cache_id>/rotate_sso
 ##### Example
 
 ```term
-curl -X POST https://insight.memcachier.com/api/v2/caches/<cache_id>/rotate_sso \
+curl -X POST https://analytics.memcachier.com/api/v2/caches/<cache_id>/rotate_sso \
   --user <username>:<password>
 ```
 
@@ -406,7 +406,7 @@ Enable a disabled cache.
 ##### HTTP Request
 
 ```term
-POST https://insight.memcachier.com/api/v2/caches/<cache_id>/enable_cache
+POST https://analytics.memcachier.com/api/v2/caches/<cache_id>/enable_cache
 ```
 
 ##### Responses
@@ -425,7 +425,7 @@ POST https://insight.memcachier.com/api/v2/caches/<cache_id>/enable_cache
 ##### Example
 
 ```term
-curl -X POST https://insight.memcachier.com/api/v2/caches/<cache_id>/enable_cache \
+curl -X POST https://analytics.memcachier.com/api/v2/caches/<cache_id>/enable_cache \
   --user <username>:<password>
 ```
 
@@ -436,7 +436,7 @@ Switch to a different cluster.
 ##### HTTP Request
 
 ```term
-POST https://insight.memcachier.com/api/v2/caches/<cache_id>/switch_cluster
+POST https://analytics.memcachier.com/api/v2/caches/<cache_id>/switch_cluster
 ```
 
 ##### Responses
@@ -455,7 +455,7 @@ POST https://insight.memcachier.com/api/v2/caches/<cache_id>/switch_cluster
 ##### Example
 
 ```term
-curl -X POST https://insight.memcachier.com/api/v2/caches/<cache_id>/switch_cluster \
+curl -X POST https://analytics.memcachier.com/api/v2/caches/<cache_id>/switch_cluster \
   --user <username>:<password>
 ```
 
@@ -474,7 +474,7 @@ Flush the cache.
 ##### HTTP Request
 
 ```term
-POST https://insight.memcachier.com/api/v2/caches/<cache_id>/flush
+POST https://analytics.memcachier.com/api/v2/caches/<cache_id>/flush
 ```
 
 ##### Responses
@@ -492,7 +492,7 @@ POST https://insight.memcachier.com/api/v2/caches/<cache_id>/flush
 ##### Example
 
 ```term
-curl -X POST https://insight.memcachier.com/api/v2/caches/<cache_id>/flush \
+curl -X POST https://analytics.memcachier.com/api/v2/caches/<cache_id>/flush \
   --user <username>:<password>
 ```
 
@@ -503,7 +503,7 @@ Reset stats.
 ##### HTTP Request
 
 ```term
-POST https://insight.memcachier.com/api/v2/caches/<cache_id>/reset_stats
+POST https://analytics.memcachier.com/api/v2/caches/<cache_id>/reset_stats
 ```
 
 ##### Responses
@@ -521,7 +521,7 @@ POST https://insight.memcachier.com/api/v2/caches/<cache_id>/reset_stats
 ##### Example
 
 ```term
-curl -X POST https://insight.memcachier.com/api/v2/caches/<cache_id>/reset_stats \
+curl -X POST https://analytics.memcachier.com/api/v2/caches/<cache_id>/reset_stats \
   --user <username>:<password>
 ```
 
@@ -532,7 +532,7 @@ Get stats for a cache.
 ##### HTTP Request
 
 ```term
-GET https://insight.memcachier.com/api/v2/caches/<cache_id>/stats
+GET https://analytics.memcachier.com/api/v2/caches/<cache_id>/stats
 ```
 
 ##### Responses
@@ -550,7 +550,7 @@ GET https://insight.memcachier.com/api/v2/caches/<cache_id>/stats
 ##### Example
 
 ```term
-curl https://insight.memcachier.com/api/v2/caches/<cache_id>/stats \
+curl https://analytics.memcachier.com/api/v2/caches/<cache_id>/stats \
   --user <username>:<password>
 ```
 
@@ -606,7 +606,7 @@ granularity, and above that gets day granularity.
 ##### HTTP Request
 
 ```term
-GET https://insight.memcachier.com/api/v2/caches/<cache_id>/insight/processed_stats
+GET https://analytics.memcachier.com/api/v2/caches/<cache_id>/insight/processed_stats
 ```
 
 ##### Query Parameters
@@ -635,7 +635,7 @@ GET https://insight.memcachier.com/api/v2/caches/<cache_id>/insight/processed_st
 ##### Example
 
 ```term
-curl https://insight.memcachier.com/api/v2/caches/<cache_id>/insight/processed_stats?names=auth_cmds_rate,auth_errors_rate,bytes&startTime=2023-01-08T15:20:00Z&endTime=2023-01-10T15:20:00Z \
+curl https://analytics.memcachier.com/api/v2/caches/<cache_id>/insight/processed_stats?names=auth_cmds_rate,auth_errors_rate,bytes&startTime=2023-01-08T15:20:00Z&endTime=2023-01-10T15:20:00Z \
   --user <username>:<password>
 ```
 
@@ -676,7 +676,7 @@ granularity, and above that gets day granularity.
 ##### HTTP Request
 
 ```term
-GET https://insight.memcachier.com/api/v2/caches/<cache_id>/insight/processed_stats/per_server
+GET https://analytics.memcachier.com/api/v2/caches/<cache_id>/insight/processed_stats/per_server
 ```
 
 ##### Query Parameters
@@ -705,7 +705,7 @@ GET https://insight.memcachier.com/api/v2/caches/<cache_id>/insight/processed_st
 ##### Example
 
 ```term
-curl https://insight.memcachier.com/api/v2/caches/<cache_id>/insight/processed_stats/per_server?names=auth_cmds_rate,auth_errors_rate,bytes&startTime=2023-01-08T15:20:00Z&endTime=2023-01-10T15:20:00Z \
+curl https://analytics.memcachier.com/api/v2/caches/<cache_id>/insight/processed_stats/per_server?names=auth_cmds_rate,auth_errors_rate,bytes&startTime=2023-01-08T15:20:00Z&endTime=2023-01-10T15:20:00Z \
   --user <username>:<password>
 ```
 
@@ -748,7 +748,7 @@ granularity, and above that gets day granularity.
 ##### HTTP Request
 
 ```term
-GET https://insight.memcachier.com/api/v2/caches/<cache_id>/insight/latency
+GET https://analytics.memcachier.com/api/v2/caches/<cache_id>/insight/latency
 ```
 
 ##### Query Parameters
@@ -776,7 +776,7 @@ GET https://insight.memcachier.com/api/v2/caches/<cache_id>/insight/latency
 ##### Example
 
 ```term
-curl https://insight.memcachier.com/api/v2/caches/<cache_id>/insight/latency?startTime=2023-01-08T15:20:00Z&endTime=2023-01-10T15:20:00Z \
+curl https://analytics.memcachier.com/api/v2/caches/<cache_id>/insight/latency?startTime=2023-01-08T15:20:00Z&endTime=2023-01-10T15:20:00Z \
   --user <username>:<password>
 ```
 
@@ -814,7 +814,7 @@ Get all alerts.
 ##### HTTP Request
 
 ```term
-GET https://insight.memcachier.com/api/v2/caches/<cache_id>/alerts
+GET https://analytics.memcachier.com/api/v2/caches/<cache_id>/alerts
 ```
 
 ##### Responses
@@ -831,7 +831,7 @@ GET https://insight.memcachier.com/api/v2/caches/<cache_id>/alerts
 ##### Example
 
 ```term
-curl https://insight.memcachier.com/api/v2/caches/<cache_id>/alerts \
+curl https://analytics.memcachier.com/api/v2/caches/<cache_id>/alerts \
   --user <username>:<password>
 ```
 
@@ -858,7 +858,7 @@ Create a new alert.
 ##### HTTP Request
 
 ```term
-POST https://insight.memcachier.com/api/v2/caches/<cache_id>/alerts
+POST https://analytics.memcachier.com/api/v2/caches/<cache_id>/alerts
 ```
 
 ##### Request Body
@@ -887,7 +887,7 @@ POST https://insight.memcachier.com/api/v2/caches/<cache_id>/alerts
 ##### Example
 
 ```term
-curl -X POST https://insight.memcachier.com/api/v2/caches/<cache_id>/alerts \
+curl -X POST https://analytics.memcachier.com/api/v2/caches/<cache_id>/alerts \
   --user <username>:<password> \
   -H 'Content-Type: application/json' \
   -d '{"trigger_type":"hit_rate","trigger_threshold":50,"delivery_config_id":1,"description":"This is a description.","enabled":true}'
@@ -913,7 +913,7 @@ Get an alert by ID.
 ##### HTTP Request
 
 ```term
-GET https://insight.memcachier.com/api/v2/caches/<cache_id>/alerts/<alert_id>
+GET https://analytics.memcachier.com/api/v2/caches/<cache_id>/alerts/<alert_id>
 ```
 
 ##### Responses
@@ -930,7 +930,7 @@ GET https://insight.memcachier.com/api/v2/caches/<cache_id>/alerts/<alert_id>
 ##### Example
 
 ```term
-curl https://insight.memcachier.com/api/v2/caches/<cache_id>/alerts/<alert_id> \
+curl https://analytics.memcachier.com/api/v2/caches/<cache_id>/alerts/<alert_id> \
   --user <username>:<password>
 ```
 
@@ -954,7 +954,7 @@ Updates an alert.
 ##### HTTP Request
 
 ```term
-PUT https://insight.memcachier.com/api/v2/caches/<cache_id>/alerts/<alert_id>
+PUT https://analytics.memcachier.com/api/v2/caches/<cache_id>/alerts/<alert_id>
 ```
 
 ##### Request Body
@@ -984,7 +984,7 @@ PUT https://insight.memcachier.com/api/v2/caches/<cache_id>/alerts/<alert_id>
 ##### Example
 
 ```term
-curl -X PUT https://insight.memcachier.com/api/v2/caches/<cache_id>/alerts/<alert_id> \
+curl -X PUT https://analytics.memcachier.com/api/v2/caches/<cache_id>/alerts/<alert_id> \
   --user <username>:<password> \
   -H 'Content-Type: application/json' \
   -d '{"id":<alert_id>,"enabled":false}'
@@ -1010,7 +1010,7 @@ Deletes an alert.
 ##### HTTP Request
 
 ```term
-DELETE https://insight.memcachier.com/api/v2/caches/<cache_id>/alerts/<alert_id>
+DELETE https://analytics.memcachier.com/api/v2/caches/<cache_id>/alerts/<alert_id>
 ```
 
 ##### Responses
@@ -1027,7 +1027,7 @@ DELETE https://insight.memcachier.com/api/v2/caches/<cache_id>/alerts/<alert_id>
 ##### Example
 
 ```term
-curl -X DELETE https://insight.memcachier.com/api/v2/caches/<cache_id>/alerts/<alert_id> \
+curl -X DELETE https://analytics.memcachier.com/api/v2/caches/<cache_id>/alerts/<alert_id> \
   --user <username>:<password>
 ```
 
@@ -1038,7 +1038,7 @@ List alert delivery configs.
 ##### HTTP Request
 
 ```term
-GET https://insight.memcachier.com/api/v2/caches/<cache_id>/alerts/configs
+GET https://analytics.memcachier.com/api/v2/caches/<cache_id>/alerts/configs
 ```
 
 ##### Responses
@@ -1055,7 +1055,7 @@ GET https://insight.memcachier.com/api/v2/caches/<cache_id>/alerts/configs
 ##### Example
 
 ```term
-curl https://insight.memcachier.com/api/v2/caches/<cache_id>/alerts/configs \
+curl https://analytics.memcachier.com/api/v2/caches/<cache_id>/alerts/configs \
   --user <username>:<password>
 ```
 
@@ -1081,7 +1081,7 @@ Create an alert delivery config.
 ##### HTTP Request
 
 ```term
-POST https://insight.memcachier.com/api/v2/caches/<cache_id>/alerts/configs
+POST https://analytics.memcachier.com/api/v2/caches/<cache_id>/alerts/configs
 ```
 
 ##### Request Body
@@ -1110,7 +1110,7 @@ POST https://insight.memcachier.com/api/v2/caches/<cache_id>/alerts/configs
 ##### Example
 
 ```term
-curl -X POST https://insight.memcachier.com/api/v2/caches/<cache_id>/alerts/configs \
+curl -X POST https://analytics.memcachier.com/api/v2/caches/<cache_id>/alerts/configs \
   --user <username>:<password> \
   -H 'Content-Type: application/json' \
   -d '{"delivery_type":"slack","slack_url":"https://hooks.slack.com/services/...","slack_channel":"#alerts"}'
@@ -1135,7 +1135,7 @@ Delete an alert delivery config.
 ##### HTTP Request
 
 ```term
-DELETE https://insight.memcachier.com/api/v2/caches/<cache_id>/alerts/configs/<config_id>
+DELETE https://analytics.memcachier.com/api/v2/caches/<cache_id>/alerts/configs/<config_id>
 ```
 
 <table class="table table-bordered">
@@ -1150,7 +1150,7 @@ DELETE https://insight.memcachier.com/api/v2/caches/<cache_id>/alerts/configs/<c
 ##### Example
 
 ```term
-curl -X DELETE https://insight.memcachier.com/api/v2/caches/<cache_id>/alerts/configs/<config_id> \
+curl -X DELETE https://analytics.memcachier.com/api/v2/caches/<cache_id>/alerts/configs/<config_id> \
   --user <username>:<password>
 ```
 
@@ -1163,7 +1163,7 @@ Get the last 100 log lines for cache.
 ##### HTTP Request
 
 ```term
-GET https://insight.memcachier.com/api/v2/caches/<cache_id>/introspection/recent_logs
+GET https://analytics.memcachier.com/api/v2/caches/<cache_id>/introspection/recent_logs
 ```
 
 ##### Responses
@@ -1182,7 +1182,7 @@ GET https://insight.memcachier.com/api/v2/caches/<cache_id>/introspection/recent
 ##### Example
 
 ```term
-curl https://insight.memcachier.com/api/v2/caches/<cache_id>/introspection/recent_logs \
+curl https://analytics.memcachier.com/api/v2/caches/<cache_id>/introspection/recent_logs \
   --user <username>:<password>
 ```
 
@@ -1210,7 +1210,7 @@ Get compound stats for cache.
 ##### HTTP Request
 
 ```term
-GET https://insight.memcachier.com/api/v2/caches/<cache_id>/introspection/compound_stats
+GET https://analytics.memcachier.com/api/v2/caches/<cache_id>/introspection/compound_stats
 ```
 
 ##### Query Parameters
@@ -1239,7 +1239,7 @@ GET https://insight.memcachier.com/api/v2/caches/<cache_id>/introspection/compou
 ##### Example
 
 ```term
-curl https://insight.memcachier.com/api/v2/caches/<cache_id>/introspection/compound_stats?startTime=2023-01-08T15:20:00Z&endTime=2023-01-10T15:20:00Z \
+curl https://analytics.memcachier.com/api/v2/caches/<cache_id>/introspection/compound_stats?startTime=2023-01-08T15:20:00Z&endTime=2023-01-10T15:20:00Z \
   --user <username>:<password>
 ```
 
@@ -1279,7 +1279,7 @@ Get popular items for cache.
 ##### HTTP Request
 
 ```term
-GET https://insight.memcachier.com/api/v2/caches/<cache_id>/introspection/popular_items
+GET https://analytics.memcachier.com/api/v2/caches/<cache_id>/introspection/popular_items
 ```
 
 ##### Responses
@@ -1298,7 +1298,7 @@ GET https://insight.memcachier.com/api/v2/caches/<cache_id>/introspection/popula
 ##### Example
 
 ```term
-curl https://insight.memcachier.com/api/v2/caches/<cache_id>/introspection/popular_items \
+curl https://analytics.memcachier.com/api/v2/caches/<cache_id>/introspection/popular_items \
   --user <username>:<password>
 ```
 
@@ -1345,7 +1345,7 @@ Get stats for a key by its name.
 ##### HTTP Request
 
 ```term
-GET https://insight.memcachier.com/api/v2/caches/<cache_id>/introspection/key_stats
+GET https://analytics.memcachier.com/api/v2/caches/<cache_id>/introspection/key_stats
 ```
 
 ##### Query Parameters
@@ -1373,7 +1373,7 @@ GET https://insight.memcachier.com/api/v2/caches/<cache_id>/introspection/key_st
 ##### Example
 
 ```term
-curl https://insight.memcachier.com/api/v2/caches/<cache_id>/introspection/key_stats?key=<key_name> \
+curl https://analytics.memcachier.com/api/v2/caches/<cache_id>/introspection/key_stats?key=<key_name> \
   --user <username>:<password>
 ```
 
@@ -1400,7 +1400,7 @@ Get all watched prefixes for cache.
 ##### HTTP Request
 
 ```term
-GET https://insight.memcachier.com/api/v2/caches/<cache_id>/introspection/prefixes
+GET https://analytics.memcachier.com/api/v2/caches/<cache_id>/introspection/prefixes
 ```
 
 ##### Responses
@@ -1419,7 +1419,7 @@ GET https://insight.memcachier.com/api/v2/caches/<cache_id>/introspection/prefix
 ##### Example
 
 ```term
-curl https://insight.memcachier.com/api/v2/caches/<cache_id>/introspection/prefixes \
+curl https://analytics.memcachier.com/api/v2/caches/<cache_id>/introspection/prefixes \
   --user <username>:<password>
 ```
 
@@ -1442,7 +1442,7 @@ Watch a prefix. Start collecting stats for a prefix.
 ##### HTTP Request
 
 ```term
-POST https://insight.memcachier.com/api/v2/caches/<cache_id>/introspection/prefixes
+POST https://analytics.memcachier.com/api/v2/caches/<cache_id>/introspection/prefixes
 ```
 
 ##### Responses
@@ -1461,7 +1461,7 @@ POST https://insight.memcachier.com/api/v2/caches/<cache_id>/introspection/prefi
 ##### Example
 
 ```term
-curl -X POST https://insight.memcachier.com/api/v2/caches/<cache_id>/introspection/prefixes \
+curl -X POST https://analytics.memcachier.com/api/v2/caches/<cache_id>/introspection/prefixes \
   --user <username>:<password> \
   -H 'Content-Type: application/json' \
   -d '{"name":"my_prefix"}'
@@ -1483,7 +1483,7 @@ Unwatch a prefix. Stop collecting stats for a prefix.
 ##### HTTP Request
 
 ```term
-DELETE https://insight.memcachier.com/api/v2/caches/<cache_id>/introspection/prefixes/<prefix_id>
+DELETE https://analytics.memcachier.com/api/v2/caches/<cache_id>/introspection/prefixes/<prefix_id>
 ```
 
 ##### Responses
@@ -1502,7 +1502,7 @@ DELETE https://insight.memcachier.com/api/v2/caches/<cache_id>/introspection/pre
 ##### Example
 
 ```term
-curl -X DELETE https://insight.memcachier.com/api/v2/caches/<cache_id>/introspection/prefixes/<prefix_id> \
+curl -X DELETE https://analytics.memcachier.com/api/v2/caches/<cache_id>/introspection/prefixes/<prefix_id> \
   --user <username>:<password> \
 ```
 
@@ -1513,7 +1513,7 @@ Get stats for a watched prefix.
 ##### HTTP Request
 
 ```term
-GET https://insight.memcachier.com/api/v2/caches/<cache_id>/introspection/prefixes/<prefix_id>/stats
+GET https://analytics.memcachier.com/api/v2/caches/<cache_id>/introspection/prefixes/<prefix_id>/stats
 ```
 
 ##### Query Parameters
@@ -1542,7 +1542,7 @@ GET https://insight.memcachier.com/api/v2/caches/<cache_id>/introspection/prefix
 ##### Example
 
 ```term
-curl https://insight.memcachier.com/api/v2/caches/<cache_id>/introspection/prefixes/<prefix_id>/stats?startTime=2023-01-08T15:20:00Z&endTime=2023-01-10T15:20:00Z \
+curl https://analytics.memcachier.com/api/v2/caches/<cache_id>/introspection/prefixes/<prefix_id>/stats?startTime=2023-01-08T15:20:00Z&endTime=2023-01-10T15:20:00Z \
   --user <username>:<password>
 ```
 
@@ -1582,7 +1582,7 @@ Get popular items for a watched prefix.
 ##### HTTP Request
 
 ```term
-GET https://insight.memcachier.com/api/v2/caches/<cache_id>/introspection/prefixes/<prefix_id>/popular_items
+GET https://analytics.memcachier.com/api/v2/caches/<cache_id>/introspection/prefixes/<prefix_id>/popular_items
 ```
 
 ##### Responses
@@ -1601,7 +1601,7 @@ GET https://insight.memcachier.com/api/v2/caches/<cache_id>/introspection/prefix
 ##### Example
 
 ```term
-curl https://insight.memcachier.com/api/v2/caches/<cache_id>/introspection/prefixes/<prefix_id>/popular_items \
+curl https://analytics.memcachier.com/api/v2/caches/<cache_id>/introspection/prefixes/<prefix_id>/popular_items \
   --user <username>:<password>
 ```
 
