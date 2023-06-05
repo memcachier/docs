@@ -1,55 +1,63 @@
 
-The [MemCachier](https://elements.heroku.com/addons/memcachier) add-on provides an HTTP API for flushing its cache contents. This allows you to set up a Heroku HTTP [deploy hook](deploy-hooks) that flushes your cache every time you deploy to staging or production, ensuring that your cache is clean and ready to go.
+The [MemCachier](https://elements.heroku.com/addons/memcachier) add-on provides an [HTTP API](memcachier#analytics-api-v2) endpoint for flushing the contents of a cache. The [`flush`](memcachier#flush) endpoint allows you to set up a Heroku [App Webhook](app-webhooks) that flushes your cache every time you deploy, ensuring that your cache is clean after each deployment.
 
 ## Step 1: Obtain your MemCachier credentials
 
-To communciate with the MemCachier API, you need the values of your app's `MEMCACHIER_USERNAME` and `MEMCACHIER_PASSWORD` config vars. You can obtain these values with the `heroku config` CLI command, or by looking them up on your MemCachier analytics dashboard.
+To communicate with the MemCachier API, you need your MemCachier username, password, and cache ID. You can find your credentials and cache ID on the **Settings** page of your
+[analytics dashboard](/documentation/memcachier-analytics).
 
-After you obtain these values, you can use them to obtain your cache's unique ID. Send the following cURL request, providing your MemCachier username and password where indicated:
+>note
+>Only credentials that have the API capability can access the MemCachier API. You can also manage capabilities from the analytics dashboard **Settings** page.
+
+To access your application's MemCachier analytics dashboard, run the following [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli) command in your terminal:
 
 ```term
-$ curl "https://analytics.memcachier.com/api/v1/login" \
-> --user "REPLACE_WITH_MEMCACHIER_USERNAME:REPLACE_WITH_MEMCACHIER_PASSWORD"
-```
-
-The body of the API's response includes your cache's unique ID:
-
-```json
-{
-  "cache_id": 123456
-}
+$ heroku addons:open memcachier
 ```
 
 ## Step 2: Test out flushing the cache
 
-After you have your MemCachier username, password, and cache ID, you can flush your cache with the following cURL request (substitute your credentials where indicated):
+To test flushing your cache, you'll perform a cURL request. You'll pass a basic Authorization header to authenticate the request. The Authorization header requires a Base64-encoded value: a username and password separated by a colon. For example, `username:password` would be Base64-encoded to `dXNlcm5hbWU6cGFzc3dvcmQ=`.
+
+On Unix-like operating systems such as macOS and Linux, you can Base64 encode your username and password with the following command, adding your actual username and password values:
 
 ```term
-$ curl "https://analytics.memcachier.com/api/v1/REPLACE_WITH_MEMCACHIER_CACHE_ID/flush" \
-> -X POST --user "REPLACE_WITH_MEMCACHIER_USERNAME:REPLACE_WITH_MEMCACHIER_PASSWORD"
+$ echo -n <username>:<password> | base64
 ```
 
-If the above request returns an error, ensure that your credentials are configured for API access on your analytics dashboard:
+`echo -n` removes the trailing newline character. If a newline character is accidentally added when encoding, authorization will fail with the error, `code=401, message=Bad user`.
 
-![Analytics dashboard credentials](https://s3.amazonaws.com/heroku-devcenter-files/article-images/1508409957-screen-shot-2017-09-07-at-11-14-48-am.png)
-
-## Step 3: Set up a deploy hook
-
-After you successfully flush your cache with a cURL request, you can set up a deploy hook with the same set of credentials, like so (substitute your credentials where indicated):
+You can now flush your cache with the following cURL request. Make sure to substitute your cache ID and Base64-encoded credentials:
 
 ```term
-$ heroku addons:create deployhooks:http \
-> --url="https://REPLACE_WITH_MEMCACHIER_USERNAME:REPLACE_WITH_MEMCACHIER_PASSWORD@\
-> analytics.memcachier.com/api/v1//REPLACE_WITH_MEMCACHIER_CACHE_ID/flush"
+$ curl -X POST https://analytics.memcachier.com/api/v2/caches/<cache_id>/flush \
+  -H 'Authorization: Basic <base64_encoded_username:password>'
 ```
 
-And that’s it! Pretty simple. Now, any time you deploy a new commit to Heroku, your cache will automatically flush its old data away, allowing you to run tests on relevant data.
+## Step 3: Subscribe to Webhook notifications
+
+After you verify the cURL flush command is working by successfully flushing your cache, you're ready to subscribe to deploy webhook notifications.
+
+To trigger the flush command when you deploy your app, you'll subscribe to notifications from the [`api:release`](https://devcenter.heroku.com/articles/app-webhooks#step-2-determine-which-events-to-subscribe-to) entity. In your terminal, run the `webhooks:add` Heroku CLI command. Again, make sure to substitute your cache ID and Base64-encoded credentials:
+
+```term
+$ heroku webhooks:add \
+-i api:release \
+-l notify \
+-u https://analytics.memcachier.com/api/v2/caches/<cache_id>/flush  \
+-t 'Basic <base64_encoded_username:password>'
+```
+
+See the Heroku [App Webhooks documentation](https://devcenter.heroku.com/articles/app-webhooks#step-3-subscribe) to explain the options used in that command.
+
+Now, any time you deploy to Heroku, your cache will automatically flush its old data.
 
 >note
->If you ever update replace your MemCachier credentials, you’ll need to manually update your deploy hook as well.
+>If you ever update your MemCachier credentials, you must also update your webhook.
 
 ## Additional resources
 
-See [Deploy Hooks](https://devcenter.heroku.com/articles/deploy-hooks#http-post-hook) for more information on setting up Heroku deploy hooks.
+See the [Webhook documentation](https://devcenter.heroku.com/articles/app-webhooks) for more information on setting up Heroku Webhooks.
 
-To learn more about the features of the MemCachier API, see the [full documentation](memcachier#analytics-api-v2).
+To learn more about the MemCachier API, see our [documentation](memcachier#analytics-api-v2).
+The [MemCachier](https://elements.heroku.com/addons/memcachier) add-on provides an [HTTP API](memcachier#analytics-api-v2) endpoint for flushing the contents of a cache. The `flush` endpoint allows you to set up a Heroku [App Webhook](app-webhooks) that flushes your cache every time you deploy, ensuring that your cache is clean and ready to go.
