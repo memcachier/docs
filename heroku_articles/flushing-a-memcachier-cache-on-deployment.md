@@ -4,12 +4,12 @@ The [MemCachier](https://elements.heroku.com/addons/memcachier) add-on provides 
 ## Step 1: Obtain your MemCachier credentials
 
 To communicate with the MemCachier API, you need your MemCachier username, password, and cache ID. You can find your credentials and cache ID on the **Settings** page of your
-[analytics dashboard](/documentation/memcachier-analytics).
+[analytics dashboard](memcachier#memcachier-analytics).
 
 >note
 >Only credentials that have the API capability can access the MemCachier API. You can also manage capabilities from the analytics dashboard **Settings** page.
 
-To access your application's MemCachier analytics dashboard, run the following [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli) command in your terminal:
+To access your application's MemCachier analytics dashboard, run the following [Heroku CLI](heroku-cli) command in your terminal:
 
 ```term
 $ heroku addons:open memcachier
@@ -38,7 +38,7 @@ $ curl -X POST https://analytics.memcachier.com/api/v2/caches/<cache_id>/flush \
 
 After you verify the cURL flush command is working by successfully flushing your cache, you're ready to subscribe to deploy webhook notifications.
 
-To trigger the flush command when you deploy your app, you'll subscribe to notifications from the [`api:release`](https://devcenter.heroku.com/articles/app-webhooks#step-2-determine-which-events-to-subscribe-to) entity. In your terminal, run the `webhooks:add` Heroku CLI command. Again, make sure to substitute your cache ID and Base64-encoded credentials:
+To trigger the flush command when you deploy your app, you'll subscribe to notifications from the [`api:release`](app-webhooks#step-2-determine-which-events-to-subscribe-to) entity. In your terminal, run the `webhooks:add` Heroku CLI command. Again, make sure to substitute your cache ID and Base64-encoded credentials:
 
 ```term
 $ heroku webhooks:add \
@@ -48,7 +48,7 @@ $ heroku webhooks:add \
 -t 'Basic <base64_encoded_username:password>'
 ```
 
-See the Heroku [App Webhooks documentation](https://devcenter.heroku.com/articles/app-webhooks#step-3-subscribe) to explain the options used in that command.
+See the Heroku [App Webhooks documentation](app-webhooks#step-3-subscribe) to explain the options used in that command.
 
 Now, any time you deploy to Heroku, your cache will automatically flush its old data.
 
@@ -57,7 +57,7 @@ Now, any time you deploy to Heroku, your cache will automatically flush its old 
 
 ## Additional resources
 
-See the [Webhook documentation](https://devcenter.heroku.com/articles/app-webhooks) for more information on setting up Heroku Webhooks.
+See the [Webhook documentation](app-webhooks) for more information on setting up Heroku Webhooks.
 
 To learn more about the MemCachier API, see our [documentation](memcachier#analytics-api-v2).
 The [MemCachier](https://elements.heroku.com/addons/memcachier) add-on provides an [HTTP API](memcachier#analytics-api-v2) endpoint for flushing the contents of a cache. The `flush` endpoint allows you to set up a Heroku [App Webhook](app-webhooks) that flushes your cache every time you deploy, ensuring that your cache is clean and ready to go.
