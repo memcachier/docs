@@ -9,13 +9,12 @@ description: "Documentation for using MemCachier with Rails"
 
 **IF(direct)**
 <div class="alert alert-info">
-We’ve built a small Rails example here:
-<a href="https://github.com/memcachier/examples-rails">MemCachier Rails sample app</a>.
-<br>
-Related tutorials:
-<ul>
-  <li><a href="https://devcenter.heroku.com/articles/building-a-rails-3-application-with-memcache">Building a Rails 5 Application with Memcache on Heroku</a></li>
-</ul>
+  <p><a href="https://github.com/memcachier/examples-rails">MemCachier Rails sample app</a>.</p>
+  <p>Related tutorials:</p>
+  <ul>
+    <li><a href="https://blog.memcachier.com/2023/06/07/deploy-rails-and-memcache-on-render/">Deploy Rails and Memcache on Render: A How-To Guide</a></li>
+    <li><a href="https://devcenter.heroku.com/articles/building-a-rails-3-application-with-memcache">Building a Rails 5 Application with Memcache on Heroku</a></li>
+  </ul>
 </div>
 **ENDIF**
 
